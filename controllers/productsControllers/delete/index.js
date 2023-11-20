@@ -1,46 +1,52 @@
 const ProductModel = require("../../../models/Products");
-const fs = require("fs");
+const fs = require("fs").promises;
 const path = require("path");
 const { deleteEmptyFolders } = require("./deleteEmptyFolders");
+
+const removeImage = async (imagePath) => {
+  try {
+    await fs.unlink(imagePath);
+    console.log("Imagen eliminada:", imagePath);
+  } catch (error) {
+    console.error("Error al eliminar la imagen:", error);
+  }
+};
 
 exports.deleteProductById = async (req, res) => {
   const productId = req.params.id;
 
   try {
     const productSelected = await ProductModel.findByPk(productId);
-    if (!productSelected)
+    if (!productSelected) {
       return res.status(404).json({ message: "Producto no encontrado" });
+    }
     const { dataValues } = productSelected;
     if (dataValues.variations && dataValues.variations.length > 0) {
-      dataValues.variations.forEach((image) => {
-        const imagePath = path.join(__dirname, "../../../public/", image);
-        fs.unlink(imagePath, (err) => {
-          if (err) {
-            console.error("Error al eliminar la imagen:", err);
-          } else {
-            console.log("Imagen eliminada:", image);
-          }
-        });
-      });
-      await deleteEmptyFolders(dataValues.variations[0]).then((res) => {
-        deleteEmptyFolders(dataValues.variations[0], 2);
-      });
+      await Promise.all(
+        dataValues.variations.map(async (variation) => {
+          await Promise.all(
+            variation.images.map(async (routeImage) => {
+              const imagePath = path.join(
+                __dirname,
+                "../../../public/",
+                routeImage
+              );
+              await removeImage(imagePath);
+            })
+          );
+          await deleteEmptyFolders(variation.images[0]);
+          await deleteEmptyFolders(variation.images[0], 2);
+        })
+      );
     }
     const miniatureImagePath = path.join(
       __dirname,
       "../../../public/",
       dataValues.miniatureImage
     );
-    fs.unlink(miniatureImagePath, (err) => {
-      if (err) {
-        console.error("Error al eliminar la miniatura:", err);
-      } else {
-        deleteEmptyFolders(dataValues.miniatureImage).then((res) => {
-          deleteEmptyFolders(dataValues.miniatureImage, 2);
-        });
-        console.log("Miniatura eliminada:", dataValues.miniatureImage);
-      }
-    });
+    await removeImage(miniatureImagePath);
+    await deleteEmptyFolders(dataValues.miniatureImage);
+    await deleteEmptyFolders(dataValues.miniatureImage, 2);
     await productSelected.destroy();
     return res
       .status(200)

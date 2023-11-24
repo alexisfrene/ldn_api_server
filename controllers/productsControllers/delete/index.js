@@ -1,7 +1,7 @@
-const ProductModel = require("../../../models/Products");
 const fs = require("fs").promises;
 const path = require("path");
 const { deleteEmptyFolders } = require("./deleteEmptyFolders");
+const { supabase } = require("../../../lib/supabase");
 
 const removeImage = async (imagePath) => {
   try {
@@ -16,14 +16,17 @@ exports.deleteProductById = async (req, res) => {
   const productId = req.params.id;
 
   try {
-    const productSelected = await ProductModel.findByPk(productId);
-    if (!productSelected) {
+    const { data, error } = await supabase
+      .from("ldn_image_manager")
+      .select("*")
+      .eq("id", productId);
+    if (error) {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
-    const { dataValues } = productSelected;
-    if (dataValues.variations && dataValues.variations.length > 0) {
+    const productSelected = data[0];
+    if (productSelected.variations && productSelected.variations.length > 0) {
       await Promise.all(
-        dataValues.variations.map(async (variation) => {
+        productSelected.variations.map(async (variation) => {
           await Promise.all(
             variation.images.map(async (routeImage) => {
               const imagePath = path.join(
@@ -42,12 +45,12 @@ exports.deleteProductById = async (req, res) => {
     const miniatureImagePath = path.join(
       __dirname,
       "../../../public/",
-      dataValues.miniatureImage
+      productSelected.miniature_image
     );
     await removeImage(miniatureImagePath);
-    await deleteEmptyFolders(dataValues.miniatureImage);
-    await deleteEmptyFolders(dataValues.miniatureImage, 2);
-    await productSelected.destroy();
+    await deleteEmptyFolders(productSelected.miniature_image);
+    await deleteEmptyFolders(productSelected.miniature_image, 2);
+    await supabase.from("ldn_image_manager").delete().eq("id", productId);
     return res
       .status(200)
       .json({ message: "Producto eliminado correctamente" });

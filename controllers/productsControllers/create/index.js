@@ -1,4 +1,4 @@
-const ProductModel = require("../../../models/Products");
+const { supabase } = require("../../../lib/supabase");
 const { handlerImageDestination } = require("./handlerImageDestination");
 const { v4: uuidv4 } = require("uuid");
 
@@ -21,16 +21,29 @@ exports.createProduct = async (req, res) => {
         id: uuidv4(),
       },
     ];
-    await ProductModel.create({
-      primaryImage,
-      description,
-      variations,
-      category,
-      miniatureImage: miniatureUrl,
-      details,
-    });
-    res.send({ data: "Imagen cargada", description, category });
+    const { data, error } = await supabase.from("ldn_image_manager").insert([
+      {
+        primary_image: primaryImage,
+        category,
+        miniature_image: miniatureUrl,
+        variations,
+        description,
+        details,
+      },
+    ]);
+    if (!error) res.send({ data });
   } catch (error) {
     console.log("Error en crear un producto:", error);
   }
+};
+
+exports.insertIdImagesVariants = async (req, res) => {
+  try {
+    const { product_id, product_image_id } = req.query;
+    const { data } = await supabase
+      .from("ldn_producs")
+      .update({ produc_variations: product_image_id })
+      .eq("id", product_id);
+    res.send({ product_id, product_image_id, data });
+  } catch (error) {}
 };

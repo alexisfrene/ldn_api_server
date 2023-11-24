@@ -1,5 +1,9 @@
-const { createProduct } = require("./create");
-const { getAllProducts, getProductById } = require("./read");
+const { createProduct, insertIdImagesVariants } = require("./create");
+const {
+  getAllProducts,
+  getProductById,
+  getProductsForCategory,
+} = require("./read");
 const { deleteProductById } = require("./delete");
 
 module.exports = {
@@ -7,4 +11,6 @@ module.exports = {
   getAllProducts,
   getProductById,
   deleteProductById,
+  getProductsForCategory,
+  insertIdImagesVariants,
 };

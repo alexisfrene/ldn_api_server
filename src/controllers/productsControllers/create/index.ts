@@ -1,18 +1,32 @@
-const { supabase } = require("../../../lib/supabase");
-const { handlerImageDestination } = require("./handlerImageDestination");
-const { v4: uuidv4 } = require("uuid");
+import { Request, Response } from "express";
+import { supabase } from "../../../lib/supabase";
+import { handlerImageDestination } from "../../../utils";
+import { v4 as uuidv4 } from "uuid";
 
-exports.createProduct = async (req, res) => {
+interface BodyProps {
+  body: {
+    description: string;
+    category: string;
+    mainImage: string;
+    details: { color: string; gender: string; brand: string; style: string };
+    collection: string;
+  };
+}
+
+export const createProduct = async (req: Request, res: Response) => {
   try {
-    const { description, category, mainImage, details, collection } = req.body;
+    const { description, category, mainImage, details, collection } = (
+      req.body as BodyProps
+    ).body;
     const categoryFolder = category.replace(/\s+/g, "-").toLowerCase();
     const productFolder = collection.replace(/\s+/g, "-").toLowerCase();
-    const { direction, primaryImage } = handlerImageDestination(
+    const files = req.files as Express.Multer.File[];
+    const { direction, primaryImage } = handlerImageDestination({
       categoryFolder,
       productFolder,
-      req.files,
-      mainImage
-    );
+      files,
+      mainImage,
+    });
     const miniatureUrl = direction.shift();
     const variations = [
       {
@@ -37,7 +51,7 @@ exports.createProduct = async (req, res) => {
   }
 };
 
-exports.insertIdImagesVariants = async (req, res) => {
+export const insertIdImagesVariants = async (req: Request, res: Response) => {
   try {
     const { product_id, product_image_id } = req.query;
     const { data } = await supabase
@@ -45,5 +59,8 @@ exports.insertIdImagesVariants = async (req, res) => {
       .update({ produc_variations: product_image_id })
       .eq("id", product_id);
     res.send({ product_id, product_image_id, data });
-  } catch (error) {}
+  } catch (error) {
+    console.log("Error en insertar ID de imágenes de variantes:", error);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
 };

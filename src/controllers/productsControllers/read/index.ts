@@ -1,23 +1,24 @@
-//const ProductModel = require("../../../models/Products");
-const { supabase } = require("../../../lib/supabase");
+import { Request, Response } from "express";
+import { supabase } from "../../../lib/supabase";
 
-exports.getAllProducts = async (__, res) => {
+export const getAllProducts = async (_: Request, res: Response) => {
   try {
-    let { data, error } = await supabase.from("ldn_image_manager").select();
+    const { data, error } = await supabase.from("ldn_image_manager").select();
     if (!error) {
-      res.json({ data });
+      return res.json({ data });
     }
   } catch (error) {
     console.error("Error al obtener la lista de productos:", error);
     res.status(500).json({ error: "No se pudo obtener la lista de productos" });
   }
+  return [];
 };
 
-exports.getProductsForCategory = async (req, res) => {
+export const getProductsForCategory = async (req: Request, res: Response) => {
   try {
     const param = req.query.category;
 
-    let { data, error } = await supabase
+    const { data, error } = await supabase
       .from("ldn_image_manager")
       .select()
       .eq("category", param);
@@ -26,15 +27,18 @@ exports.getProductsForCategory = async (req, res) => {
     }
   } catch (error) {
     console.error("Error al obtener la lista de productos:", error);
-    res.status(500).json({ error: "No se pudo obtener la lista de productos" });
+    return res
+      .status(500)
+      .json({ error: "No se pudo obtener la lista de productos" });
   }
+  return;
 };
 
-exports.getProductById = async (req, res) => {
+export const getProductById = async (req: Request, res: Response) => {
   const productId = req.params.id;
 
   try {
-    let { data, error } = await supabase
+    const { data, error } = await supabase
       .from("ldn_image_manager")
       .select()
       .eq("id", productId);
@@ -45,6 +49,6 @@ exports.getProductById = async (req, res) => {
   } catch (error) {
     return res
       .status(500)
-      .json({ message: "Error al buscar el producto", error: error.message });
+      .json({ message: "Error al buscar el producto", error: error });
   }
 };

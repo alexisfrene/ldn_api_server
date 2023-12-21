@@ -1,14 +1,14 @@
-const fs = require("fs").promises;
-const path = require("path");
+import { promises as fsPromises } from "fs";
+import path from "path";
 
-exports.deleteEmptyFolders = async (route, levels = 1) => {
+export const deleteEmptyFolders = async (route: string, levels = 1) => {
   try {
     const pathParts = route.split("/");
     const commonPath = pathParts.slice(0, -levels).join("/") + "/";
     const folderPath = path.join(__dirname, `../../../public/${commonPath}`);
-    const files = await fs.readdir(folderPath);
+    const files = await fsPromises.readdir(folderPath);
     if (!files || files.length === 0) {
-      await fs.rmdir(folderPath);
+      await fsPromises.rmdir(folderPath);
       console.log("Carpeta vacía eliminada:", folderPath);
     }
   } catch (err) {

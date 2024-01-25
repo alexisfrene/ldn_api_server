@@ -3,21 +3,10 @@ import { supabase } from "../../../lib/supabase";
 import { handlerImageDestination } from "../../../utils";
 import { v4 as uuidv4 } from "uuid";
 
-interface BodyProps {
-  body: {
-    description: string;
-    category: string;
-    mainImage: string;
-    details: { color: string; gender: string; brand: string; style: string };
-    collection: string;
-  };
-}
-
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    const { description, category, mainImage, details, collection } = (
-      req.body as BodyProps
-    ).body;
+    const { description, category, mainImage, details, collection } = req.body;
+
     const categoryFolder = category.replace(/\s+/g, "-").toLowerCase();
     const productFolder = collection.replace(/\s+/g, "-").toLowerCase();
     const files = req.files as Express.Multer.File[];

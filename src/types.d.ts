@@ -4,7 +4,7 @@ export type ImagePath = string & { __imagePathBrand: never };
 export type Gender = "MALE" | "FEMALE" | "UNSPECIFIED";
 export type Brand = "NIKE" | "PUMA" | "ADDIDAS" | "OTRA";
 export type Styles = "URBAN" | "SPORTS" | "UNSPECIFIED";
-export type Categorys =
+export type CategoryType =
   | "t-shirts"
   | "pants"
   | "sneakers"
@@ -45,6 +45,6 @@ export interface VariantsImage {
   variations: CollectionType[];
   description: string;
   details: VariantsDetails;
-  category: Categorys;
+  category: CategoryType;
   user_id: Uuid;
 }

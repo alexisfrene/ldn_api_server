@@ -3,6 +3,7 @@ import { promises as fsPromises } from "fs";
 import path from "path";
 import { deleteEmptyFolders } from "./deleteEmptyFolders";
 import { supabase } from "../../../lib/supabase";
+import { constants, access } from "fs/promises";
 
 const { unlink } = fsPromises;
 interface CollectionType {
@@ -13,10 +14,18 @@ interface CollectionType {
 
 const removeImage = async (imagePath: string) => {
   try {
+    // Verificar si el archivo existe antes de intentar eliminarlo
+    await access(imagePath, constants.F_OK);
+
+    // El archivo existe, puedes proceder con unlink
     await unlink(imagePath);
     console.log("Imagen eliminada:", imagePath);
   } catch (error) {
-    console.error("Error al eliminar la imagen:", error);
+    if (error === "ENOENT") {
+      console.log("El archivo no existe:", imagePath);
+    } else {
+      console.error("Error al eliminar la imagen:", error);
+    }
   }
 };
 
@@ -32,7 +41,6 @@ export const deleteProductById = async (req: Request, res: Response) => {
     if (error) {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
-
     const productSelected = data[0];
 
     if (productSelected.variations && productSelected.variations.length > 0) {
@@ -43,9 +51,10 @@ export const deleteProductById = async (req: Request, res: Response) => {
               variation.images.map(async (routeImage) => {
                 const imagePath = path.join(
                   __dirname,
-                  "../../../public/",
+                  "../../../../public/",
                   routeImage
                 );
+
                 await removeImage(imagePath);
               })
             );
@@ -55,10 +64,9 @@ export const deleteProductById = async (req: Request, res: Response) => {
         )
       );
     }
-
     const miniatureImagePath = path.join(
       __dirname,
-      "../../../public/",
+      "../../../../public/",
       productSelected.miniature_image
     );
     await removeImage(miniatureImagePath);

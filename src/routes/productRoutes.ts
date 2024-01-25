@@ -11,14 +11,14 @@ import {
   deleteProductById,
   getProductById,
 } from "../controllers";
-import { Categorys, Uuid } from "../types";
+import { CategoryType, Uuid } from "../types";
 
 const router = express.Router();
 const upload = multer();
 
 // GET
 router.get("/products", async (req: Request, res: Response) => {
-  const category: Categorys = req.query.category as Categorys;
+  const category: CategoryType = req.query.category as CategoryType;
   if (category) {
     return getProductsForCategory(req, res);
   } else {

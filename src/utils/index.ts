@@ -54,7 +54,7 @@ export const handlerImageDestination = ({
     }
 
     direction.push(
-      `uploads/${nickFolder}/${productFolder}/original-${newFileName}-${i}`
+      `uploads/${nickFolder}/${productFolder}/original-${newFileName}`
     );
   }
 

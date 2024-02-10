@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getProductById = exports.deleteProductById = exports.removeCollection = exports.updateProduct = exports.addVariation = exports.createProduct = exports.insertIdImagesVariants = exports.getAllProducts = exports.getProductsForCategory = void 0;
+var productsControllers_1 = require("./productsControllers");
+Object.defineProperty(exports, "getProductsForCategory", { enumerable: true, get: function () { return productsControllers_1.getProductsForCategory; } });
+Object.defineProperty(exports, "getAllProducts", { enumerable: true, get: function () { return productsControllers_1.getAllProducts; } });
+Object.defineProperty(exports, "insertIdImagesVariants", { enumerable: true, get: function () { return productsControllers_1.insertIdImagesVariants; } });
+Object.defineProperty(exports, "createProduct", { enumerable: true, get: function () { return productsControllers_1.createProduct; } });
+Object.defineProperty(exports, "addVariation", { enumerable: true, get: function () { return productsControllers_1.addVariation; } });
+Object.defineProperty(exports, "updateProduct", { enumerable: true, get: function () { return productsControllers_1.updateProduct; } });
+Object.defineProperty(exports, "removeCollection", { enumerable: true, get: function () { return productsControllers_1.removeCollection; } });
+Object.defineProperty(exports, "deleteProductById", { enumerable: true, get: function () { return productsControllers_1.deleteProductById; } });
+Object.defineProperty(exports, "getProductById", { enumerable: true, get: function () { return productsControllers_1.getProductById; } });

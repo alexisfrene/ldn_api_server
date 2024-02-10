@@ -14,10 +14,7 @@ interface CollectionType {
 
 const removeImage = async (imagePath: string) => {
   try {
-    // Verificar si el archivo existe antes de intentar eliminarlo
     await access(imagePath, constants.F_OK);
-
-    // El archivo existe, puedes proceder con unlink
     await unlink(imagePath);
     console.log("Imagen eliminada:", imagePath);
   } catch (error) {
@@ -117,7 +114,7 @@ export const removeCollection = async (req: Request, res: Response) => {
                 variation.images.map(async (routeImage) => {
                   const imagePath = path.join(
                     __dirname,
-                    "../../../public/",
+                    "../../../../public/",
                     routeImage
                   );
                   await removeImage(imagePath);

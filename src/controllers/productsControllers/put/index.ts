@@ -16,6 +16,7 @@ export const addVariation = async (req: Request, res: Response) => {
     categoryFolder: category,
     productFolder: collection,
     files,
+    withMiniature: false,
   });
 
   try {

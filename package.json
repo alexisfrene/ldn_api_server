@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "tsc": "tsc",
-    "start": "ts-node index.ts",
+    "start": "ts-node-dev index.ts",
     "build": "tsc",
     "dev": "ts-node-dev index.ts"
   },
@@ -36,6 +36,5 @@
     "ts-standard": "^12.0.2",
     "tslib": "^2.6.2",
     "typescript": "^5.3.3"
-  },
-  "type": "module"
+  }
 }

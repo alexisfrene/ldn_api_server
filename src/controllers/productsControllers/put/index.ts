@@ -77,7 +77,6 @@ export const updateCollection = async (req: Request, res: Response) => {
       .single();
     if (error) return res.status(400).json(error);
     const primaryImage = data.primary_image;
-    const miniatureImage = data.miniature_image;
     let variationSelected = data.variations.find(
       (variation: { id: string }) => variation.id === collectionId
     );

@@ -3,7 +3,10 @@ import { supabase } from "../../../lib/supabase";
 
 export const getAllProducts = async (_: Request, res: Response) => {
   try {
-    const { data, error } = await supabase.from("ldn_image_manager").select();
+    const { data, error } = await supabase
+      .from("ldn_image_manager")
+      .select()
+      .order("created_at", { ascending: false });
     if (!error) {
       return res.json({ data });
     }
@@ -17,11 +20,11 @@ export const getAllProducts = async (_: Request, res: Response) => {
 export const getProductsForCategory = async (req: Request, res: Response) => {
   try {
     const param = req.query.category;
-
     const { data, error } = await supabase
       .from("ldn_image_manager")
       .select()
-      .eq("category", param);
+      .eq("category", param)
+      .order("created_at", { ascending: false });
     if (!error) {
       res.json({ data });
     }

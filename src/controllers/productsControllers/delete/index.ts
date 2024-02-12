@@ -1,45 +1,25 @@
 import { Request, Response } from "express";
-import { promises as fsPromises } from "fs";
 import path from "path";
-import { deleteEmptyFolders } from "./deleteEmptyFolders";
 import { supabase } from "../../../lib/supabase";
-import { constants, access } from "fs/promises";
+import { deleteEmptyFolders, removeImage } from "../../../utils";
 
-const { unlink } = fsPromises;
 interface CollectionType {
   id: string;
   name: string;
   images: string[];
 }
 
-const removeImage = async (imagePath: string) => {
-  try {
-    await access(imagePath, constants.F_OK);
-    await unlink(imagePath);
-    console.log("Imagen eliminada:", imagePath);
-  } catch (error) {
-    if (error === "ENOENT") {
-      console.log("El archivo no existe:", imagePath);
-    } else {
-      console.error("Error al eliminar la imagen:", error);
-    }
-  }
-};
-
 export const deleteProductById = async (req: Request, res: Response) => {
   const productId = req.params.id;
-
   try {
     const { data, error } = await supabase
       .from("ldn_image_manager")
       .select("*")
       .eq("id", productId);
-
     if (error) {
       return res.status(404).json({ message: "Producto no encontrado" });
     }
     const productSelected = data[0];
-
     if (productSelected.variations && productSelected.variations.length > 0) {
       await Promise.all(
         productSelected.variations.map(

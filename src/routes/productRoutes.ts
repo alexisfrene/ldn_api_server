@@ -12,6 +12,7 @@ import {
   getProductById,
 } from "../controllers";
 import { CategoryType, Uuid } from "../types";
+import { updateCollection } from "../controllers/productsControllers/put";
 
 const router = express.Router();
 const upload = multer();
@@ -47,12 +48,14 @@ router.put(
   "/products/:id",
   upload.array("files", 10),
   async (req: Request, res: Response) => {
-    const { variation_add } = req.query;
+    const { variation_add, id_collection } = req.query;
     if (variation_add) {
       return addVariation(req, res);
-    } else {
-      return updateProduct(req, res);
     }
+    if (id_collection) {
+      return updateCollection(req, res);
+    }
+    return updateProduct(req, res);
   }
 );
 

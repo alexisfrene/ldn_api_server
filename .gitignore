@@ -4,3 +4,4 @@ public_
 package-lock.json
 .env
 .env.example
+*.jpg

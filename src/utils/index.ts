@@ -50,7 +50,14 @@ export const handlerImageDestination = ({
         recursive: true,
       });
 
-      sharp(file.buffer).resize(200).toFile(miniatureImagePath);
+      sharp(file.buffer)
+        .rotate()
+        .resize({
+          width: 384,
+          height: 384,
+          fit: "fill",
+        })
+        .toFile(miniatureImagePath);
       primaryImage = `uploads/${nickFolder}/${collectionName}/original-${newFileName}`;
       withMiniature &&
         direction.unshift(

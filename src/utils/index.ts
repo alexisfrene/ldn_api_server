@@ -35,16 +35,23 @@ export const handlerImageDestination = ({
     const ext = file.originalname.split(".").pop() || "";
     const newFileName = `${Date.now() + "--" + Math.random() + "-" + i}.${ext}`;
     const originalImagePath = `./public/uploads/${nickFolder}/${collectionName}/original-${newFileName}`;
+    const collectionFolderPath = path.join(
+      __dirname,
+      `../../public/uploads/${nickFolder}`
+    );
 
-    fs.mkdirSync(`./public/uploads/${nickFolder}`, { recursive: true });
-    fs.mkdirSync(`./public/uploads/${nickFolder}/${collectionName}`, {
+    fs.mkdirSync(collectionFolderPath, { recursive: true });
+    fs.mkdirSync(`${collectionFolderPath}/${collectionName}`, {
       recursive: true,
     });
 
     fs.writeFileSync(originalImagePath, file.buffer);
 
     if (file.originalname === mainImage) {
-      const miniatureImagePath = `./public/optimize/${nickFolder}/${collectionName}/miniature-${newFileName}`;
+      const miniatureImagePath = path.join(
+        __dirname,
+        `../../public/optimize/${nickFolder}/${collectionName}/miniature-${newFileName}`
+      );
       fs.mkdirSync(`./public/optimize/${nickFolder}`, { recursive: true });
       fs.mkdirSync(`./public/optimize/${nickFolder}/${collectionName}`, {
         recursive: true,
@@ -101,3 +108,9 @@ export const deleteEmptyFolders = async (route: string, levels = 1) => {
     console.error("Error al eliminar la carpeta:", err);
   }
 };
+
+export const whiteList = [
+  "https://ldn-web.vercel.app",
+  "http://localhost:5173",
+  "https://www.postman.com",
+];

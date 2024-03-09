@@ -1,6 +1,7 @@
 node_modules
 public
 public_
+build
 package-lock.json
 .env
 .env.example

@@ -77,9 +77,10 @@ export const handlerImageDestination = ({
 };
 
 export const removeImage = async (imagePath: string) => {
+  const pathComplete = `${root}/public/${imagePath}`;
   try {
-    await access(imagePath, constants.F_OK);
-    await unlink(imagePath);
+    await access(pathComplete, constants.F_OK);
+    await unlink(pathComplete);
     return { OK: true, message: "Imagen eliminada correctamente!" };
   } catch (error) {
     if (error === "ENOENT") {

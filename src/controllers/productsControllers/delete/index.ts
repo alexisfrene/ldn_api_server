@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import path from "path";
 import { supabase } from "../../../lib/supabase";
 import { deleteEmptyFolders, removeImage } from "../../../utils";
 
@@ -26,13 +25,7 @@ export const deleteProductById = async (req: Request, res: Response) => {
           async (variation: { images: string[] }) => {
             await Promise.all(
               variation.images.map(async (routeImage) => {
-                const imagePath = path.join(
-                  __dirname,
-                  "../../../../public/",
-                  routeImage
-                );
-
-                await removeImage(imagePath);
+                await removeImage(routeImage);
               })
             );
             await deleteEmptyFolders(variation.images[0]);
@@ -41,12 +34,7 @@ export const deleteProductById = async (req: Request, res: Response) => {
         )
       );
     }
-    const miniatureImagePath = path.join(
-      __dirname,
-      "../../../../public/",
-      productSelected.miniature_image
-    );
-    await removeImage(miniatureImagePath);
+    await removeImage(productSelected.miniature_image);
     await deleteEmptyFolders(productSelected.miniature_image);
     await deleteEmptyFolders(productSelected.miniature_image, 2);
 
@@ -92,12 +80,7 @@ export const removeCollection = async (req: Request, res: Response) => {
             if (variation.id === collectionId) {
               await Promise.all(
                 variation.images.map(async (routeImage) => {
-                  const imagePath = path.join(
-                    __dirname,
-                    "../../../../public/",
-                    routeImage
-                  );
-                  await removeImage(imagePath);
+                  await removeImage(routeImage);
                 })
               );
               await deleteEmptyFolders(variation.images[0]);

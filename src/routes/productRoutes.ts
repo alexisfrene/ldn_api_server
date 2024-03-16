@@ -14,35 +14,25 @@ import {
 import { CategoryType, Uuid } from "../types";
 import { updateCollection } from "../controllers/productsControllers/put";
 import { editVariationsDetails } from "../controllers/productsControllers";
-import cors from "cors";
 const router = express.Router();
 const upload = multer({ limits: { fileSize: 10 * 1024 * 1024, files: 10 } });
 
 // GET
-router.get(
-  "/products",
-  cors({ methods: ["GET"] }),
-  async (req: Request, res: Response) => {
-    const category: CategoryType = req.query.category as CategoryType;
-    if (category) {
-      return getProductsForCategory(req, res);
-    } else {
-      return getAllProducts(req, res);
-    }
+router.get("/products", async (req: Request, res: Response) => {
+  const category: CategoryType = req.query.category as CategoryType;
+  if (category) {
+    return getProductsForCategory(req, res);
+  } else {
+    return getAllProducts(req, res);
   }
-);
+});
 
 router.get("/products/:id", getProductById);
 
 // POST
 router.post(
   "/products",
-  cors({
-    methods: ["POST"],
-    origin: (origin) => {
-      console.log(origin);
-    },
-  }),
+
   upload.array("files", 10),
   async (req: Request, res: Response) => {
     const productId: Uuid = req.query.product_id as Uuid;

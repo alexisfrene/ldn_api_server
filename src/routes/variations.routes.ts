@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import multer from "multer";
+import { CategoryType, Uuid } from "../types";
 import {
   getProductsForCategory,
   getAllProducts,
@@ -10,15 +11,14 @@ import {
   removeCollection,
   deleteProductById,
   getProductById,
+  updateCollection,
+  editVariationsDetails,
 } from "../controllers";
-import { CategoryType, Uuid } from "../types";
-import { updateCollection } from "../controllers/productsControllers/put";
-import { editVariationsDetails } from "../controllers/productsControllers";
-const router = express.Router();
-const upload = multer({ limits: { fileSize: 10 * 1024 * 1024, files: 10 } });
 
+const router = express.Router();
+const upload = multer({ limits: { fileSize: 50 * 1024 * 1024, files: 10 } });
 // GET
-router.get("/products", async (req: Request, res: Response) => {
+router.get("/variations", async (req: Request, res: Response) => {
   const category: CategoryType = req.query.category as CategoryType;
   if (category) {
     return getProductsForCategory(req, res);
@@ -27,12 +27,11 @@ router.get("/products", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/products/:id", getProductById);
+router.get("/variations/:id", getProductById);
 
 // POST
 router.post(
-  "/products",
-
+  "/variations",
   upload.array("files", 10),
   async (req: Request, res: Response) => {
     const productId: Uuid = req.query.product_id as Uuid;
@@ -46,7 +45,7 @@ router.post(
 
 // PUT
 router.put(
-  "/products/:id",
+  "/variations/:id",
   upload.array("files", 10),
   async (req: Request, res: Response) => {
     const { variation_add, id_collection } = req.query;
@@ -62,7 +61,7 @@ router.put(
 
 // PATCH
 router.patch(
-  "/products/:id",
+  "/variations/:id",
   upload.array("files", 10),
   async (req: Request, res: Response) => {
     const { edit } = req.query;
@@ -72,7 +71,7 @@ router.patch(
 );
 
 // DELETE
-router.delete("/products/:id", async (req: Request, res: Response) => {
+router.delete("/variations/:id", async (req: Request, res: Response) => {
   const collectionId: Uuid = req.query.variation_remove as Uuid;
   if (collectionId) {
     return removeCollection(req, res);
@@ -81,4 +80,4 @@ router.delete("/products/:id", async (req: Request, res: Response) => {
   }
 });
 
-export default router;
+export { router };

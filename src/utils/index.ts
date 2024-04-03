@@ -1,7 +1,9 @@
 import sharp from "sharp";
-import fs, { promises as fsPromises } from "fs";
-import { constants, access } from "fs/promises";
-const { unlink } = fsPromises;
+import bcrypt from "bcrypt";
+import fs from "node:fs";
+import fsPromises, { constants, access, unlink } from "node:fs/promises";
+import path from "node:path";
+
 const root = process.cwd();
 const transformarString = (inputString: string): string => {
   const cleanString = inputString.replace(/[^a-zA-Z0-9\s]/g, "");
@@ -33,23 +35,48 @@ export const handlerImageDestination = ({
     const file = files[i];
     const ext = file.originalname.split(".").pop() || "";
     const newFileName = `${Date.now() + "--" + Math.random() + "-" + i}.${ext}`;
-    const originalImagePath = `${root}/public/uploads/${nickFolder}/${collectionName}/original-${newFileName}`;
-    const collectionFolderPath = `${root}/public/uploads/${nickFolder}`;
+    //const originalImagePath = `${root}/public/uploads/${nickFolder}/${collectionName}/original-${newFileName}`;
+    //const collectionFolderPath = `${root}/public/uploads/${nickFolder}`;
+    const collectionFolderPath = path.join(
+      root,
+      "public",
+      "uploads",
+      nickFolder
+    );
+    const originalImagePath = path.join(
+      collectionFolderPath,
+      collectionName,
+      `original-${newFileName}`
+    );
 
     fs.mkdirSync(collectionFolderPath, { recursive: true });
-    fs.mkdirSync(`${collectionFolderPath}/${collectionName}`, {
+    // fs.mkdirSync(`${collectionFolderPath}/${collectionName}`, {
+    //   recursive: true,
+    // });
+    fs.mkdirSync(path.join(collectionFolderPath, collectionName), {
       recursive: true,
     });
 
     fs.writeFileSync(originalImagePath, file.buffer);
 
     if (file.originalname === mainImage) {
-      const miniatureImagePath = `${root}/public/optimize/${nickFolder}/${collectionName}/miniature-${newFileName}`;
-
-      fs.mkdirSync(`${root}/public/optimize/${nickFolder}`, {
+      //const miniatureImagePath = `${root}/public/optimize/${nickFolder}/${collectionName}/miniature-${newFileName}`;
+      const miniatureFolder = path.join(root, "public", "optimize", nickFolder);
+      const miniatureImagePath = path.join(
+        miniatureFolder,
+        collectionName,
+        `miniature-${newFileName}`
+      );
+      // fs.mkdirSync(`${root}/public/optimize/${nickFolder}`, {
+      //   recursive: true,
+      // });
+      // fs.mkdirSync(`${root}/public/optimize/${nickFolder}/${collectionName}`, {
+      //   recursive: true,
+      // });
+      fs.mkdirSync(path.join(miniatureFolder), {
         recursive: true,
       });
-      fs.mkdirSync(`${root}/public/optimize/${nickFolder}/${collectionName}`, {
+      fs.mkdirSync(path.join(miniatureFolder, collectionName), {
         recursive: true,
       });
 
@@ -61,6 +88,7 @@ export const handlerImageDestination = ({
           fit: "fill",
         })
         .toFile(miniatureImagePath);
+      //Estas url son para el guardado en la DB
       primaryImage = `uploads/${nickFolder}/${collectionName}/original-${newFileName}`;
       withMiniature &&
         direction.unshift(
@@ -77,7 +105,8 @@ export const handlerImageDestination = ({
 };
 
 export const removeImage = async (imagePath: string) => {
-  const pathComplete = `${root}/public/${imagePath}`;
+  // const pathComplete = `${root}/public/${imagePath}`;
+  const pathComplete = path.join(root, "public", imagePath);
   try {
     await access(pathComplete, constants.F_OK);
     await unlink(pathComplete);
@@ -95,7 +124,8 @@ export const deleteEmptyFolders = async (route: string, levels = 1) => {
   try {
     const pathParts = route.split("/");
     const commonPath = pathParts.slice(0, -levels).join("/") + "/";
-    const folderPath = `${root}/public/${commonPath}`;
+    // const folderPath = `${root}/public/${commonPath}`;
+    const folderPath = path.join(root, "public", commonPath);
     const files = await fsPromises.readdir(folderPath);
     if (!files || files.length === 0) {
       await fsPromises.rmdir(folderPath);
@@ -104,4 +134,17 @@ export const deleteEmptyFolders = async (route: string, levels = 1) => {
   } catch (err) {
     console.error("Error al eliminar la carpeta:", err);
   }
+};
+const saltRoundsString = process.env.SALT_ROUNDS;
+if (!saltRoundsString) {
+  throw new Error(
+    "The salt rounds were not found in the environment variables"
+  );
+}
+const saltRounds = parseInt(saltRoundsString, 10);
+
+export const hashPassword = async (password: string): Promise<string> => {
+  const salt = await bcrypt.genSalt(saltRounds);
+  const hashedPassword = await bcrypt.hash(password, salt);
+  return hashedPassword;
 };

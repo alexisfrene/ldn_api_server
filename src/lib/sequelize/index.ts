@@ -1,12 +1,21 @@
 import { Sequelize } from "sequelize";
+const {
+  DATABASE_NAME,
+  DATABASE_USER,
+  DATABASE_PASSWORD,
+  DATABASE_PORT,
+  DATABASE_HOST,
+} = process.env;
+const databasePort = Number(DATABASE_PORT) || undefined;
 
 export const sequelize = new Sequelize(
-  "tu_base_de_datos",
-  "tu_usuario",
-  "tu_contraseña",
+  DATABASE_NAME || "",
+  DATABASE_USER || "",
+  DATABASE_PASSWORD || "",
   {
-    host: "localhost",
+    host: DATABASE_HOST,
     dialect: "postgres",
-    port: 5432, // Este es el puerto por defecto, ajusta según sea necesario
+    port: databasePort,
+    logging: false,
   }
 );

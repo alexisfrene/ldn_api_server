@@ -8,4 +8,7 @@ export {
   removeCollection,
   deleteProductById,
   getProductById,
-} from "./productsControllers";
+  editVariationsDetails,
+  updateCollection,
+} from "./variations";
+export { createUser } from "./users";

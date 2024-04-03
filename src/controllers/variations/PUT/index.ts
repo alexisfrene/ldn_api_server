@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import path from "path";
 import { supabase } from "../../../lib";
 import {
   deleteEmptyFolders,
@@ -97,12 +96,7 @@ export const updateCollection = async (req: Request, res: Response) => {
         await Promise.all(
           remove.map(async (url: string) => {
             if (url !== primaryImage) {
-              const imagePath = path.join(
-                __dirname,
-                "../../../../public/",
-                url
-              );
-              const res = await removeImage(imagePath);
+              const res = await removeImage(url);
               if (res.OK) {
                 variationSelected.images = variationSelected.images.filter(
                   (e: string) => e !== url
@@ -118,8 +112,7 @@ export const updateCollection = async (req: Request, res: Response) => {
       await Promise.all(
         variationSelected.images.map(async (url: string) => {
           if (url !== primaryImage) {
-            const imagePath = path.join(__dirname, "../../../../public/", url);
-            const res = await removeImage(imagePath);
+            const res = await removeImage(url);
             if (res.OK) {
               await deleteEmptyFolders(url);
               await deleteEmptyFolders(url, 2);

@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { variationsRoutes, usersRoutes } from "./routes";
+import { variationsRoutes, usersRoutes, productsRoutes } from "./routes";
 export const app = express();
 app.use(cors());
 app.use(express.json());
@@ -11,4 +11,4 @@ app.use(
 
   express.static("public/optimize")
 );
-app.use("/api", variationsRoutes, usersRoutes);
+app.use("/api", variationsRoutes, usersRoutes, productsRoutes);

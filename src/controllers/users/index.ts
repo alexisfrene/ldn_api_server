@@ -1,1 +1,1 @@
-export { createUser } from "./POST";
+export { createUser, userLogin } from "./POST";

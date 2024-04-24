@@ -1,8 +1,8 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../../";
-import { Setting } from "./Settings";
-//import { Product } from "./Products";
-//const Setting = require("./Settings.js");
+import { Product } from "./Products";
+import { Size } from "./Sizes";
+import { Category } from "./Categories";
 
 export const User = sequelize.define(
   "users",
@@ -11,16 +11,23 @@ export const User = sequelize.define(
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
+      unique: true,
     },
     last_name: {
       type: DataTypes.STRING(15),
-      defaultValue: "-",
       allowNull: false,
+      validate: {
+        isAlpha: true,
+        len: [1, 15],
+      },
     },
     first_name: {
       type: DataTypes.STRING(15),
-      defaultValue: "-",
       allowNull: false,
+      validate: {
+        isAlpha: true,
+        len: [1, 15],
+      },
     },
     username: {
       type: DataTypes.STRING(15),
@@ -35,10 +42,13 @@ export const User = sequelize.define(
       type: DataTypes.STRING(50),
       allowNull: false,
       unique: true,
+      validate: {
+        isEmail: true,
+      },
     },
     recent_activity: {
-      type: DataTypes.STRING,
-      defaultValue: null,
+      type: DataTypes.ARRAY(DataTypes.JSON),
+      defaultValue: [],
     },
     birthday_date: {
       type: DataTypes.DATE,
@@ -49,7 +59,7 @@ export const User = sequelize.define(
       type: DataTypes.ENUM("male", "female", "unspecified"),
       allowNull: false,
     },
-    session_toke: {
+    session_token: {
       type: DataTypes.STRING,
       defaultValue: null,
     },
@@ -61,7 +71,7 @@ export const User = sequelize.define(
       type: DataTypes.STRING,
       defaultValue: null,
     },
-    products_table: { type: DataTypes.STRING, defaultValue: null },
+    products_table: { type: DataTypes.STRING, defaultValue: "" },
     avatar_url: {
       type: DataTypes.STRING(255),
     },
@@ -69,5 +79,9 @@ export const User = sequelize.define(
   { timestamps: true }
 );
 
-User.hasOne(Setting, { foreignKey: "user_id" });
-//User.hasMany(Product, { foreignKey: "user_id" });
+User.hasMany(Product, { as: "products", foreignKey: "user_id" });
+Product.belongsTo(User, { foreignKey: "user_id" });
+User.hasMany(Size, { as: "sizes", foreignKey: "user_id" });
+Size.belongsTo(User, { foreignKey: "user_id" });
+User.hasOne(Category, { as: "category", foreignKey: "user_id" });
+Category.belongsTo(User, { foreignKey: "user_id" });

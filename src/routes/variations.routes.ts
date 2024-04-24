@@ -14,24 +14,30 @@ import {
   updateCollection,
   editVariationsDetails,
 } from "../controllers";
+import { authenticateToken } from "../middleware";
 
 const router = express.Router();
 const upload = multer({ limits: { fileSize: 50 * 1024 * 1024, files: 10 } });
 // GET
-router.get("/variations", async (req: Request, res: Response) => {
-  const category: CategoryType = req.query.category as CategoryType;
-  if (category) {
-    return getProductsForCategory(req, res);
-  } else {
-    return getAllProducts(req, res);
+router.get(
+  "/variations",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    const category: CategoryType = req.query.category as CategoryType;
+    if (category) {
+      return getProductsForCategory(req, res);
+    } else {
+      return getAllProducts(req, res);
+    }
   }
-});
+);
 
 router.get("/variations/:id", getProductById);
 
 // POST
 router.post(
   "/variations",
+  authenticateToken,
   upload.array("files", 10),
   async (req: Request, res: Response) => {
     const productId: Uuid = req.query.product_id as Uuid;
@@ -46,6 +52,7 @@ router.post(
 // PUT
 router.put(
   "/variations/:id",
+  authenticateToken,
   upload.array("files", 10),
   async (req: Request, res: Response) => {
     const { variation_add, id_collection } = req.query;
@@ -62,6 +69,7 @@ router.put(
 // PATCH
 router.patch(
   "/variations/:id",
+  authenticateToken,
   upload.array("files", 10),
   async (req: Request, res: Response) => {
     const { edit } = req.query;
@@ -71,13 +79,17 @@ router.patch(
 );
 
 // DELETE
-router.delete("/variations/:id", async (req: Request, res: Response) => {
-  const collectionId: Uuid = req.query.variation_remove as Uuid;
-  if (collectionId) {
-    return removeCollection(req, res);
-  } else {
-    return deleteProductById(req, res);
+router.delete(
+  "/variations/:id",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    const collectionId: Uuid = req.query.variation_remove as Uuid;
+    if (collectionId) {
+      return removeCollection(req, res);
+    } else {
+      return deleteProductById(req, res);
+    }
   }
-});
+);
 
 export { router };

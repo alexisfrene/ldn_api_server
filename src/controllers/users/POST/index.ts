@@ -1,11 +1,9 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { User } from "../../../lib/sequelize/models/Users";
 import { hashPassword } from "../../../utils";
-import { productsSizeDefault } from "../../../mocks";
-import { Size } from "../../../lib/sequelize/models/Sizes";
-
+import db from "../../../lib/sequelize";
+const User = db.User;
 export const createUser = async (req: Request, res: Response) => {
   try {
     const {
@@ -53,12 +51,6 @@ export const createUser = async (req: Request, res: Response) => {
     //TODO : estaría bueno implementar un sistema para cuando se quiera restablecer la password , para evitar que coloque una contraseña antigua
     const password_hash = await hashPassword(password);
     const avatar_url = `https://res.cloudinary.com/ldn-img/image/upload/v1711132173/default-avatar/${gender.toLowerCase()}.webp`;
-    const defaultSize = productsSizeDefault();
-    await Size.create({
-      title: "Tallas",
-      values: defaultSize.letter,
-    });
-
     await User.create({
       first_name,
       last_name,
@@ -68,6 +60,7 @@ export const createUser = async (req: Request, res: Response) => {
       username,
       birthday_date,
       avatar_url,
+      recent_activity: [],
     });
 
     return res.status(201).send({ message: "User create" });
@@ -112,11 +105,11 @@ export const userLogin = async (req: Request, res: Response) => {
             { session_token: token },
             { where: { user_id: userSearch.user_id } }
           );
-          const userSelected = await User.findByPk(userSearch.user_id, {
-            attributes: { exclude: ["password_hash"] },
+          const session_token = await User.findByPk(userSearch.user_id, {
+            attributes: ["session_token"],
           });
 
-          return res.status(200).json({ session: userSelected });
+          return res.status(200).json({ data: session_token });
         } else {
           return res.status(400).json({ message: "Invalid password" });
         }

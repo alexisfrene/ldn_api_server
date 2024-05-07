@@ -134,3 +134,13 @@ export const hashPassword = async (password: string): Promise<string> => {
   const hashedPassword = await bcrypt.hash(password, salt);
   return hashedPassword;
 };
+
+export const getFileNameWithoutExtension = (
+  fileNameWithExtension: string
+): string => {
+  const lastIndex = fileNameWithExtension.lastIndexOf(".");
+  if (lastIndex !== -1) {
+    return fileNameWithExtension.substring(0, lastIndex);
+  }
+  return fileNameWithExtension;
+};

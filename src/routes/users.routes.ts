@@ -1,11 +1,17 @@
-import express, { Response } from "express";
-import { User } from "../lib/sequelize/models";
-import { createUser, userLogin } from "../controllers";
+import express, { Request, Response } from "express";
+import db from "../lib/sequelize";
+import { createUser, getUserId, userLogin } from "../controllers";
 
+const User = db.User;
 const router = express.Router();
 
 //GET
-router.get("/user", async (__, res: Response) => {
+router.get("/user", async (req: Request, res: Response) => {
+  const query = req.query;
+
+  if (query.get === "id") {
+    return getUserId(req, res);
+  }
   const allUser = await User.findAll({
     attributes: ["email", "username", "user_id"],
   });

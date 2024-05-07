@@ -32,7 +32,7 @@ router.get(
   }
 );
 
-router.get("/variations/:id", getProductById);
+router.get("/variations/:id", authenticateToken, getProductById);
 
 // POST
 router.post(

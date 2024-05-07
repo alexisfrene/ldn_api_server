@@ -1,19 +1,87 @@
 import { Request, Response } from "express";
-import { Product } from "../../../lib/sequelize/models";
+import db from "../../../lib/sequelize";
+import { uploadToCloudinary } from "../../../lib";
+import axios from "axios";
+
+const Product = db.Product;
+const Category = db.Category;
+const Size = db.Size;
+const Detail = db.Detail;
 
 export const createProducts = async (req: Request, res: Response) => {
   try {
-    console.log(req.body);
-    const testProduct = {
-      name: "Nombre",
-      description: "descripción",
-      price: 9999,
-      user_id: "fe2f979a-be7c-4e57-8068-57a5004d8baf",
-    };
-    const newProduct = await Product.create(testProduct);
+    const file = req.file as Express.Multer.File;
+    console.log("BODY -->888");
+    if (!file) return new Error("fatal image");
+    req.body.price = Number(req.body.price);
+    const data = req.body;
+    const dataNewProduct: Record<string, any> = {};
+    //Si pasan gender , color , brand , style , age -> crear un Details y sacar el id para pasar al Product
+    console.log("BODY -->999");
+    const details = data.details;
+    const newDetails = await Detail.create({
+      gender: details.gender || "unspecified",
+      color: details.color || "unspecified",
+      brand: details.brand || "unspecified",
+      style: details.style || "unspecified",
+      age: details.age || "unspecified",
+    });
+    console.log("BODY -->12121");
+    if (!newDetails)
+      return res
+        .status(400)
+        .json({ error: "No se pudo crear los detalles del producto" });
+    console.log("BODY -->", req.body);
+    dataNewProduct["details_id"] = newDetails.detail_id;
+    if (data.category_id) {
+      const category = await Category.findByPk(data.category_id, { raw: true });
+      if (category.values.length) {
+        const verifyCategory = category.values.find(
+          (value: { id: string }) => value.id === data.category_value
+        );
 
-    return res.status(200).json({ newProduct });
+        if (verifyCategory) {
+          dataNewProduct["category_id"] = data.category_id;
+          dataNewProduct["category_value"] = data.category_value;
+        }
+      }
+    }
+    if (data.size_id) {
+      const size = await Size.findByPk(data.size_id, { raw: true });
+      if (size.values.length) {
+        const verifyCategory = size.values.find(
+          (value: { id: string }) => value.id === data.size_value
+        );
+        if (verifyCategory) {
+          dataNewProduct["size_id"] = data.size_id;
+          dataNewProduct["size_value"] = data.size_value;
+        }
+      }
+    }
+
+    //Data básica -> Product : name , description , primary_image , price (number) , stock (number), dollar_today
+    const image_url = await uploadToCloudinary(file, req.body.user_id);
+
+    if (!image_url)
+      return res
+        .status(400)
+        .json({ error: "No se pudo subir la imagen a cloud" });
+    dataNewProduct["name"] = data.name;
+    dataNewProduct["description"] = data.description;
+    dataNewProduct["primary_image"] = image_url;
+    dataNewProduct["price"] = data.price;
+    dataNewProduct["user_id"] = data.user_id;
+
+    const dollarBlue: { data: { venta: string } } = await axios.get(
+      "https://dolarapi.com/v1/dolares/contadoconliqui"
+    );
+    dataNewProduct["dollar_today"] =
+      Math.floor(Number(dollarBlue.data?.venta)) || 1;
+    const newProduct = await Product.create(dataNewProduct);
+
+    return res.status(200).json(newProduct);
   } catch (error) {
+    console.log(error);
     return res.status(400).json({ msj: "err" });
   }
 };

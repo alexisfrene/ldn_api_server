@@ -11,5 +11,7 @@ export {
   editVariationsDetails,
   updateCollection,
 } from "./variations";
-export { createUser, userLogin } from "./users";
-export { createProducts } from "./products";
+export { createUser, userLogin, getUserId } from "./users";
+export { createProducts, getProducts } from "./products";
+export { createCategories, getAllCategories } from "./category";
+export { createSize, getAllSizes } from "./sizes";

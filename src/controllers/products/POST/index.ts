@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
+import axios from "axios";
 import db from "../../../lib/sequelize";
 import { uploadToCloudinary } from "../../../lib";
-import axios from "axios";
 
 const Product = db.Product;
 const Category = db.Category;
@@ -11,27 +11,22 @@ const Detail = db.Detail;
 export const createProducts = async (req: Request, res: Response) => {
   try {
     const file = req.file as Express.Multer.File;
-    console.log("BODY -->888");
     if (!file) return new Error("fatal image");
     req.body.price = Number(req.body.price);
     const data = req.body;
     const dataNewProduct: Record<string, any> = {};
-    //Si pasan gender , color , brand , style , age -> crear un Details y sacar el id para pasar al Product
-    console.log("BODY -->999");
-    const details = data.details;
+    const details = data?.details;
     const newDetails = await Detail.create({
-      gender: details.gender || "unspecified",
-      color: details.color || "unspecified",
-      brand: details.brand || "unspecified",
-      style: details.style || "unspecified",
-      age: details.age || "unspecified",
+      gender: details?.gender || "unspecified",
+      color: details?.color || "unspecified",
+      brand: details?.brand || "unspecified",
+      style: details?.style || "unspecified",
+      age: details?.age || "unspecified",
     });
-    console.log("BODY -->12121");
     if (!newDetails)
       return res
         .status(400)
         .json({ error: "No se pudo crear los detalles del producto" });
-    console.log("BODY -->", req.body);
     dataNewProduct["details_id"] = newDetails.detail_id;
     if (data.category_id) {
       const category = await Category.findByPk(data.category_id, { raw: true });
@@ -58,10 +53,7 @@ export const createProducts = async (req: Request, res: Response) => {
         }
       }
     }
-
-    //Data básica -> Product : name , description , primary_image , price (number) , stock (number), dollar_today
     const image_url = await uploadToCloudinary(file, req.body.user_id);
-
     if (!image_url)
       return res
         .status(400)

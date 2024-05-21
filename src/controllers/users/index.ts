@@ -1,2 +1,2 @@
-export { createUser, userLogin } from "./POST";
-export { getUserId } from "./GET";
+export * from "./POST";
+export * from "./GET";

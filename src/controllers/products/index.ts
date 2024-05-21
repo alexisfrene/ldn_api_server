@@ -1,2 +1,3 @@
-export { createProducts } from "./POST";
-export { getProducts } from "./GET";
+export * from "./POST";
+export * from "./GET";
+export * from "./DELETE";

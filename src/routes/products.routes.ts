@@ -1,9 +1,13 @@
 import express from "express";
-import { createProducts, getProducts } from "../controllers";
-import { authenticateToken } from "../middleware";
 import multer from "multer";
 import path from "node:path";
-import { getImageProduct } from "../controllers/products/GET";
+import { authenticateToken } from "../middleware";
+import {
+  getImageProduct,
+  deleteProduct,
+  createProducts,
+  getProducts,
+} from "../controllers";
 
 const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024, files: 1 },
@@ -36,5 +40,7 @@ router.post(
   authenticateToken,
   createProducts
 );
+//DELETE
+router.delete("/products/:id", authenticateToken, deleteProduct);
 
 export { router };

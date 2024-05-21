@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import db from "../lib/sequelize";
-import { createUser, getUserId, userLogin } from "../controllers";
+import { createUser, getAvatar, getUserId, userLogin } from "../controllers";
+import { authenticateToken } from "../middleware";
 
 const User = db.User;
 const router = express.Router();
@@ -17,6 +18,7 @@ router.get("/user", async (req: Request, res: Response) => {
   });
   return res.status(200).send(allUser);
 });
+router.get("/user/avatar", authenticateToken, getAvatar);
 //POST
 router.post("/user", createUser);
 router.post("/user/login", userLogin);

@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import db from "../../../lib/sequelize";
+
+const User = db.User;
 
 interface DecodedToken {
   user_id: string;
@@ -22,5 +25,21 @@ export const getUserId = async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Unauthorized: Invalid token" });
     }
     return res.status(401).json({ error });
+  }
+};
+
+export const getAvatar = async (req: Request, res: Response) => {
+  const body = req.body;
+  try {
+    if (body.user_id) {
+      const avatar = await User.findByPk(req.body.user_id);
+
+      return res.status(200).json(avatar.avatar_url);
+    }
+
+    return res.status(401).json({ error: "Falta token" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Error al pedir la url del avatar" });
   }
 };

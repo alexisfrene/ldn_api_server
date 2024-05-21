@@ -4,16 +4,21 @@ import { getSecureUrl } from "../../../lib";
 
 const User = db.User;
 const Product = db.Product;
-// const Detail = db.Detail;
-// const Category = db.Category;
-// const Size = db.Size;
+
 export const getProducts = async (req: Request, res: Response) => {
   try {
     const user = await User.findByPk(req.body.user_id);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    const products = await user.getProducts();
+    const allProducts = await user.getProducts();
+    if (!allProducts.length)
+      return res
+        .status(400)
+        .json({ error: "El usuario no tiene productos cargados" });
+    const products = allProducts.filter(
+      (producto: { state: boolean }) => producto.state === true
+    );
 
     if (Array.isArray(products)) {
       const productDetails = await Promise.all(

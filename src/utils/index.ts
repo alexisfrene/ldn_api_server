@@ -144,3 +144,27 @@ export const getFileNameWithoutExtension = (
   }
   return fileNameWithExtension;
 };
+
+export const cleanObject = (
+  obj: Record<string, any>,
+  keysToCheck: string[]
+) => {
+  const propertiesToEdit: Record<string, any> = {};
+  keysToCheck.forEach((key) => {
+    if (obj.hasOwnProperty(key)) {
+      if (obj[key] === null || obj[key] === undefined || obj[key] === "") {
+        delete obj[key];
+      } else {
+        propertiesToEdit[key] = obj[key];
+      }
+    }
+  });
+
+  return propertiesToEdit;
+};
+
+export const isNumber = (str: string) => {
+  const regex = /^-?\d+(\.\d+)?$/;
+
+  return regex.test(str);
+};

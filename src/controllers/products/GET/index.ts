@@ -71,7 +71,9 @@ export const getProducts = async (req: Request, res: Response) => {
         })
       );
 
-      return res.status(200).json(productDetails);
+      return res
+        .status(200)
+        .json(productDetails.sort((a, b) => a.code - b.code));
     }
 
     return res.status(400).json({ error: "No hay productos cargados" });

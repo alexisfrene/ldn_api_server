@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import multer from "multer";
 import path from "node:path";
 import { authenticateToken } from "../middleware";
@@ -7,6 +7,8 @@ import {
   deleteProduct,
   createProducts,
   getProducts,
+  editProductDetails,
+  editProductData,
 } from "../controllers";
 
 const upload = multer({
@@ -42,5 +44,20 @@ router.post(
 );
 //DELETE
 router.delete("/products/:id", authenticateToken, deleteProduct);
+//PATCH
+router.patch(
+  "/products/:id",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    const { type } = req.query;
+    if (type === "data") {
+      return editProductData(req, res);
+    }
+    if (type === "details") {
+      return editProductDetails(req, res);
+    }
+    return res.status(400).json({ error: "Falta query" });
+  }
+);
 
 export { router };

@@ -1,7 +1,13 @@
 import express from "express";
 import multer from "multer";
 import path from "path";
-import { createCategories, getAllCategories } from "../controllers";
+import {
+  createCategories,
+  getAllCategories,
+  getByIdCategory,
+  getByIdCategoryValue,
+  getByIdValueImageURL,
+} from "../controllers";
 import { authenticateToken } from "../middleware";
 
 const upload = multer({
@@ -25,6 +31,20 @@ const upload = multer({
 });
 const router = express.Router();
 //GET
+router.get("/categories/:id", authenticateToken, async (req, res) => {
+  const { type } = req.query;
+  if (type === "collection") {
+    return getByIdCategory(req, res);
+  }
+  if (type === "value") {
+    return getByIdCategoryValue(req, res);
+  }
+  if (type === "icon") {
+    return getByIdValueImageURL(req, res);
+  }
+
+  return res.status(500).json({ error: true, message: "Falta query" });
+});
 router.get("/categories", authenticateToken, getAllCategories);
 //POST
 router.post(

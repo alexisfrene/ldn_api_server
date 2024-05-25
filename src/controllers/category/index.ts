@@ -1,2 +1,2 @@
-export { createCategories } from "./POST";
-export { getAllCategories } from "./GET";
+export * from "./POST";
+export * from "./GET";

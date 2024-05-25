@@ -13,14 +13,16 @@ export const cloudinaryConfig = cloudinary;
 
 export const uploadToCloudinary = async (
   file: Express.Multer.File,
-  folder: string
+  folder: string,
+  width = 1080,
+  height = 1080
 ) => {
   const public_id = getFileNameWithoutExtension(file.filename);
   const res = await cloudinaryConfig.uploader.upload(file.path, {
     public_id,
     folder,
     transformation: [
-      { width: 1080, height: 1080, crop: "scale" },
+      { width, height, crop: "scale" },
       { quality: "auto", fetch_format: "auto" },
     ],
   });

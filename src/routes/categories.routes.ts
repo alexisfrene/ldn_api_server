@@ -2,6 +2,7 @@ import express from "express";
 import multer from "multer";
 import path from "path";
 import {
+  addCategoryValue,
   createCategories,
   getAllCategories,
   getByIdCategory,
@@ -52,6 +53,13 @@ router.post(
   upload.array("files"),
   authenticateToken,
   createCategories
+);
+//PATCH
+router.patch(
+  "/categories/:id",
+  upload.array("files"),
+  authenticateToken,
+  addCategoryValue
 );
 
 export { router };

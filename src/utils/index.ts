@@ -76,7 +76,6 @@ export const handlerImageDestination = ({
           fit: "fill",
         })
         .toFile(miniatureImagePath);
-      //Estas url son para el guardado en la DB
       primaryImage = `uploads/${nickFolder}/${collectionName}/original-${newFileName}`;
       withMiniature &&
         direction.unshift(

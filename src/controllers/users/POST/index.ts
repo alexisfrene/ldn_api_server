@@ -3,7 +3,10 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { hashPassword } from "../../../utils";
 import db from "../../../lib/sequelize";
+
 const User = db.User;
+const Category = db.Category;
+
 export const createUser = async (req: Request, res: Response) => {
   try {
     const {
@@ -46,12 +49,9 @@ export const createUser = async (req: Request, res: Response) => {
       return res
         .status(400)
         .json({ message: "The password must be a minimum of 8 in length" });
-    //TODO : validad que contenga al menos una letra mayúscula/minúscula y un numero mínimo
-    //TODO : evitar información personal
-    //TODO : estaría bueno implementar un sistema para cuando se quiera restablecer la password , para evitar que coloque una contraseña antigua
     const password_hash = await hashPassword(password);
     const avatar_url = `https://res.cloudinary.com/ldn-img/image/upload/v1711132173/default-avatar/${gender.toLowerCase()}.webp`;
-    await User.create({
+    const newUser = await User.create({
       first_name,
       last_name,
       email,
@@ -61,6 +61,17 @@ export const createUser = async (req: Request, res: Response) => {
       birthday_date,
       avatar_url,
       recent_activity: [],
+    });
+    await Category.create({
+      title: "Default",
+      values: [
+        {
+          id: "default",
+          value: "Sin categoría",
+          icon_url: "/categories/11",
+        },
+      ],
+      user_id: newUser.user_id,
     });
 
     return res.status(201).send({ message: "User create" });

@@ -55,9 +55,9 @@ export const getProducts = async (req: Request, res: Response) => {
           } = productFromDB;
 
           return {
-            category: categoryValue.value,
+            category: categoryValue?.value || null,
             details,
-            size: sizeValue.value,
+            size: sizeValue?.value || null,
             name,
             product_id,
             description,

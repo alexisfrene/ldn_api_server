@@ -31,6 +31,17 @@ export const uploadToCloudinary = async (
   return public_id;
 };
 
+export const deleteImageToCloudinary = async (publicId: string) => {
+  try {
+    const result = await cloudinary.uploader.destroy(publicId);
+
+    return result;
+  } catch (error) {
+    console.error("Error al eliminar la imagen:", error);
+    throw error;
+  }
+};
+
 export const getSecureUrl = (
   fileName: string,
   user_id: string

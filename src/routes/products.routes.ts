@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import multer from "multer";
 import path from "node:path";
 import { authenticateToken } from "../middleware";
@@ -9,6 +9,7 @@ import {
   getProducts,
   editProductDetails,
   editProductData,
+  changeImageProduct,
 } from "../controllers";
 
 const upload = multer({
@@ -30,23 +31,33 @@ const upload = multer({
     },
   }),
 });
+
 const router = express.Router();
 
-//GET
 router.get("/products", authenticateToken, getProducts);
 router.get("/products/image", authenticateToken, getImageProduct);
-//POST
+
 router.post(
   "/products",
   upload.single("file"),
   authenticateToken,
   createProducts
 );
-//DELETE
+
 router.delete("/products/:id", authenticateToken, deleteProduct);
-//PATCH
+
+const conditionalUpload = (req: Request, res: Response, next: NextFunction) => {
+  const { type } = req.query;
+  if (type === "image") {
+    upload.single("file")(req, res, next);
+  } else {
+    next();
+  }
+};
+
 router.patch(
   "/products/:id",
+  conditionalUpload,
   authenticateToken,
   async (req: Request, res: Response) => {
     const { type } = req.query;
@@ -55,6 +66,9 @@ router.patch(
     }
     if (type === "details") {
       return editProductDetails(req, res);
+    }
+    if (type === "image") {
+      return changeImageProduct(req, res);
     }
     return res.status(400).json({ error: "Falta query" });
   }

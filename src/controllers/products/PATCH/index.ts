@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { cleanObject, isNumber } from "../../../utils";
 import db from "../../../lib/sequelize";
+import { uploadToCloudinary } from "../../../lib";
+import { deleteImageToCloudinary } from "../../../lib/cloudinary";
 
 const Product = db.Product;
 const Detail = db.Detail;
@@ -103,5 +105,27 @@ export const editProductData = async (req: Request, res: Response) => {
     console.log("Error al editar los detalles del producto", error);
 
     return res.status(500).json("Error in delete products");
+  }
+};
+
+export const changeImageProduct = async (req: Request, res: Response) => {
+  try {
+    const userId = req.body.user_id;
+    if (!userId) return new Error("User no autorizado");
+    const file = req.file as Express.Multer.File;
+    if (!file) return new Error("fatal image");
+
+    const image_url = await uploadToCloudinary(file, userId);
+    if (!image_url)
+      return res
+        .status(400)
+        .json({ error: true, message: "Error al subir la imagen" });
+    const product = await Product.findByPk(req.params.id);
+    await deleteImageToCloudinary(`${userId}/${product.primary_image}`);
+    const updateProduct = await product.update({ primary_image: image_url });
+    return res.status(200).json({ error: false, data: updateProduct });
+  } catch (error) {
+    console.log("Error in --> changeImageProduct", error);
+    return res.status(500).json({ error: true, message: error });
   }
 };

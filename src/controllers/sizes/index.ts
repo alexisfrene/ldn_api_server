@@ -1,2 +1,4 @@
-export { createSize } from "./POST";
-export { getAllSizes } from "./GET";
+export * from "./POST";
+export * from "./GET";
+export * from "./PATCH";
+export * from "./DELETE";

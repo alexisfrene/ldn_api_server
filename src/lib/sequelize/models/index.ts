@@ -1,6 +1,6 @@
-export { Category } from "./Categories";
-export { ProductDetails } from "./ProductDetails";
-export { Product } from "./Products";
-export { Setting } from "./Settings";
-export { Size } from "./Sizes";
-export { User } from "./Users";
+export * from "./Categories";
+export * from "./Details";
+export * from "./Products";
+export * from "./Sizes";
+export * from "./Users";
+export * from "./Variations";

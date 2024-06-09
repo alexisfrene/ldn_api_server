@@ -1,3 +1,15 @@
 {
-  "cSpell.words": ["originalname", "produc", "producs", "supabase", "uuidv"]
+  "cSpell.words": [
+    "cloudinary",
+    "Cloudinary",
+    "originalname",
+    "postgres",
+    "produc",
+    "producs",
+    "PSQL",
+    "supabase",
+    "uuidv"
+  ],
+  "editor.cursorBlinking": "phase",
+  "editor.linkedEditing": true
 }

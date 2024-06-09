@@ -35,8 +35,6 @@ export const handlerImageDestination = ({
     const file = files[i];
     const ext = file.originalname.split(".").pop() || "";
     const newFileName = `${Date.now() + "--" + Math.random() + "-" + i}.${ext}`;
-    //const originalImagePath = `${root}/public/uploads/${nickFolder}/${collectionName}/original-${newFileName}`;
-    //const collectionFolderPath = `${root}/public/uploads/${nickFolder}`;
     const collectionFolderPath = path.join(
       root,
       "public",
@@ -50,9 +48,6 @@ export const handlerImageDestination = ({
     );
 
     fs.mkdirSync(collectionFolderPath, { recursive: true });
-    // fs.mkdirSync(`${collectionFolderPath}/${collectionName}`, {
-    //   recursive: true,
-    // });
     fs.mkdirSync(path.join(collectionFolderPath, collectionName), {
       recursive: true,
     });
@@ -60,19 +55,12 @@ export const handlerImageDestination = ({
     fs.writeFileSync(originalImagePath, file.buffer);
 
     if (file.originalname === mainImage) {
-      //const miniatureImagePath = `${root}/public/optimize/${nickFolder}/${collectionName}/miniature-${newFileName}`;
       const miniatureFolder = path.join(root, "public", "optimize", nickFolder);
       const miniatureImagePath = path.join(
         miniatureFolder,
         collectionName,
         `miniature-${newFileName}`
       );
-      // fs.mkdirSync(`${root}/public/optimize/${nickFolder}`, {
-      //   recursive: true,
-      // });
-      // fs.mkdirSync(`${root}/public/optimize/${nickFolder}/${collectionName}`, {
-      //   recursive: true,
-      // });
       fs.mkdirSync(path.join(miniatureFolder), {
         recursive: true,
       });
@@ -88,7 +76,6 @@ export const handlerImageDestination = ({
           fit: "fill",
         })
         .toFile(miniatureImagePath);
-      //Estas url son para el guardado en la DB
       primaryImage = `uploads/${nickFolder}/${collectionName}/original-${newFileName}`;
       withMiniature &&
         direction.unshift(
@@ -105,7 +92,6 @@ export const handlerImageDestination = ({
 };
 
 export const removeImage = async (imagePath: string) => {
-  // const pathComplete = `${root}/public/${imagePath}`;
   const pathComplete = path.join(root, "public", imagePath);
   try {
     await access(pathComplete, constants.F_OK);
@@ -124,7 +110,6 @@ export const deleteEmptyFolders = async (route: string, levels = 1) => {
   try {
     const pathParts = route.split("/");
     const commonPath = pathParts.slice(0, -levels).join("/") + "/";
-    // const folderPath = `${root}/public/${commonPath}`;
     const folderPath = path.join(root, "public", commonPath);
     const files = await fsPromises.readdir(folderPath);
     if (!files || files.length === 0) {
@@ -147,4 +132,38 @@ export const hashPassword = async (password: string): Promise<string> => {
   const salt = await bcrypt.genSalt(saltRounds);
   const hashedPassword = await bcrypt.hash(password, salt);
   return hashedPassword;
+};
+
+export const getFileNameWithoutExtension = (
+  fileNameWithExtension: string
+): string => {
+  const lastIndex = fileNameWithExtension.lastIndexOf(".");
+  if (lastIndex !== -1) {
+    return fileNameWithExtension.substring(0, lastIndex);
+  }
+  return fileNameWithExtension;
+};
+
+export const cleanObject = (
+  obj: Record<string, any>,
+  keysToCheck: string[]
+) => {
+  const propertiesToEdit: Record<string, any> = {};
+  keysToCheck.forEach((key) => {
+    if (obj.hasOwnProperty(key)) {
+      if (obj[key] === null || obj[key] === undefined || obj[key] === "") {
+        delete obj[key];
+      } else {
+        propertiesToEdit[key] = obj[key];
+      }
+    }
+  });
+
+  return propertiesToEdit;
+};
+
+export const isNumber = (str: string) => {
+  const regex = /^-?\d+(\.\d+)?$/;
+
+  return regex.test(str);
 };

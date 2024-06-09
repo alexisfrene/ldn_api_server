@@ -1,2 +1,6 @@
 export { supabase } from "./supabase";
-export { sequelize } from "./sequelize";
+export {
+  cloudinaryConfig,
+  uploadToCloudinary,
+  getSecureUrl,
+} from "./cloudinary";

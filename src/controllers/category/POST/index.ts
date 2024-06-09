@@ -8,7 +8,6 @@ const Category = db.Category;
 export const createCategories = async (req: Request, res: Response) => {
   try {
     const { title, values, user_id } = req.body;
-    console.log(req.body);
     const files = req.files as Express.Multer.File[];
     if (!files) return res.status(400).json({ error: "Fatal image" });
     const uploadPromises = files.map(async (file, index) => {

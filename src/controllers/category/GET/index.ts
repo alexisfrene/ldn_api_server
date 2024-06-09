@@ -9,7 +9,11 @@ export const getAllCategories = async (req: Request, res: Response) => {
   try {
     if (!user_id) return res.status(401).json({ error: "No authority" });
     const user = await User.findByPk(user_id);
-    const categories = await user.getCategories();
+    if (!user?.getCategories)
+      return res
+        .status(400)
+        .json({ error: true, message: "El usuario no tiene categorías" });
+    const categories = await user?.getCategories();
     const formatterCategories = categories.map(
       (category: {
         values: { icon_url: string; value: string; id: string }[];

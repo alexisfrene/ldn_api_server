@@ -1,55 +1,76 @@
 import { Request, Response } from "express";
-import { supabase } from "../../../lib/supabase";
-import { handlerImageDestination } from "../../../utils";
+import db from "../../../lib/sequelize";
 import { v4 as uuidv4 } from "uuid";
+import { uploadToCloudinary } from "../../../lib";
 
-export const createProduct = async (req: Request, res: Response) => {
+const User = db.User;
+const Variation = db.Variation;
+const Category = db.Category;
+const Product = db.Product;
+
+export const createVariation = async (req: Request, res: Response) => {
   try {
-    const { description, category, mainImage, details, collection } = req.body;
-
-    const categoryFolder = category.replace(/\s+/g, "-").toLowerCase();
-    const productFolder = collection.replace(/\s+/g, "-").toLowerCase();
+    const { title, label, user_id, category_id, category_value } = req.body;
     const files = req.files as Express.Multer.File[];
-    const { direction, primaryImage } = handlerImageDestination({
-      categoryFolder,
-      productFolder,
-      files,
-      mainImage,
+    if (!files)
+      return res
+        .status(400)
+        .json({ error: true, message: "No se paso imágenes" });
+    const user = await User.findByPk(user_id);
+    if (!user)
+      return res
+        .status(400)
+        .json({ error: true, message: "Usuario no autorizado" });
+    let newVariation: Record<string, any> = {};
+    if (category_id) {
+      const category = await Category.findByPk(category_id);
+      if (category.values.length) {
+        const verifyCategory = category.values.find(
+          (value: { id: string }) => value.id === category_value
+        );
+        if (verifyCategory) {
+          newVariation["category_id"] = category_id;
+          newVariation["category_value"] = category_value;
+        }
+      }
+    }
+    const uploadPromises = files.map(async (file) => {
+      const image_url = await uploadToCloudinary(file, `${user_id}/variations`);
+      console.log(image_url);
+      return image_url;
     });
-    const miniatureUrl = direction.shift();
-    const variations = [
-      {
-        name: collection,
-        images: direction,
-        id: uuidv4(),
-      },
-    ];
-    const { data, error } = await supabase.from("ldn_image_manager").insert([
-      {
-        primary_image: primaryImage,
-        category,
-        miniature_image: miniatureUrl,
-        variations,
-        description,
-        details,
-      },
-    ]);
-    if (!error) res.send({ data });
+    const images = await Promise.all(uploadPromises);
+    newVariation["title"] = title;
+    newVariation["values"] = [{ id: uuidv4(), label, images }];
+    newVariation["user_id"] = user_id;
+    const variation = await Variation.create(newVariation);
+
+    return res.status(200).json({ variation });
   } catch (error) {
     console.log("Error en crear un producto:", error);
+    return res.status(500).json({ error: true, message: error });
   }
 };
 
-export const insertIdImagesVariants = async (req: Request, res: Response) => {
+export const insertVariants = async (req: Request, res: Response) => {
   try {
-    const { product_id, product_image_id } = req.query;
-    const { data } = await supabase
-      .from("ldn_producs")
-      .update({ produc_variations: product_image_id })
-      .eq("id", product_id);
-    res.send({ product_id, product_image_id, data });
+    const productId = req.query.product_id;
+    const variationId = req.params.id;
+    console.log("Hola");
+    const variation = await Variation.findByPk(variationId);
+    if (!variation)
+      return res
+        .status(400)
+        .json({ error: true, message: "No se encontró la variación" });
+    const product = await Product.findByPk(productId);
+    if (!product)
+      return res
+        .status(400)
+        .json({ error: true, message: "User no autorizado" });
+    await product.update({ variation_id: variationId });
+    return res.status(200).json({ error: false, message: "Todo child" });
   } catch (error) {
     console.log("Error en insertar ID de imágenes de variantes:", error);
-    res.status(500).send({ error: "Internal Server Error" });
+    return res.status(500).send({ error: "Internal Server Error" });
   }
 };

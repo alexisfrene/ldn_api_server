@@ -11,8 +11,8 @@ export const getProducts = async (req: Request, res: Response) => {
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-    const allProducts = await user.getProducts();
-    if (!allProducts.length)
+    const allProducts = user?.getProducts() ? await user.getProducts() : [];
+    if (!allProducts)
       return res
         .status(400)
         .json({ error: "El usuario no tiene productos cargados" });
@@ -37,7 +37,7 @@ export const getProducts = async (req: Request, res: Response) => {
               )
             : null;
 
-          const details = await productFromDB.getProduct_details();
+          const details = await productFromDB.getDetail();
           const urlCloudinary = getSecureUrl(
             product.primary_image,
             user.user_id

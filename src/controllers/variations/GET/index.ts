@@ -1,54 +1,102 @@
 import { Request, Response } from "express";
-import { supabase } from "../../../lib/supabase";
+import db from "../../../lib/sequelize";
 
-export const getAllProducts = async (_: Request, res: Response) => {
+const User = db.User;
+
+export const getAllVariations = async (req: Request, res: Response) => {
   try {
-    const { data, error } = await supabase
-      .from("ldn_image_manager")
-      .select()
-      .order("created_at", { ascending: false });
-    if (!error) {
-      return res.json({ data });
-    }
+    const user = await User.findByPk(req.body.user_id);
+    if (!user)
+      return res.status(400).json({ error: true, message: "No autorizado" });
+
+    const variations = await user?.getVariations();
+    if (!variations)
+      return res
+        .status(400)
+        .json({ error: true, message: "No se encontraron variaciones" });
+
+    return res.status(200).json(variations);
   } catch (error) {
     console.error("Error al obtener la lista de productos:", error);
-    res.status(500).json({ error: "No se pudo obtener la lista de productos" });
+
+    return res.status(500).json({ error: true, message: error });
   }
-  return [];
 };
 
-export const getProductsForCategory = async (req: Request, res: Response) => {
+export const getVariationForCategory = async (req: Request, res: Response) => {
   try {
-    const param = req.query.category;
-    const { data, error } = await supabase
-      .from("ldn_image_manager")
-      .select()
-      .eq("category", param)
-      .order("created_at", { ascending: false });
-    if (!error) {
-      res.json({ data });
-    }
+    const { user_id } = req.body;
+    const { category, value } = req.query as {
+      category: string | undefined;
+      value: string | undefined;
+    };
+    if (!user_id) return res.status(401).json({ error: "No authority" });
+    const user = await User.findByPk(user_id);
+    if (!user)
+      return res.status(400).json({ error: true, message: "No autorizado" });
+    if (!category || !value)
+      return res
+        .status(400)
+        .json({ error: true, message: "No se paso los parámetros esperados" });
+    const categories = await user?.getCategories();
+    const categoryForCategory = categories.filter(
+      (item: { category_id: string; values: any[] }) =>
+        item.category_id === category &&
+        item.values.find((item: { id: string }) => item.id === value)
+    );
+    if (!categoryForCategory)
+      return res
+        .status(400)
+        .json({ error: true, message: "No se encontró la categoría" });
+    const variations = await user?.getVariations().then((res: any[]) => {
+      return res.filter(
+        (variation: { category_id: string; category_value: string }) =>
+          variation.category_id === category &&
+          variation.category_value === value
+      );
+    });
+    if (!variations)
+      return res
+        .status(400)
+        .json({ error: true, message: "No se encontraron variaciones" });
+
+    return res.status(200).json({ variations, hola: "hola" });
   } catch (error) {
     console.error("Error al obtener la lista de productos:", error);
     return res
       .status(500)
       .json({ error: "No se pudo obtener la lista de productos" });
   }
-  return;
 };
 
-export const getProductById = async (req: Request, res: Response) => {
-  const productId = req.params.id;
+export const getVariationById = async (req: Request, res: Response) => {
+  const variationId = req.params.id;
+  const userId = req.body.user_id;
 
   try {
-    const { data, error } = await supabase
-      .from("ldn_image_manager")
-      .select()
-      .eq("id", productId);
-    if (error) {
-      return res.status(404).json({ message: "Producto no encontrado" });
-    }
-    return res.json({ data: data[0] });
+    const user = await User.findByPk(userId);
+    if (!user)
+      return res
+        .status(400)
+        .json({ error: true, message: "User no registrado" });
+    if (!userId)
+      return res
+        .status(400)
+        .json({ error: true, message: "Usuario no registrado" });
+    const userVariations = await user.getVariations();
+    if (!userVariations)
+      return res
+        .status(400)
+        .json({ error: true, message: "No se encontró ninguna variación " });
+    const variationSelected = userVariations.filter(
+      (variation: { variation_id: string }) =>
+        variation.variation_id === variationId
+    );
+    if (!variationSelected)
+      return res
+        .status(400)
+        .json({ error: true, message: "No se encontró ninguna variación " });
+    return res.status(200).json(variationSelected);
   } catch (error) {
     return res
       .status(500)

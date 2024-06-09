@@ -19,7 +19,7 @@ export const editProductDetails = async (req: Request, res: Response) => {
   ]);
   try {
     const product = await Product.findByPk(req.params.id);
-    const selectorDetails = await product.getProduct_details();
+    const selectorDetails = await product.getDetail();
     const details = await Detail.findByPk(selectorDetails.detail_id);
     const updateDetails = await details.update(propertiesToEdit);
 

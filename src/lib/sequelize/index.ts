@@ -51,8 +51,9 @@ Object.keys(db).forEach((modelName) => {
 
 //sequelize.sync({ force: true });
 //Product.sync({ force: true });
-// Category.sync({ force: true });
+// User.sync();
 //Size.sync({ force: true });
+//Variation.sync({ alter: true });
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

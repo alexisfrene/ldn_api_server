@@ -15,7 +15,7 @@ type VariationItem = {
   images: string[];
 };
 
-const variationModel = (sequelize: Sequelize) => {
+export default (sequelize: Sequelize) => {
   class Variation extends Model<
     InferAttributes<Variation, { omit: "user_id" | "category_id" }>,
     InferCreationAttributes<Variation, { omit: "user_id" | "category_id" }>
@@ -27,10 +27,10 @@ const variationModel = (sequelize: Sequelize) => {
     declare updatedAt: CreationOptional<Date>;
     declare user_id?: NonAttribute<Uuid>;
     declare category_id?: NonAttribute<Uuid>;
-
+    declare category_value: Uuid;
     static associate(models: any) {
       Variation.belongsTo(models.Category, {
-        as: "category",
+        as: "categories",
         foreignKey: "category_id",
       });
     }
@@ -47,6 +47,10 @@ const variationModel = (sequelize: Sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: "Sin nombre",
+      },
+      category_value: {
+        type: DataTypes.STRING,
+        defaultValue: "",
       },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
@@ -90,5 +94,3 @@ const variationModel = (sequelize: Sequelize) => {
   );
   return Variation;
 };
-
-export default variationModel;

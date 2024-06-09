@@ -48,8 +48,12 @@ export default (sequelize: Sequelize) => {
         foreignKey: "size_id",
       });
       Product.belongsTo(models.Detail, {
-        as: "product_details",
-        foreignKey: "details_id",
+        as: "detail",
+        foreignKey: "detail_id",
+      });
+      Product.belongsTo(models.Variation, {
+        as: "variation",
+        foreignKey: "variation_id",
       });
     }
   }

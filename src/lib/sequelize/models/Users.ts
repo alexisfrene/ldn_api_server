@@ -30,16 +30,23 @@ export default (sequelize: Sequelize) => {
     declare phone_number: CreationOptional<string | null>;
     declare role: CreationOptional<string | null>;
     declare session_token: CreationOptional<string | null>;
-
+    declare config: Record<string, any>;
     get fullName(): NonAttribute<string> {
       return `${this.first_name} ${this.last_name}`;
     }
 
     static associate(models: any) {
-      User.hasMany(models.Product, { as: "products", foreignKey: "user_id" });
+      User.hasMany(models.Product, {
+        as: "products",
+        foreignKey: "user_id",
+      });
       User.hasMany(models.Size, { as: "sizes", foreignKey: "user_id" });
       User.hasMany(models.Category, {
         as: "categories",
+        foreignKey: "user_id",
+      });
+      User.hasMany(models.Variation, {
+        as: "variations",
         foreignKey: "user_id",
       });
     }
@@ -51,6 +58,10 @@ export default (sequelize: Sequelize) => {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
         unique: true,
+      },
+      config: {
+        type: DataTypes.JSON,
+        defaultValue: { local_image_saving: true },
       },
       last_name: {
         type: DataTypes.STRING(15),

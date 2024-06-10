@@ -11,13 +11,10 @@ import { Uuid } from "../../../types";
 
 export default (sequelize: Sequelize) => {
   class Product extends Model<
-    InferAttributes<
-      Product,
-      { omit: "user_id" | "category_id" | "details_id" }
-    >,
+    InferAttributes<Product, { omit: "user_id" | "category_id" | "detail_id" }>,
     InferCreationAttributes<
       Product,
-      { omit: "user_id" | "category_id" | "details_id" }
+      { omit: "user_id" | "category_id" | "detail_id" }
     >
   > {
     declare product_id: CreationOptional<string>;
@@ -37,7 +34,7 @@ export default (sequelize: Sequelize) => {
 
     declare user_id?: NonAttribute<Uuid>;
     declare category_id?: NonAttribute<Uuid>;
-    declare details_id?: NonAttribute<Uuid>;
+    declare detail_id?: NonAttribute<Uuid>;
     static associate(models: any) {
       Product.belongsTo(models.Category, {
         as: "category",

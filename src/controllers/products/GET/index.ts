@@ -7,7 +7,7 @@ const Product = db.Product;
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const user = await User.findByPk(req.body.user_id);
+    const user = await User.findByPk(req.body.user_id || "");
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -37,7 +37,7 @@ export const getProducts = async (req: Request, res: Response) => {
               )
             : null;
 
-          const details = await productFromDB.getDetail();
+          const detail = await productFromDB.getDetail();
           const urlCloudinary = getSecureUrl(
             product.primary_image,
             user.user_id
@@ -56,7 +56,7 @@ export const getProducts = async (req: Request, res: Response) => {
 
           return {
             category: categoryValue?.value || null,
-            details,
+            detail,
             size: sizeValue?.value || null,
             name,
             product_id,

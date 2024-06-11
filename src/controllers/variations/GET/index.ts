@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import db from "../../../lib/sequelize";
+import { getSecureUrl } from "../../../lib";
 
 const User = db.User;
 
@@ -8,14 +9,40 @@ export const getAllVariations = async (req: Request, res: Response) => {
     const user = await User.findByPk(req.body.user_id);
     if (!user)
       return res.status(400).json({ error: true, message: "No autorizado" });
-
     const variations = await user?.getVariations();
     if (!variations)
       return res
         .status(400)
         .json({ error: true, message: "No se encontraron variaciones" });
 
-    return res.status(200).json(variations);
+    const variationsMapper = variations.map(
+      (variation: {
+        values: { images: string[]; label: string; id: string }[];
+        variation_id: string;
+        title: string;
+      }) => {
+        const values = variation.values.map(
+          (collection: { images: string[]; label: string; id: string }) => {
+            const images = collection.images.map((image: string) =>
+              getSecureUrl(`variations/${image}`, user.user_id)
+            );
+            return {
+              id: collection.id,
+              label: collection.label,
+              images,
+            };
+          }
+        );
+
+        return {
+          variation_id: variation.variation_id,
+          title: variation.title,
+          values,
+        };
+      }
+    );
+
+    return res.status(200).json(variationsMapper);
   } catch (error) {
     console.error("Error al obtener la lista de productos:", error);
 
@@ -96,7 +123,25 @@ export const getVariationById = async (req: Request, res: Response) => {
       return res
         .status(400)
         .json({ error: true, message: "No se encontró ninguna variación " });
-    return res.status(200).json(variationSelected);
+
+    const values = variationSelected[0].values.map(
+      (collection: { images: string[]; label: string; id: string }) => {
+        const images = collection.images.map((image: string) =>
+          getSecureUrl(`variations/${image}`, user.user_id)
+        );
+        return {
+          id: collection.id,
+          label: collection.label,
+          images,
+        };
+      }
+    );
+
+    return res.status(200).json({
+      title: variationSelected[0].title,
+      variation_id: variationSelected[0].variation_id,
+      values,
+    });
   } catch (error) {
     return res
       .status(500)

@@ -48,3 +48,8 @@ export interface VariantsImage {
   category: CategoryType;
   user_id: Uuid;
 }
+
+declare module "../config/sequelize.config" {
+  const sequelizeConfig: any;
+  export default sequelizeConfig;
+}

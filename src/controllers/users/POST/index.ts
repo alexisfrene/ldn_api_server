@@ -62,13 +62,14 @@ export const createUser = async (req: Request, res: Response) => {
       avatar_url,
       recent_activity: [],
     });
+
     await Category.create({
       title: "Default",
       values: [
         {
           id: "default",
           value: "Sin categoría",
-          icon_url: "/categories/11",
+          icon_url: "categories/default",
         },
       ],
       user_id: newUser.user_id,

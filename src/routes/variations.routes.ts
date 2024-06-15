@@ -12,7 +12,7 @@ import {
   deleteVariationById,
   getVariationById,
   updateCollection,
-  editVariationsDetails,
+  addImagesCollection,
   getVariationForCategory,
 } from "../controllers";
 import { authenticateToken } from "../middleware";
@@ -86,11 +86,11 @@ router.put(
 );
 router.patch(
   "/variations/:id",
+  upload.single("file"),
   authenticateToken,
-  upload.array("files", 10),
   async (req: Request, res: Response) => {
     const { edit } = req.query;
-    if (edit === "details") return editVariationsDetails(req, res);
+    if (edit === "add_image") return addImagesCollection(req, res);
     return res.status(400).json({ msj: "nada que ver pa" });
   }
 );

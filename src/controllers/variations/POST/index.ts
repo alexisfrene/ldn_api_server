@@ -36,7 +36,7 @@ export const createVariation = async (req: Request, res: Response) => {
     }
     const uploadPromises = files.map(async (file) => {
       const image_url = await uploadToCloudinary(file, `${user_id}/variations`);
-      console.log(image_url);
+
       return image_url;
     });
     const images = await Promise.all(uploadPromises);

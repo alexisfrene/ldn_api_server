@@ -57,32 +57,6 @@ export default (sequelize: Sequelize) => {
       values: {
         type: DataTypes.ARRAY(DataTypes.JSONB),
         defaultValue: [],
-        validate: {
-          isArrayOfObjects(value: VariationItem[]) {
-            if (!Array.isArray(value)) {
-              throw new Error("Values must be an array");
-            }
-            for (const item of value) {
-              if (
-                typeof item !== "object" ||
-                item === null ||
-                Array.isArray(item)
-              ) {
-                throw new Error("Each item in values must be an object");
-              }
-              if (!item.id || typeof item.id !== "string") {
-                throw new Error(
-                  "Each item in values must have an 'id' property of type string"
-                );
-              }
-              if (!item.label || typeof item.label !== "string") {
-                throw new Error(
-                  "Each item in values must have a 'value' property of type string"
-                );
-              }
-            }
-          },
-        },
       },
     },
     {

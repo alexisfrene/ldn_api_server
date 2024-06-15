@@ -50,7 +50,7 @@ Object.keys(db).forEach((modelName) => {
 });
 
 //Size.sync({ force: true });
-//Variation.sync({ alter: true });
+//Variation.sync({ force: true });
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

@@ -9,7 +9,7 @@ import {
   addVariation,
   updateProduct,
   removeCollection,
-  deleteProductById,
+  deleteVariationById,
   getVariationById,
   updateCollection,
   editVariationsDetails,
@@ -69,7 +69,6 @@ router.post(
   authenticateToken,
   createVariation
 );
-
 router.put(
   "/variations/:id",
   authenticateToken,
@@ -103,7 +102,7 @@ router.delete(
     if (collectionId) {
       return removeCollection(req, res);
     } else {
-      return deleteProductById(req, res);
+      return deleteVariationById(req, res);
     }
   }
 );

@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { supabase } from "../../../lib/supabase";
+import db from "../../../lib/sequelize";
 import { deleteEmptyFolders, removeImage } from "../../../utils";
+import { deleteImageToCloudinary } from "../../../lib/cloudinary";
 
 interface CollectionType {
   id: string;
@@ -8,41 +10,33 @@ interface CollectionType {
   images: string[];
 }
 
-export const deleteProductById = async (req: Request, res: Response) => {
-  const productId = req.params.id;
-  try {
-    const { data, error } = await supabase
-      .from("ldn_image_manager")
-      .select("*")
-      .eq("id", productId);
-    if (error) {
-      return res.status(404).json({ message: "Producto no encontrado" });
-    }
-    const productSelected = data[0];
-    if (productSelected.variations && productSelected.variations.length > 0) {
-      await Promise.all(
-        productSelected.variations.map(
-          async (variation: { images: string[] }) => {
-            await Promise.all(
-              variation.images.map(async (routeImage) => {
-                await removeImage(routeImage);
-              })
-            );
-            await deleteEmptyFolders(variation.images[0]);
-            await deleteEmptyFolders(variation.images[0], 2);
-          }
-        )
-      );
-    }
-    await removeImage(productSelected.miniature_image);
-    await deleteEmptyFolders(productSelected.miniature_image);
-    await deleteEmptyFolders(productSelected.miniature_image, 2);
+const Variation = db.Variation;
 
-    await supabase.from("ldn_image_manager").delete().eq("id", productId);
+export const deleteVariationById = async (req: Request, res: Response) => {
+  const variationId = req.params.id;
+  const { user_id } = req.body;
+  try {
+    const variation = await Variation.findByPk(variationId);
+    if (!user_id)
+      return res.status(500).json({ message: "No autorizado", error: true });
+    if (!variation) {
+      return res
+        .status(404)
+        .json({ message: "variación no encontrado", error: true });
+    }
+
+    await variation.values.forEach(async (value: { images: string[] }) => {
+      value.images.map(async (image: string) => {
+        await deleteImageToCloudinary(`${user_id}/variations/${image}`);
+        console.log("Variation -->", { url: `${user_id}/${image}` });
+      });
+    });
+
+    await variation.destroy();
 
     return res
       .status(200)
-      .json({ message: "Producto eliminado correctamente" });
+      .json({ message: "variación eliminado correctamente" });
   } catch (error) {
     return res.status(500).json({
       message: "Error al eliminar el producto",

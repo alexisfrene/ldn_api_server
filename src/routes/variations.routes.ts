@@ -14,6 +14,7 @@ import {
   updateCollection,
   addImagesCollection,
   getVariationForCategory,
+  removeImagesCollection,
 } from "../controllers";
 import { authenticateToken } from "../middleware";
 
@@ -91,6 +92,7 @@ router.patch(
   async (req: Request, res: Response) => {
     const { edit } = req.query;
     if (edit === "add_image") return addImagesCollection(req, res);
+    if (edit === "remove_image") return removeImagesCollection(req, res);
     return res.status(400).json({ msj: "nada que ver pa" });
   }
 );

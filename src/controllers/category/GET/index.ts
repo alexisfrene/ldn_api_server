@@ -6,14 +6,22 @@ const User = db.User;
 
 export const getAllCategories = async (req: Request, res: Response) => {
   const { user_id } = req.body;
+
+  if (!user_id) {
+    return res.status(401).json({ error: "No authority" });
+  }
+
   try {
-    if (!user_id) return res.status(401).json({ error: "No authority" });
     const user = await User.findByPk(user_id);
-    if (!user?.getCategories)
+    if (!user || !user.getCategories) {
       return res
         .status(400)
         .json({ error: true, message: "El usuario no tiene categorías" });
-    const categories = await user?.getCategories();
+    }
+
+    const categories = await user.getCategories({
+      order: [["category_id", "ASC"]],
+    });
     const formatterCategories = categories.map(
       (category: {
         values: { icon_url: string; value: string; id: string }[];
@@ -36,44 +44,79 @@ export const getAllCategories = async (req: Request, res: Response) => {
         };
       }
     );
+
     return res.status(200).json(formatterCategories);
   } catch (error) {
-    return res.status(501).json({ message: error });
+    console.error("Error fetching categories:", error);
+    return res
+      .status(500)
+      .json({ message: "Internal server error", error: true });
   }
 };
 
 export const getByIdCategory = async (req: Request, res: Response) => {
   const { user_id } = req.body;
   const { id } = req.params;
+
+  if (!user_id) {
+    return res.status(401).json({ error: "No authority" });
+  }
+
+  if (!id) {
+    return res
+      .status(400)
+      .json({ error: "No se proporcionó un id para buscar una categoría" });
+  }
+
   try {
-    if (!user_id) return res.status(401).json({ error: "No authority" });
-    if (!id)
+    const user = await User.findByPk(user_id);
+    if (!user || !user.getCategories) {
       return res
         .status(400)
-        .json({ error: "No se proporciono un id para buscar una categoría" });
-    const user = await User.findByPk(user_id);
-    const categories = await user.getCategories();
-    const selectedCategory = await categories.find(
+        .json({ error: true, message: "El usuario no tiene categorías" });
+    }
+
+    const categories = await user.getCategories({
+      order: [["category_id", "ASC"]],
+    });
+    const selectedCategory = categories.find(
       (category: { category_id: string }) => category.category_id === id
     );
 
     return res.status(200).json(selectedCategory);
   } catch (error) {
-    return res.status(501).json({ message: error });
+    console.error("Error fetching category by ID:", error);
+    return res
+      .status(500)
+      .json({ message: "Internal server error", error: true });
   }
 };
 
 export const getByIdCategoryValue = async (req: Request, res: Response) => {
   const { user_id } = req.body;
   const { id } = req.params;
+
+  if (!user_id) {
+    return res.status(401).json({ error: "No authority" });
+  }
+
+  if (!id) {
+    return res
+      .status(400)
+      .json({ error: "No se proporcionó un id para buscar una categoría" });
+  }
+
   try {
-    if (!user_id) return res.status(401).json({ error: "No authority" });
-    if (!id)
+    const user = await User.findByPk(user_id);
+    if (!user || !user.getCategories) {
       return res
         .status(400)
-        .json({ error: "No se proporciono un id para buscar una categoría" });
-    const user = await User.findByPk(user_id);
-    const categories = await user.getCategories();
+        .json({ error: true, message: "El usuario no tiene categorías" });
+    }
+
+    const categories = await user.getCategories({
+      order: [["category_id", "ASC"]],
+    });
     const selectedValue = categories.reduce(
       (foundValue: any, category: { values: any[] }) => {
         return (
@@ -86,21 +129,38 @@ export const getByIdCategoryValue = async (req: Request, res: Response) => {
 
     return res.status(200).json(selectedValue);
   } catch (error) {
-    return res.status(501).json({ message: error });
+    console.error("Error fetching category value by ID:", error);
+    return res
+      .status(500)
+      .json({ message: "Internal server error", error: true });
   }
 };
 
 export const getByIdValueImageURL = async (req: Request, res: Response) => {
   const { user_id } = req.body;
   const { id } = req.params;
+
+  if (!user_id) {
+    return res.status(401).json({ error: "No authority" });
+  }
+
+  if (!id) {
+    return res
+      .status(400)
+      .json({ error: "No se proporcionó un id para buscar una categoría" });
+  }
+
   try {
-    if (!user_id) return res.status(401).json({ error: "No authority" });
-    if (!id)
+    const user = await User.findByPk(user_id);
+    if (!user || !user.getCategories) {
       return res
         .status(400)
-        .json({ error: "No se proporciono un id para buscar una categoría" });
-    const user = await User.findByPk(user_id);
-    const categories = await user.getCategories();
+        .json({ error: true, message: "El usuario no tiene categorías" });
+    }
+
+    const categories = await user.getCategories({
+      order: [["category_id", "ASC"]],
+    });
     const selectedValue = categories.reduce(
       (foundValue: any, category: { values: any[] }) => {
         return (
@@ -111,10 +171,17 @@ export const getByIdValueImageURL = async (req: Request, res: Response) => {
       null
     );
 
+    if (!selectedValue) {
+      return res.status(404).json({ error: "Value not found" });
+    }
+
     const url = getSecureUrl(selectedValue.icon_url, user_id);
 
     return res.status(200).json(url);
   } catch (error) {
-    return res.status(501).json({ message: error });
+    console.error("Error fetching value image URL by ID:", error);
+    return res
+      .status(500)
+      .json({ message: "Internal server error", error: true });
   }
 };

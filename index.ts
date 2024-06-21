@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import db from "./src/lib/sequelize";
 
 dotenv.config();
+
 const PORT = process.env.PORT || 3210;
 const main = async () => {
   try {

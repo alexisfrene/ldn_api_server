@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 const {
   DATABASE_NAME,
   DATABASE_USER,

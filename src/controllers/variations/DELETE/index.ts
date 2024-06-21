@@ -1,14 +1,6 @@
 import { Request, Response } from "express";
-import { supabase } from "../../../lib/supabase";
 import db from "../../../lib/sequelize";
-import { deleteEmptyFolders, removeImage } from "../../../utils";
 import { deleteImageToCloudinary } from "../../../lib/cloudinary";
-
-interface CollectionType {
-  id: string;
-  name: string;
-  images: string[];
-}
 
 const Variation = db.Variation;
 
@@ -43,51 +35,4 @@ export const deleteVariationById = async (req: Request, res: Response) => {
       error: error,
     });
   }
-};
-
-export const removeCollection = async (req: Request, res: Response) => {
-  const collectionId = req.query.variation_remove;
-  const variationsId = req.params.id;
-
-  try {
-    const { data, error } = await supabase
-      .from("ldn_image_manager")
-      .select("*")
-      .eq("id", variationsId);
-
-    if (!error && data) {
-      const filteredCollection = data[0]?.variations
-        .map((collection: { id: string }) =>
-          collection.id !== collectionId ? collection : null
-        )
-        .filter((collection: CollectionType) => collection !== null);
-
-      const { error: updateError } = await supabase
-        .from("ldn_image_manager")
-        .update({ variations: filteredCollection || [] })
-        .eq("id", variationsId)
-        .single();
-
-      if (!updateError) {
-        await Promise.all(
-          data[0]?.variations.map(async (variation: CollectionType) => {
-            if (variation.id === collectionId) {
-              await Promise.all(
-                variation.images.map(async (routeImage) => {
-                  await removeImage(routeImage);
-                })
-              );
-              await deleteEmptyFolders(variation.images[0]);
-              await deleteEmptyFolders(variation.images[0], 2);
-            }
-          })
-        );
-      }
-      return res.send("Collection eliminada");
-    }
-  } catch (error) {
-    console.log("Error al eliminar la collection", error);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-  return res.status(500).json({ error: "Internal Server Error" });
 };

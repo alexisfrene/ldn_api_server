@@ -1,17 +1,13 @@
 import express, { Request, Response } from "express";
 import path from "node:path";
 import multer from "multer";
-import { Uuid } from "../types";
 import {
   getAllVariations,
   insertVariants,
   createVariation,
-  addVariation,
   updateProduct,
-  removeCollection,
   deleteVariationById,
   getVariationById,
-  updateCollection,
   addImagesCollection,
   getVariationForCategory,
   removeImagesCollection,
@@ -75,13 +71,6 @@ router.put(
   authenticateToken,
   upload.array("files", 10),
   async (req: Request, res: Response) => {
-    const { variation_add, id_collection } = req.query;
-    if (variation_add) {
-      return addVariation(req, res);
-    }
-    if (id_collection) {
-      return updateCollection(req, res);
-    }
     return updateProduct(req, res);
   }
 );
@@ -100,12 +89,7 @@ router.delete(
   "/variations/:id",
   authenticateToken,
   async (req: Request, res: Response) => {
-    const collectionId: Uuid = req.query.variation_remove as Uuid;
-    if (collectionId) {
-      return removeCollection(req, res);
-    } else {
-      return deleteVariationById(req, res);
-    }
+    return deleteVariationById(req, res);
   }
 );
 

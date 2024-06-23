@@ -5,7 +5,6 @@ const Product = db.Product;
 
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
-    console.log(req.body, req.params);
     const product = await Product.findByPk(req.params.id);
     await product.update({ state: false });
     if (!product.state) {

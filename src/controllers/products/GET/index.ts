@@ -130,7 +130,6 @@ export const getProductById = async (req: Request, res: Response) => {
       : null;
 
     const detail = await product.getDetail();
-    console.log("hola", detail);
     const urlCloudinary = getSecureUrl(product.primary_image, userId);
 
     const {

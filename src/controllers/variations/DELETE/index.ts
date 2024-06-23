@@ -20,7 +20,6 @@ export const deleteVariationById = async (req: Request, res: Response) => {
     await variation.values.forEach(async (value: { images: string[] }) => {
       value.images.map(async (image: string) => {
         await deleteImageToCloudinary(`${user_id}/variations/${image}`);
-        console.log("Variation -->", { url: `${user_id}/${image}` });
       });
     });
 

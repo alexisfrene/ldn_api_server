@@ -56,7 +56,6 @@ export const insertVariants = async (req: Request, res: Response) => {
   try {
     const productId = req.query.product_id;
     const variationId = req.params.id;
-    console.log("Hola");
     const variation = await Variation.findByPk(variationId);
     if (!variation)
       return res

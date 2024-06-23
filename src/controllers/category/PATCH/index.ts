@@ -46,7 +46,6 @@ export const addCategoryValue = async (req: Request, res: Response) => {
       64,
       64
     );
-    console.log("icon_url", icon_url);
     if (!icon_url)
       return res
         .status(400)

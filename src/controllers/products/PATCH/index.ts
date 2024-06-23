@@ -28,13 +28,10 @@ export const editProductDetails = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Product not found" });
     }
     let selectorDetails = await product?.getDetail();
-    console.log("sel", selectorDetails);
     if (!selectorDetails) {
       const newDetail = await Detail.create();
-      console.log("detail", newDetail);
       await product.update({ detail_id: newDetail.detail_id });
       selectorDetails = await product?.getDetail();
-      console.log("sel--2", selectorDetails);
     }
     const details = await Detail.findByPk(selectorDetails.detail_id);
     if (!details) {

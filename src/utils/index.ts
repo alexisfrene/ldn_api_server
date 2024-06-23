@@ -114,7 +114,6 @@ export const deleteEmptyFolders = async (route: string, levels = 1) => {
     const files = await fsPromises.readdir(folderPath);
     if (!files || files.length === 0) {
       await fsPromises.rmdir(folderPath);
-      console.log("Carpeta vacía eliminada:", folderPath);
     }
   } catch (err) {
     console.error("Error al eliminar la carpeta:", err);

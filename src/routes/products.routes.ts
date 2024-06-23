@@ -10,6 +10,7 @@ import {
   editProductDetails,
   editProductData,
   changeImageProduct,
+  getProductById,
 } from "../controllers";
 
 const upload = multer({
@@ -35,6 +36,7 @@ const upload = multer({
 const router = express.Router();
 
 router.get("/products", authenticateToken, getProducts);
+router.get("/products/:id", authenticateToken, getProductById);
 router.get("/products/image", authenticateToken, getImageProduct);
 
 router.post(

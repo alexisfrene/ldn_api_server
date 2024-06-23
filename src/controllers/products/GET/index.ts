@@ -103,3 +103,64 @@ export const getImageProduct = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const getProductById = async (req: Request, res: Response) => {
+  const productId = req.params.id;
+  const userId = req.body.user_id;
+  try {
+    if (!productId)
+      return res
+        .status(400)
+        .json({ error: true, message: "No se paso un id de producto" });
+    const product = await Product.findByPk(productId);
+    if (!product)
+      return res
+        .status(400)
+        .json({ error: true, message: "No se encontró producto" });
+
+    const category = await product.getCategory();
+    const categoryValue = category
+      ? category.values.find(
+          (e: { id: string }) => e.id === product.category_value
+        )
+      : null;
+    const size = await product.getSize();
+    const sizeValue = size
+      ? size.values.find((e: { id: string }) => e.id === product.size_value)
+      : null;
+
+    const detail = await product.getDetail();
+    console.log("hola", detail);
+    const urlCloudinary = getSecureUrl(product.primary_image, userId);
+
+    const {
+      name,
+      product_id,
+      description,
+      price,
+      state,
+      code,
+      stock,
+      discount,
+    } = product;
+
+    return res.status(200).json({
+      category: categoryValue?.value || null,
+      detail,
+      size: sizeValue?.value || null,
+      name,
+      product_id,
+      description,
+      primary_image: urlCloudinary || "",
+      price,
+      state,
+      code,
+      stock,
+      discount,
+    });
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ error: true, message: "Error al buscar el producto" });
+  }
+};

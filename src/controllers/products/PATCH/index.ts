@@ -17,17 +17,38 @@ export const editProductDetails = async (req: Request, res: Response) => {
     "style",
     "age",
   ]);
+
+  if (!req.params.id) {
+    return res.status(400).json({ error: "Invalid product ID" });
+  }
+
   try {
     const product = await Product.findByPk(req.params.id);
-    const selectorDetails = await product.getDetail();
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    let selectorDetails = await product?.getDetail();
+    console.log("sel", selectorDetails);
+    if (!selectorDetails) {
+      const newDetail = await Detail.create();
+      console.log("detail", newDetail);
+      await product.update({ detail_id: newDetail.detail_id });
+      selectorDetails = await product?.getDetail();
+      console.log("sel--2", selectorDetails);
+    }
     const details = await Detail.findByPk(selectorDetails.detail_id);
+    if (!details) {
+      return res.status(404).json({ error: "Details not found" });
+    }
     const updateDetails = await details.update(propertiesToEdit);
 
     return res.status(200).json(updateDetails);
   } catch (error) {
-    console.log("Error al editar los detalles del producto", error);
+    console.error("Error while editing product details:", error);
 
-    return res.status(500).json("Error in delete products");
+    return res
+      .status(500)
+      .json({ error: "An error occurred while editing the product details" });
   }
 };
 
@@ -56,7 +77,7 @@ export const editProductData = async (req: Request, res: Response) => {
     }
     let nameProps = { category: "", size: "" };
 
-    if (propertiesToEdit.category_id && propertiesToEdit.category_value) {
+    if (propertiesToEdit?.category_id && propertiesToEdit?.category_value) {
       const newCategory = await Category.findByPk(propertiesToEdit.category_id);
       const valuesNewCategory = newCategory.values.find(
         (value: { id: string }) => value.id === propertiesToEdit.category_value
@@ -73,7 +94,7 @@ export const editProductData = async (req: Request, res: Response) => {
       );
       nameProps.category = value.value;
     }
-    if (propertiesToEdit.size_id && propertiesToEdit.size_value) {
+    if (propertiesToEdit?.size_id && propertiesToEdit?.size_value) {
       const newSize = await Size.findByPk(propertiesToEdit.size_id);
       const valuesNewSize = newSize.values.find(
         (value: { id: string }) => value.id === propertiesToEdit.size_value
@@ -104,7 +125,7 @@ export const editProductData = async (req: Request, res: Response) => {
   } catch (error) {
     console.log("Error al editar los detalles del producto", error);
 
-    return res.status(500).json("Error in delete products");
+    return res.status(500).json("Error in delete editProductData");
   }
 };
 

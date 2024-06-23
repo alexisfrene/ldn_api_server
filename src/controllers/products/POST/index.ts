@@ -15,19 +15,19 @@ export const createProducts = async (req: Request, res: Response) => {
     req.body.price = Number(req.body.price);
     const data = req.body;
     const dataNewProduct: Record<string, any> = {};
-    const details = data?.details;
+    const detail = data?.detail;
     const newDetails = await Detail.create({
-      gender: details?.gender || "unspecified",
-      color: details?.color || "unspecified",
-      brand: details?.brand || "unspecified",
-      style: details?.style || "unspecified",
-      age: details?.age || "unspecified",
+      gender: detail?.gender || "unspecified",
+      color: detail?.color || "unspecified",
+      brand: detail?.brand || "unspecified",
+      style: detail?.style || "unspecified",
+      age: detail?.age || "unspecified",
     });
     if (!newDetails)
       return res
         .status(400)
         .json({ error: "No se pudo crear los detalles del producto" });
-    dataNewProduct["details_id"] = newDetails.detail_id;
+    dataNewProduct["detail_id"] = newDetails.detail_id;
     if (data.category_id) {
       const category = await Category.findByPk(data.category_id, { raw: true });
       if (category.values.length) {

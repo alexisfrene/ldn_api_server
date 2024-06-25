@@ -44,10 +44,38 @@ export const deleteImageToCloudinary = async (publicId: string) => {
 
 export const getSecureUrl = (
   fileName: string,
-  user_id: string
+  user_id: string,
+  width = 300,
+  height = 225
 ): string | null => {
   const publicId = `/${user_id}/${fileName}`;
-  const result = cloudinary.url(publicId, { secure: true });
+  const result = cloudinary.url(publicId, {
+    secure: true,
+    transformation: [
+      {
+        width,
+        height,
+        crop: "limit",
+      },
+      {
+        fetch_format: "auto",
+        quality: "auto",
+        dpr: "auto",
+      },
+      {
+        format: "webp",
+      },
+      {
+        effect: "auto_brightness",
+      },
+      {
+        effect: "auto_contrast",
+      },
+      {
+        effect: "auto_color",
+      },
+    ],
+  });
   if (result.length) {
     return result;
   }

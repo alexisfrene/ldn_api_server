@@ -5,7 +5,7 @@ import { getSecureUrl } from "../../../lib";
 const User = db.User;
 const Product = db.Product;
 
-export const getProducts = async (req: Request, res: Response) => {
+export const getAllProducts = async (req: Request, res: Response) => {
   try {
     const user = await User.findByPk(req.body.user_id || "");
     if (!user) {
@@ -19,61 +19,45 @@ export const getProducts = async (req: Request, res: Response) => {
     const products = allProducts.filter(
       (producto: { state: boolean }) => producto.state === true
     );
-
     if (Array.isArray(products)) {
       const productDetails = await Promise.all(
         products.map(async (product) => {
-          const productFromDB = await Product.findByPk(product.product_id);
-          const category = await productFromDB.getCategory();
-          const categoryValue = category
-            ? category.values.find(
-                (e: { id: string }) => e.id === productFromDB.category_value
-              )
-            : null;
+          const productFromDB = await Product.findByPk(product.product_id, {
+            attributes: [
+              "name",
+              "product_id",
+              "primary_image",
+              "price",
+              "state",
+            ],
+          });
           const size = await productFromDB.getSize();
           const sizeValue = size
             ? size.values.find(
                 (e: { id: string }) => e.id === productFromDB.size_value
               )
             : null;
-
-          const detail = await productFromDB.getDetail();
           const urlCloudinary = getSecureUrl(
             product.primary_image,
             user.user_id
           );
 
-          const {
-            name,
-            product_id,
-            description,
-            price,
-            state,
-            code,
-            stock,
-            discount,
-          } = productFromDB;
+          const { name, product_id, price, state } = productFromDB;
 
           return {
-            category: categoryValue?.value || null,
-            detail,
             size: sizeValue?.value || null,
             name,
             product_id,
-            description,
             primary_image: urlCloudinary || "",
             price,
             state,
-            code,
-            stock,
-            discount,
           };
         })
       );
 
       return res
         .status(200)
-        .json(productDetails.sort((a, b) => a.code - b.code));
+        .json(productDetails.sort((a, b) => a.product_id - b.product_id));
     }
 
     return res.status(400).json({ error: "No hay productos cargados" });

@@ -6,7 +6,7 @@ import {
   getImageProduct,
   deleteProduct,
   createProducts,
-  getProducts,
+  getAllProducts,
   editProductDetails,
   editProductData,
   changeImageProduct,
@@ -35,7 +35,7 @@ const upload = multer({
 
 const router = express.Router();
 
-router.get("/products", authenticateToken, getProducts);
+router.get("/products", authenticateToken, getAllProducts);
 router.get("/products/:id", authenticateToken, getProductById);
 router.get("/products/image", authenticateToken, getImageProduct);
 

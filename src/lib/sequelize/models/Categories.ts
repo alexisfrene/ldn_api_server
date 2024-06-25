@@ -7,6 +7,7 @@ import {
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../../../types";
+
 type CategoriesItem = {
   id: string;
   value: string;

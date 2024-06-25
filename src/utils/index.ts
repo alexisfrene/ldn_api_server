@@ -1,8 +1,8 @@
-import sharp from "sharp";
-import bcrypt from "bcrypt";
-import fs from "node:fs";
 import fsPromises, { constants, access, unlink } from "node:fs/promises";
 import path from "node:path";
+import fs from "node:fs";
+import sharp from "sharp";
+import bcrypt from "bcrypt";
 
 const root = process.cwd();
 const transformarString = (inputString: string): string => {

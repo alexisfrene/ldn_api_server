@@ -5,7 +5,7 @@ import productModel from "./models/Products";
 import categoryModel from "./models/Categories";
 import detailModel from "./models/Details";
 import variationModel from "./models/Variations";
-import { config as connectionPSQL } from "./config/config";
+import { config as connectionPSQL } from "./config";
 
 const env = "development";
 const config = connectionPSQL[env];

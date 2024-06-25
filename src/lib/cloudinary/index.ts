@@ -65,15 +65,6 @@ export const getSecureUrl = (
       {
         format: "webp",
       },
-      {
-        effect: "auto_brightness",
-      },
-      {
-        effect: "auto_contrast",
-      },
-      {
-        effect: "auto_color",
-      },
     ],
   });
   if (result.length) {

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import db from "../../../lib/sequelize";
 import { v4 as uuidv4 } from "uuid";
+import db from "../../../lib/sequelize";
 import { uploadToCloudinary } from "../../../lib";
 
 const User = db.User;

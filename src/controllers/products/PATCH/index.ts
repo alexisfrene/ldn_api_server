@@ -8,6 +8,7 @@ const Product = db.Product;
 const Detail = db.Detail;
 const Category = db.Category;
 const Size = db.Size;
+const Variation = db.Variation;
 
 export const editProductDetails = async (req: Request, res: Response) => {
   const propertiesToEdit = cleanObject(req.body, [
@@ -152,9 +153,25 @@ export const linkVariation = async (req: Request, res: Response) => {
   const productId = req.params.id;
   const variationId = req.query.variation_id;
   try {
-    //Primero validar , que el id producto y de la variación sea valido
-    //Segundo ligar el id
-    return res.status(200).json({ productId, variationId: variationId });
+    if (!variationId)
+      return res
+        .status(400)
+        .json({ error: true, message: "NO se paso id de la variación" });
+    const variation = await Variation.findByPk(variationId);
+    if (!variation)
+      return res
+        .status(400)
+        .json({ error: true, message: "NO encontró la variación" });
+    const product = await Product.findByPk(productId);
+    if (!product)
+      return res
+        .status(400)
+        .json({ error: true, message: "NO encontró el producto" });
+    await product.update({ variation_id: variation.variation_id });
+
+    return res
+      .status(200)
+      .json({ error: false, message: "Se ligo la variación !" });
   } catch (error) {
     console.error(error);
     return res

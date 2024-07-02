@@ -9,6 +9,7 @@ import {
   editProductData,
   changeImageProduct,
   getProductById,
+  linkVariation,
 } from "../controllers";
 import { upload } from "../lib/multer";
 
@@ -50,6 +51,9 @@ router.patch(
     }
     if (type === "image") {
       return changeImageProduct(req, res);
+    }
+    if (type === "variation") {
+      return linkVariation(req, res);
     }
     return res.status(400).json({ error: "Falta query" });
   }

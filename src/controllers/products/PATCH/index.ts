@@ -147,3 +147,18 @@ export const changeImageProduct = async (req: Request, res: Response) => {
     return res.status(500).json({ error: true, message: error });
   }
 };
+
+export const linkVariation = async (req: Request, res: Response) => {
+  const productId = req.params.id;
+  const variationId = req.query.variation_id;
+  try {
+    //Primero validar , que el id producto y de la variación sea valido
+    //Segundo ligar el id
+    return res.status(200).json({ productId, variationId: variationId });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: true, message: "Error in link variation" });
+  }
+};

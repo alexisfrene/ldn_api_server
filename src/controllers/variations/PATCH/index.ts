@@ -121,3 +121,15 @@ export const removeImagesCollection = async (req: Request, res: Response) => {
       .json({ error: true, message: "Error in change image collection" });
   }
 };
+
+export const insertCollection = async (req: Request, res: Response) => {
+  const { category_id, category_value } = req.body;
+  try {
+    return res.status(200).json({ category_id, category_value });
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json({ error: true, message: "Error al buscar los productos" });
+  }
+};

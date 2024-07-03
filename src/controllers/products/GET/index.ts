@@ -81,6 +81,7 @@ export const getImageProduct = async (req: Request, res: Response) => {
 export const getProductById = async (req: Request, res: Response) => {
   const productId = req.params.id;
   const userId = req.body.user_id;
+  const { user_id } = req.body;
   try {
     if (!productId)
       return res
@@ -105,6 +106,28 @@ export const getProductById = async (req: Request, res: Response) => {
 
     const detail = await product.getDetail();
     const urlCloudinary = getSecureUrl(product.primary_image, userId);
+    let variationFormat = {
+      variation_id: "",
+      title: "",
+      values: [] as { id: string; label: string; images: string[] }[],
+    };
+    const variations = await product.getVariation();
+    if (variations) {
+      variationFormat.title = variations.title;
+      variationFormat.variation_id = variations.variation_id;
+      variations.values.forEach(
+        (value: { id: string; label: string; images: string[] }) => {
+          variationFormat.values.push({
+            id: value.id,
+            label: value.label,
+            images: value.images.map(
+              (image: string) =>
+                getSecureUrl(`variations/${image}`, user_id) || ""
+            ),
+          });
+        }
+      );
+    }
 
     const {
       name,
@@ -130,6 +153,7 @@ export const getProductById = async (req: Request, res: Response) => {
       code,
       stock,
       discount,
+      variation: variationFormat,
     });
   } catch (error) {
     return res

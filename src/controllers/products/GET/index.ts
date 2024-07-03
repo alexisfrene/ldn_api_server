@@ -22,15 +22,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
     if (Array.isArray(products)) {
       const productDetails = await Promise.all(
         products.map(async (product) => {
-          const productFromDB = await Product.findByPk(product.product_id, {
-            attributes: [
-              "name",
-              "product_id",
-              "primary_image",
-              "price",
-              "state",
-            ],
-          });
+          const productFromDB = await Product.findByPk(product.product_id);
           const size = await productFromDB.getSize();
           const sizeValue = size
             ? size.values.find(
@@ -41,11 +33,9 @@ export const getAllProducts = async (req: Request, res: Response) => {
             product.primary_image,
             user.user_id
           );
-
           const { name, product_id, price, state } = productFromDB;
-
           return {
-            size: sizeValue?.value || null,
+            size: sizeValue.value || "-",
             name,
             product_id,
             primary_image: urlCloudinary || "",

@@ -43,3 +43,27 @@ export const getAvatar = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Error al pedir la url del avatar" });
   }
 };
+
+export const getPreferenceInProductView = async (
+  req: Request,
+  res: Response
+) => {
+  const body = req.body;
+  try {
+    if (body.user_id) {
+      const user = await User.findByPk(req.body.user_id);
+
+      return res.status(200).json({
+        preference_in_product_view:
+          user.config.preference_in_product_view || false,
+      });
+    }
+
+    return res.status(401).json({ error: "Falta token" });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ error: "Error al pedir la url getPreferenceInProductView" });
+  }
+};

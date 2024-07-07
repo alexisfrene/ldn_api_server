@@ -45,9 +45,13 @@ export const getAllProducts = async (req: Request, res: Response) => {
         })
       );
 
-      return res
-        .status(200)
-        .json(productDetails.sort((a, b) => a.product_id - b.product_id));
+      return res.status(200).json(
+        productDetails.sort((a, b) => {
+          if (a.product_id < b.product_id) return -1;
+          if (a.product_id > b.product_id) return 1;
+          return 0;
+        })
+      );
     }
 
     return res.status(400).json({ error: "No hay productos cargados" });

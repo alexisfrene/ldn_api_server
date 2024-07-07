@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import {
   getAllVariations,
   insertVariants,
@@ -9,11 +9,21 @@ import {
   addImagesCollection,
   getVariationForCategory,
   removeImagesCollection,
+  insertNewCollection,
 } from "../controllers";
 import { authenticateToken } from "../middleware";
 import { upload } from "../lib/multer";
 
 const router = express.Router();
+
+const conditionalUpload = (req: Request, res: Response, next: NextFunction) => {
+  const { edit } = req.query;
+  if (edit === "add_collection") {
+    return upload.array("files", 10)(req, res, next);
+  } else {
+    return upload.single("file")(req, res, next);
+  }
+};
 
 router.get("/variations", authenticateToken, async (req, res) => {
   const { query } = req;
@@ -56,15 +66,17 @@ router.put(
 );
 router.patch(
   "/variations/:id",
-  upload.single("file"),
+  conditionalUpload,
   authenticateToken,
   async (req: Request, res: Response) => {
     const { edit } = req.query;
     if (edit === "add_image") return addImagesCollection(req, res);
+    if (edit === "add_collection") return insertNewCollection(req, res);
     if (edit === "remove_image") return removeImagesCollection(req, res);
-    return res.status(400).json({ msj: "nada que ver pa" });
+    return res.status(500).json({ msj: "nada que ver pa" });
   }
 );
+
 router.delete(
   "/variations/:id",
   authenticateToken,

@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { v4 as uuidv4 } from "uuid";
 import db from "../../../lib/sequelize";
 import { uploadToCloudinary } from "../../../lib";
 import { deleteImageToCloudinary } from "../../../lib/cloudinary";
@@ -122,10 +123,30 @@ export const removeImagesCollection = async (req: Request, res: Response) => {
   }
 };
 
-export const insertCollection = async (req: Request, res: Response) => {
-  const { category_id, category_value } = req.body;
+export const insertNewCollection = async (req: Request, res: Response) => {
+  const { label, user_id } = req.body;
+  const files = req.files as Express.Multer.File[];
+  const { id: variationId } = req.params;
   try {
-    return res.status(200).json({ category_id, category_value });
+    const variation = await Variation.findByPk(variationId);
+    if (!variation)
+      return res
+        .status(500)
+        .json({ error: true, message: "Error insertNewCollection" });
+    const uploadPromises = files.map(async (file) => {
+      const image_url = await uploadToCloudinary(file, `${user_id}/variations`);
+
+      return image_url;
+    });
+    const images = await Promise.all(uploadPromises);
+    const newCollection = {
+      id: uuidv4(),
+      label,
+      images,
+    };
+    await variation.update({ values: [...variation.values, newCollection] });
+
+    return res.status(200).json({ newCollection });
   } catch (error) {
     console.error(error);
     return res

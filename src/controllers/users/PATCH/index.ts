@@ -23,7 +23,7 @@ export const changeAvatar = async (req: Request, res: Response) => {
       return res
         .status(400)
         .json({ error: true, message: "Error al subir la imagen" });
-    const url = getSecureUrl(public_id, user_id);
+    const url = getSecureUrl(`avatar/${public_id}`, user_id);
     await user.update({ avatar_url: url });
     return res.status(200).json({ error: false, message: "Todo oK", url });
   } catch (error) {

@@ -16,7 +16,7 @@ export const upload = multer({
     },
     filename: (_req, file, cb) => {
       const ext = path.extname(file.originalname);
-      cb(null, Date.now() + ext);
+      cb(null, `${Date.now()}-${Math.random() * 10}` + ext);
     },
   }),
 });

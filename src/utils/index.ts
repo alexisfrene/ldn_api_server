@@ -140,7 +140,7 @@ export const getFileNameWithoutExtension = (
   if (lastIndex !== -1) {
     return fileNameWithExtension.substring(0, lastIndex);
   }
-  return fileNameWithExtension;
+  return `${fileNameWithExtension}-${Math.random() * 10}`;
 };
 
 export const cleanObject = (

@@ -1,9 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import db from "../lib/sequelize";
 import { Uuid } from "../types";
-
-const User = db.User;
 
 export const authenticateToken = async (
   req: Request,
@@ -18,11 +15,6 @@ export const authenticateToken = async (
   const decodedToken = jwt.decode(token) as { user_id: Uuid } | null;
 
   if (!decodedToken)
-    return res.status(401).json({ message: "Unauthorized : Missing token" });
-
-  const sessionTokenByUser = await User.findByPk(decodedToken.user_id);
-
-  if (sessionTokenByUser?.dataValues.session_token !== token)
     return res.status(401).json({ message: "Unauthorized : Missing token" });
 
   return jwt.verify(

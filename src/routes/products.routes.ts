@@ -10,12 +10,20 @@ import {
   changeImageProduct,
   getProductById,
   linkVariation,
+  getProductForCategory,
 } from "../controllers";
 import { upload } from "../lib/multer";
 
 const router = express.Router();
 
-router.get("/products", authenticateToken, getAllProducts);
+router.get("/products", authenticateToken, async (req, res) => {
+  const { category_value, category_id } = req.query;
+  if (category_id && category_value) {
+    return getProductForCategory(req, res);
+  } else {
+    return getAllProducts(req, res);
+  }
+});
 router.get("/products/:id", authenticateToken, getProductById);
 router.get("/products/image", authenticateToken, getImageProduct);
 

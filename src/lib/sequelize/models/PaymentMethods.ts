@@ -32,7 +32,7 @@ export default (sequelize: Sequelize) => {
     },
     {
       sequelize,
-      modelName: "PaymentMethod",
+      modelName: "PaymentMethods",
       tableName: "payment_methods",
       timestamps: false,
     }

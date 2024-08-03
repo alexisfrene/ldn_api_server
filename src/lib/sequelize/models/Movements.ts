@@ -10,20 +10,35 @@ import { Uuid } from "../../../types";
 
 export default (sequelize: Sequelize) => {
   class Movements extends Model<
-    InferAttributes<Movements, { omit: "user_id" | "payment_method_id" }>,
+    InferAttributes<
+      Movements,
+      { omit: "user_id" | "payment_method_id" | "financial_accounts_id" }
+    >,
     InferCreationAttributes<
       Movements,
-      { omit: "user_id" | "payment_method_id" }
+      { omit: "user_id" | "payment_method_id" | "financial_accounts_id" }
     >
   > {
     declare movements_id: Uuid;
     declare label: string;
     declare value: number;
-    declare type: 0 | 1; //0 = Entrada de dinero , 1=Salida de dinero;
+    declare type: "inflow_of_money" | "money outflow";
+    declare financial_id: Uuid;
     declare updatedAt: Date;
     declare createdAt: Date;
     declare user_id?: NonAttribute<Uuid>;
     declare payment_method_id?: NonAttribute<Uuid>;
+    declare financial_accounts_id?: NonAttribute<Uuid>;
+    static associate(models: any) {
+      Movements.belongsTo(models.FinancialAccounts, {
+        as: "financial_accounts",
+        foreignKey: "financial_accounts_id",
+      });
+      Movements.belongsTo(models.PaymentMethods, {
+        as: "payment_methods",
+        foreignKey: "payment_method_id",
+      });
+    }
   }
 
   Movements.init(
@@ -32,6 +47,10 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
+      },
+      financial_id: {
+        type: DataTypes.STRING,
+        allowNull: false,
       },
       label: {
         type: DataTypes.STRING,

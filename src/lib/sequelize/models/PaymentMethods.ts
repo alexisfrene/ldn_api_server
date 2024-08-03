@@ -8,67 +8,34 @@ import {
 } from "sequelize";
 import { Uuid } from "../../../types";
 
-type SizeItem = {
-  id: Uuid;
-  value: string;
-};
-
 export default (sequelize: Sequelize) => {
-  class Size extends Model<
-    InferAttributes<Size, { omit: "user_id" }>,
-    InferCreationAttributes<Size, { omit: "user_id" }>
+  class PaymentMethods extends Model<
+    InferAttributes<PaymentMethods, { omit: "user_id" }>,
+    InferCreationAttributes<PaymentMethods, { omit: "user_id" }>
   > {
-    declare size_id: Uuid;
-    declare title: string;
-    declare values: SizeItem[];
-
+    declare payment_method_id: Uuid;
+    declare name: string;
     declare user_id?: NonAttribute<Uuid>;
   }
-
-  Size.init(
+  PaymentMethods.init(
     {
-      size_id: {
+      payment_method_id: {
         type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
       },
-      title: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: "Sin nombre",
       },
-      values: {
-        type: DataTypes.ARRAY(DataTypes.JSONB),
-        defaultValue: [],
-        validate: {
-          isArrayOfObjects(value: SizeItem[]) {
-            if (!Array.isArray(value)) {
-              throw new Error("Values must be an array");
-            }
-            for (const item of value) {
-              if (
-                typeof item !== "object" ||
-                item === null ||
-                Array.isArray(item)
-              ) {
-                throw new Error("Each item in values must be an object");
-              }
-              if (!item.id || typeof item.id !== "string") {
-                throw new Error(
-                  "Each item in values must have an 'id' property of type string"
-                );
-              }
-              if (!item.value || typeof item.value !== "string") {
-                throw new Error(
-                  "Each item in values must have a 'value' property of type string"
-                );
-              }
-            }
-          },
-        },
-      },
     },
-    { sequelize, modelName: "Size", tableName: "sizes", timestamps: false }
+    {
+      sequelize,
+      modelName: "PaymentMethod",
+      tableName: "PaymentMethods",
+      timestamps: false,
+    }
   );
-  return Size;
+  return PaymentMethods;
 };

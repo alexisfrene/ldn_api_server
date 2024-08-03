@@ -6,6 +6,7 @@ import categoryModel from "./models/Categories";
 import detailModel from "./models/Details";
 import variationModel from "./models/Variations";
 import salesModel from "./models/Sales";
+import paymentMethodsModel from "./models/PaymentMethods";
 import { config as connectionPSQL } from "./config";
 
 const env = "development";
@@ -37,6 +38,7 @@ const Category = categoryModel(sequelize);
 const Detail = detailModel(sequelize);
 const Variation = variationModel(sequelize);
 const Sales = salesModel(sequelize);
+const PaymentMethods = paymentMethodsModel(sequelize);
 
 db[User.name] = User;
 db[Size.name] = Size;
@@ -45,6 +47,7 @@ db[Category.name] = Category;
 db[Detail.name] = Detail;
 db[Variation.name] = Variation;
 db[Sales.name] = Sales;
+db[PaymentMethods.name] = PaymentMethods;
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
@@ -55,6 +58,7 @@ Object.keys(db).forEach((modelName) => {
 //Size.sync({ force: true });
 //Variation.sync({ force: true });
 //Sales.sync();
+//PaymentMethods.sync();
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

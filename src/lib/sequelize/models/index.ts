@@ -4,3 +4,4 @@ export * from "./Products";
 export * from "./Sizes";
 export * from "./Users";
 export * from "./Variations";
+export * from "./Sales";

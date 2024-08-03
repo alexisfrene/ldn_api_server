@@ -5,7 +5,7 @@ import productModel from "./models/Products";
 import categoryModel from "./models/Categories";
 import detailModel from "./models/Details";
 import variationModel from "./models/Variations";
-import salesModel from "./models/Sales";
+import movementsModel from "./models/Movements";
 import paymentMethodsModel from "./models/PaymentMethods";
 import { config as connectionPSQL } from "./config";
 
@@ -37,7 +37,7 @@ const Product = productModel(sequelize);
 const Category = categoryModel(sequelize);
 const Detail = detailModel(sequelize);
 const Variation = variationModel(sequelize);
-const Sales = salesModel(sequelize);
+const Movements = movementsModel(sequelize);
 const PaymentMethods = paymentMethodsModel(sequelize);
 
 db[User.name] = User;
@@ -46,7 +46,7 @@ db[Product.name] = Product;
 db[Category.name] = Category;
 db[Detail.name] = Detail;
 db[Variation.name] = Variation;
-db[Sales.name] = Sales;
+db[Movements.name] = Movements;
 db[PaymentMethods.name] = PaymentMethods;
 
 Object.keys(db).forEach((modelName) => {
@@ -57,7 +57,7 @@ Object.keys(db).forEach((modelName) => {
 
 //Size.sync({ force: true });
 //Variation.sync({ force: true });
-//Sales.sync();
+//Movements.sync();
 //PaymentMethods.sync();
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

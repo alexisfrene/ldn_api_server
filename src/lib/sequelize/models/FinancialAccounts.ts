@@ -10,6 +10,9 @@ import { Uuid } from "../../../types";
 
 type FinancialItem = {
   name: string;
+  updatedAt?: Date;
+  createdAt?: Date;
+  expiration?: Date;
   id: string;
   value: number;
 };
@@ -20,8 +23,8 @@ export default (sequelize: Sequelize) => {
     InferCreationAttributes<FinancialAccounts, { omit: "user_id" }>
   > {
     declare financial_accounts_id: Uuid;
-    declare title: string;
-    declare type: number; //0 = Entrada de dinero , 1=Salida de dinero | 2 = Pago deuda | 3 = pago sueldos;
+    declare name: string;
+    declare type: "inflow_of_money" | "money_outflow";
     declare values: FinancialItem[];
     declare user_id?: NonAttribute<Uuid>;
   }
@@ -33,45 +36,19 @@ export default (sequelize: Sequelize) => {
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
       },
-      title: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: "Sin nombre",
       },
       type: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
         defaultValue: 0,
       },
       values: {
         type: DataTypes.ARRAY(DataTypes.JSONB),
         defaultValue: [],
-        validate: {
-          isArrayOfObjects(value: FinancialItem[]) {
-            if (!Array.isArray(value)) {
-              throw new Error("Values must be an array");
-            }
-            for (const item of value) {
-              if (
-                typeof item !== "object" ||
-                item === null ||
-                Array.isArray(item)
-              ) {
-                throw new Error("Each item in values must be an object");
-              }
-              if (!item.id || typeof item.id !== "string") {
-                throw new Error(
-                  "Each item in values must have an 'id' property of type string"
-                );
-              }
-              if (!item.value || typeof item.value !== "string") {
-                throw new Error(
-                  "Each item in values must have a 'value' property of type string"
-                );
-              }
-            }
-          },
-        },
       },
     },
     {

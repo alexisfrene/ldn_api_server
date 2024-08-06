@@ -1,9 +1,9 @@
 import express from "express";
-import { getAllSell } from "../controllers";
 import { authenticateToken } from "../middleware";
+import { createFinancialAccounts } from "../controllers";
 
 const router = express.Router();
 
-router.get("/finances", authenticateToken, getAllSell);
+router.post("/financial_accounts", authenticateToken, createFinancialAccounts);
 
 export { router };

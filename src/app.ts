@@ -6,6 +6,7 @@ import {
   productsRoutes,
   categoriesRoutes,
   sizeRoutes,
+  financeRoutes,
 } from "./routes";
 export const app = express();
 app.use(cors());
@@ -18,5 +19,6 @@ app.use(
   usersRoutes,
   productsRoutes,
   categoriesRoutes,
-  sizeRoutes
+  sizeRoutes,
+  financeRoutes
 );

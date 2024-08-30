@@ -166,3 +166,27 @@ export const isNumber = (str: string) => {
 
   return regex.test(str);
 };
+
+export const formatDate = () => {
+  const now: Date = new Date();
+  const pad = (num: number): string => num.toString().padStart(2, "0");
+
+  const year: number = now.getFullYear();
+  const month: string = pad(now.getMonth() + 1);
+  const day: string = pad(now.getDate());
+
+  const hours: string = pad(now.getHours());
+  const minutes: string = pad(now.getMinutes());
+  const seconds: string = pad(now.getSeconds());
+  const milliseconds: string = now
+    .getMilliseconds()
+    .toString()
+    .padStart(3, "0");
+
+  const timezoneOffset: number = -now.getTimezoneOffset();
+  const sign: string = timezoneOffset >= 0 ? "+" : "-";
+  const offsetHours: string = pad(Math.floor(Math.abs(timezoneOffset) / 60));
+  const offsetMinutes: string = pad(Math.abs(timezoneOffset) % 60);
+
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}${sign}${offsetHours}${offsetMinutes}`;
+};

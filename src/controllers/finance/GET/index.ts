@@ -32,7 +32,7 @@ export const getFinancialAccounts = async (req: Request, res: Response) => {
 
   try {
     const user = await User.findByPk(user_id);
-    const financialAccounts = await user.getFinancialAccounts();
+    const financialAccounts = await user.getFinancial_accounts();
 
     return res.status(200).json({ financialAccounts });
   } catch (error) {

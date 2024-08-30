@@ -49,6 +49,10 @@ export default (sequelize: Sequelize) => {
         as: "variations",
         foreignKey: "user_id",
       });
+      User.hasMany(models.FinancialAccounts, {
+        as: "financial_accounts",
+        foreignKey: "user_id",
+      });
     }
   }
   User.init(

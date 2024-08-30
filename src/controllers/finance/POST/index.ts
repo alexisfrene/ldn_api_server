@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-//import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import db from "../../../lib/sequelize";
 
 const FinancialAccounts = db.FinancialAccounts;
@@ -21,6 +21,15 @@ export const createFinancialAccounts = async (req: Request, res: Response) => {
       const newFinancialAccounts = await FinancialAccounts.create({
         name,
         type,
+        values: [
+          {
+            name: "-",
+            updatedAt: Date.now(),
+            createdAt: Date.now(),
+            id: uuidv4(),
+            value: 0,
+          },
+        ],
         user_id,
       });
       return res.status(200).json(newFinancialAccounts);

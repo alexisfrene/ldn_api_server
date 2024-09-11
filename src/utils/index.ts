@@ -4,13 +4,6 @@ import fs from "node:fs";
 import sharp from "sharp";
 import bcrypt from "bcrypt";
 
-const root = process.cwd();
-const transformarString = (inputString: string): string => {
-  const cleanString = inputString.replace(/[^a-zA-Z0-9\s]/g, "");
-  const transformedString = cleanString.replace(/\s+/g, "_");
-
-  return transformedString.toLowerCase();
-};
 interface ImageDestinationOptions {
   categoryFolder?: string;
   productFolder: string;
@@ -18,6 +11,15 @@ interface ImageDestinationOptions {
   mainImage?: string;
   withMiniature?: boolean;
 }
+
+const root = process.cwd();
+
+const transformarString = (inputString: string): string => {
+  const cleanString = inputString.replace(/[^a-zA-Z0-9\s]/g, "");
+  const transformedString = cleanString.replace(/\s+/g, "_");
+
+  return transformedString.toLowerCase();
+};
 
 export const handlerImageDestination = ({
   categoryFolder = "sin_name",

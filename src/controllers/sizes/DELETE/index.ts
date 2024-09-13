@@ -6,7 +6,7 @@ const User = db.User;
 
 export const deleteSizeCollection = async (req: Request, res: Response) => {
   try {
-    const { user_id } = req.body;
+    const user_id = req.user;
     const size_id = req.params.id;
     if (!size_id)
       return res
@@ -41,7 +41,7 @@ export const deleteSizeCollection = async (req: Request, res: Response) => {
 
 export const deleteSizeValue = async (req: Request, res: Response) => {
   try {
-    const { user_id } = req.body;
+    const user_id = req.user;
     const size_id = req.params.id;
     const size_value = req.query.value_id;
     if (!size_id)

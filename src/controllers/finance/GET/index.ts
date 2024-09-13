@@ -4,7 +4,7 @@ import db from "../../../lib/sequelize";
 const User = db.User;
 
 export const getAllSell = async (req: Request, res: Response) => {
-  const { user_id } = req.body;
+  const user_id = req.user;
 
   if (!user_id) {
     return res.status(401).json({ message: "No authority", error: true });
@@ -28,7 +28,7 @@ export const getAllSell = async (req: Request, res: Response) => {
 };
 
 export const getFinancialAccounts = async (req: Request, res: Response) => {
-  const { user_id } = req.body;
+  const user_id = req.user;
 
   try {
     const user = await User.findByPk(user_id);

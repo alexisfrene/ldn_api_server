@@ -5,7 +5,8 @@ import db from "../../../lib/sequelize";
 const Size = db.Size;
 
 export const createSize = async (req: Request, res: Response) => {
-  const { title, values, user_id } = req.body;
+  const user_id = req.user;
+  const { title, values } = req.body;
   try {
     const newSize = await Size.create({
       title,

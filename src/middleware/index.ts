@@ -25,7 +25,7 @@ export const authenticateToken = async (
       if (err) {
         return res.status(401).json({ message: "Unauthorized: Invalid token" });
       }
-      req.body.user_id = decodedToken.user_id;
+      req.user = decodedToken.user_id;
 
       return next();
     }

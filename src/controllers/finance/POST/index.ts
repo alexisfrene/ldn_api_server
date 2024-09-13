@@ -6,7 +6,8 @@ import { formatDate } from "../../../utils";
 const FinancialAccounts = db.FinancialAccounts;
 
 export const createMovement = async (req: Request, res: Response) => {
-  const { title, values, user_id } = req.body;
+  const user_id = req.user;
+  const { title, values } = req.body;
   try {
     return res.status(200).json({ title, values, user_id });
   } catch (error) {
@@ -15,7 +16,8 @@ export const createMovement = async (req: Request, res: Response) => {
 };
 
 export const createFinancialAccounts = async (req: Request, res: Response) => {
-  const { name, type, user_id } = req.body;
+  const user_id = req.user;
+  const { name, type } = req.body;
 
   try {
     if (type === "inflow_of_money" || type === "money_outflow") {

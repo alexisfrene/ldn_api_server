@@ -7,7 +7,8 @@ const User = db.User;
 
 export const addSizeValue = async (req: Request, res: Response) => {
   const size_id = req.params.id;
-  const { value, user_id } = req.body;
+  const user_id = req.user;
+  const { value } = req.body;
   try {
     if (!user_id)
       return res

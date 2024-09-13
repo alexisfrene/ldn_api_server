@@ -7,7 +7,7 @@ const User = db.User;
 
 export const deleteCategoryCollection = async (req: Request, res: Response) => {
   try {
-    const { user_id } = req.body;
+    const user_id = req.user;
     const category_id = req.params.id;
 
     if (!category_id)
@@ -48,7 +48,7 @@ export const deleteCategoryCollection = async (req: Request, res: Response) => {
 
 export const deleteCategoryValue = async (req: Request, res: Response) => {
   try {
-    const { user_id } = req.body;
+    const user_id = req.user;
     const category_id = req.params.id;
     const category_value = req.query.value_id;
     if (!category_id)

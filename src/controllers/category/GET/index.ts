@@ -5,7 +5,7 @@ import { getSecureUrl } from "../../../lib";
 const User = db.User;
 
 export const getAllCategories = async (req: Request, res: Response) => {
-  const { user_id } = req.body;
+  const user_id = req.user;
 
   if (!user_id) {
     return res.status(401).json({ error: "No authority" });
@@ -55,7 +55,7 @@ export const getAllCategories = async (req: Request, res: Response) => {
 };
 
 export const getByIdCategory = async (req: Request, res: Response) => {
-  const { user_id } = req.body;
+  const user_id = req.user;
   const { id } = req.params;
 
   if (!user_id) {
@@ -93,7 +93,7 @@ export const getByIdCategory = async (req: Request, res: Response) => {
 };
 
 export const getByIdCategoryValue = async (req: Request, res: Response) => {
-  const { user_id } = req.body;
+  const user_id = req.user;
   const { id } = req.params;
 
   if (!user_id) {
@@ -137,7 +137,7 @@ export const getByIdCategoryValue = async (req: Request, res: Response) => {
 };
 
 export const getByIdValueImageURL = async (req: Request, res: Response) => {
-  const { user_id } = req.body;
+  const user_id = req.user;
   const { id } = req.params;
 
   if (!user_id) {

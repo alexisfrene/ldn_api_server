@@ -5,9 +5,10 @@ import { getSecureUrl, uploadToCloudinary } from "../../../lib";
 const User = db.User;
 
 export const changeAvatar = async (req: Request, res: Response) => {
-  const { user_id } = req.body;
+  const user_id = req.user;
   const file = req.file;
   try {
+    if (!user_id) return res.status(400).json({ error: "Falta user_id" });
     const user = await User.findByPk(user_id);
     if (!file)
       return res

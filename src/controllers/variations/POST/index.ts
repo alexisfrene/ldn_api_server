@@ -10,7 +10,8 @@ const Product = db.Product;
 
 export const createVariation = async (req: Request, res: Response) => {
   try {
-    const { title, label, user_id, category_id, category_value } = req.body;
+    const user_id = req.user;
+    const { title, label, category_id, category_value } = req.body;
     const files = req.files as Express.Multer.File[];
     if (!files)
       return res

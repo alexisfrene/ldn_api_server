@@ -22,7 +22,7 @@ export default (sequelize: Sequelize) => {
     declare movements_id: Uuid;
     declare label: string;
     declare value: number;
-    declare type: "inflow_of_money" | "money outflow";
+    declare type: "inflow_of_money" | "money_outflow";
     declare updatedAt: Date;
     declare createdAt: Date;
     declare user_id?: NonAttribute<Uuid>;
@@ -53,9 +53,9 @@ export default (sequelize: Sequelize) => {
         defaultValue: "Sin nombre",
       },
       type: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: 0,
+        defaultValue: "inflow_of_money",
       },
       value: {
         type: DataTypes.INTEGER,

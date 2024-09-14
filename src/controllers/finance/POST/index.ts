@@ -4,12 +4,23 @@ import db from "../../../lib/sequelize";
 import { formatDate } from "../../../utils";
 
 const FinancialAccounts = db.FinancialAccounts;
+const PaymentMethod = db.PaymentMethods;
+const Movement = db.Movements;
 
 export const createMovement = async (req: Request, res: Response) => {
   const user_id = req.user;
-  const { title, values } = req.body;
+  const { label, value, type, payment_method_id, financial_accounts_id } =
+    req.body;
   try {
-    return res.status(200).json({ title, values, user_id });
+    const newMovement = await Movement.create({
+      label,
+      value,
+      type,
+      payment_method_id,
+      financial_accounts_id,
+      user_id,
+    });
+    return res.status(200).json({ newMovement });
   } catch (error) {
     return res.status(501).json({ message: error });
   }
@@ -45,5 +56,22 @@ export const createFinancialAccounts = async (req: Request, res: Response) => {
     return res
       .status(400)
       .json({ message: "Error al crear una cuenta financiera", error: true });
+  }
+};
+
+export const createPaymentMethod = async (req: Request, res: Response) => {
+  const user_id = req.user;
+  const { name } = req.body;
+
+  try {
+    const newPaymentMethod = await PaymentMethod.create({
+      name,
+      user_id,
+    });
+    return res.status(200).json(newPaymentMethod);
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ message: "Error al crear una newPaymentMethod", error: true });
   }
 };

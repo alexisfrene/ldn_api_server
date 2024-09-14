@@ -28,12 +28,13 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: "Sin nombre",
+        unique: true,
       },
     },
     {
       sequelize,
       modelName: "PaymentMethods",
-      tableName: "payment_methods",
+      tableName: "paymentMethods",
       timestamps: false,
     }
   );

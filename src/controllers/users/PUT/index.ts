@@ -4,7 +4,7 @@ import db from "../../../lib/sequelize";
 const User = db.User;
 
 export const preferenceInProductView = async (req: Request, res: Response) => {
-  const { user_id } = req.body;
+  const user_id = req.user;
   const { preferenceInProductView } = req.query;
   try {
     const user = await User.findByPk(user_id);

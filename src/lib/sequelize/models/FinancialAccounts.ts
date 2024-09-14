@@ -54,7 +54,7 @@ export default (sequelize: Sequelize) => {
     {
       sequelize,
       modelName: "FinancialAccounts",
-      tableName: "financial_accounts",
+      tableName: "financialAccounts",
       timestamps: false,
     }
   );

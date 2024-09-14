@@ -6,7 +6,7 @@ const Variation = db.Variation;
 
 export const deleteVariationById = async (req: Request, res: Response) => {
   const variationId = req.params.id;
-  const { user_id } = req.body;
+  const user_id = req.user;
   try {
     const variation = await Variation.findByPk(variationId);
     if (!user_id)

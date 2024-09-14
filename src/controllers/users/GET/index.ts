@@ -29,10 +29,10 @@ export const getUserId = async (req: Request, res: Response) => {
 };
 
 export const getAvatar = async (req: Request, res: Response) => {
-  const body = req.body;
+  const user_id = req.user;
   try {
-    if (body.user_id) {
-      const avatar = await User.findByPk(req.body.user_id);
+    if (user_id) {
+      const avatar = await User.findByPk(user_id);
 
       return res.status(200).json(avatar.avatar_url);
     }
@@ -48,10 +48,10 @@ export const getPreferenceInProductView = async (
   req: Request,
   res: Response
 ) => {
-  const body = req.body;
+  const user_id = req.user;
   try {
-    if (body.user_id) {
-      const user = await User.findByPk(req.body.user_id);
+    if (user_id) {
+      const user = await User.findByPk(user_id);
 
       return res.status(200).json({
         preference_in_product_view:

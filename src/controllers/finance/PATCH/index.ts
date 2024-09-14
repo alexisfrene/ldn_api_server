@@ -5,7 +5,8 @@ import db from "../../../lib/sequelize";
 const FinancialAccounts = db.FinancialAccounts;
 
 export const addFinancialAccount = async (req: Request, res: Response) => {
-  const { financial_accounts_id, value, user_id } = req.body;
+  const user_id = req.user;
+  const { financial_accounts_id, value } = req.body;
   try {
     if (!financial_accounts_id)
       res.status(400).json({

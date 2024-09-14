@@ -62,7 +62,8 @@ Object.keys(db).forEach((modelName) => {
 //Variation.sync({ force: true });
 // Movements.sync({ force: true });
 //FinancialAccounts.sync({ force: true });
-// PaymentMethods.sync();
+// PaymentMethods.sync({});
+//User.sync({ alter: true });
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

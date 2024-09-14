@@ -6,6 +6,7 @@ import db from "../../../lib/sequelize";
 
 const User = db.User;
 const Category = db.Category;
+const Size = db.Size;
 
 export const createUser = async (req: Request, res: Response) => {
   try {
@@ -70,6 +71,17 @@ export const createUser = async (req: Request, res: Response) => {
           id: "default",
           value: "Sin categoría",
           icon_url: "categories/default",
+        },
+      ],
+      user_id: newUser.user_id,
+    });
+
+    await Size.create({
+      title: "Default",
+      values: [
+        {
+          id: "default",
+          value: "Sin talla/numero",
         },
       ],
       user_id: newUser.user_id,

@@ -11,6 +11,8 @@ const Detail = db.Detail;
 export const createProducts = async (req: Request, res: Response) => {
   try {
     const file = req.file as Express.Multer.File;
+    const user_id = req.user;
+    if (!user_id) return new Error("Falta id user");
     if (!file) return new Error("fatal image");
     req.body.price = Number(req.body.price);
     const data = req.body;
@@ -53,7 +55,7 @@ export const createProducts = async (req: Request, res: Response) => {
         }
       }
     }
-    const image_url = await uploadToCloudinary(file, req.body.user_id);
+    const image_url = await uploadToCloudinary(file, user_id);
     if (!image_url)
       return res
         .status(400)
@@ -62,7 +64,7 @@ export const createProducts = async (req: Request, res: Response) => {
     dataNewProduct["description"] = data.description;
     dataNewProduct["primary_image"] = image_url;
     dataNewProduct["price"] = data.price;
-    dataNewProduct["user_id"] = data.user_id;
+    dataNewProduct["user_id"] = user_id;
 
     const dollarBlue: { data: { venta: string } } = await axios.get(
       "https://dolarapi.com/v1/dolares/contadoconliqui"

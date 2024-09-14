@@ -5,8 +5,9 @@ import { getSecureUrl } from "../../../lib";
 const User = db.User;
 
 export const getAllVariations = async (req: Request, res: Response) => {
+  const user_id = req.user;
   try {
-    const user = await User.findByPk(req.body.user_id);
+    const user = await User.findByPk(user_id);
     if (!user)
       return res.status(400).json({ error: true, message: "No autorizado" });
     const variations = await user?.getVariations();
@@ -52,7 +53,7 @@ export const getAllVariations = async (req: Request, res: Response) => {
 
 export const getVariationForCategory = async (req: Request, res: Response) => {
   try {
-    const { user_id } = req.body;
+    const user_id = req.user;
     const { category, value } = req.query as {
       category: string | undefined;
       value: string | undefined;
@@ -98,7 +99,7 @@ export const getVariationForCategory = async (req: Request, res: Response) => {
 
 export const getVariationById = async (req: Request, res: Response) => {
   const variationId = req.params.id;
-  const userId = req.body.user_id;
+  const userId = req.user;
 
   try {
     const user = await User.findByPk(userId);

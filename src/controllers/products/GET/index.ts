@@ -7,8 +7,9 @@ const Product = db.Product;
 const Category = db.Category;
 
 export const getAllProducts = async (req: Request, res: Response) => {
+  const user_id = req.user;
   try {
-    const user = await User.findByPk(req.body.user_id || "");
+    const user = await User.findByPk(user_id || "");
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -64,8 +65,9 @@ export const getAllProducts = async (req: Request, res: Response) => {
 
 export const getImageProduct = async (req: Request, res: Response) => {
   try {
-    const { user_id } = req.body;
+    const user_id = req.user;
     const query = req.query;
+    if (!user_id) return res.status(400).json({ error: "Falta user_id" });
     if (!query.public_id)
       return res.status(400).json({ error: "Falta public_id" });
     if (typeof query.public_id !== "string")
@@ -86,8 +88,9 @@ export const getImageProduct = async (req: Request, res: Response) => {
 export const getProductById = async (req: Request, res: Response) => {
   const productId = req.params.id;
   const userId = req.body.user_id;
-  const { user_id } = req.body;
+  const user_id = req.user;
   try {
+    if (!user_id) return res.status(400).json({ error: "Falta user_id" });
     if (!productId)
       return res
         .status(400)
@@ -117,6 +120,7 @@ export const getProductById = async (req: Request, res: Response) => {
       values: [] as { id: string; label: string; images: string[] }[],
     };
     const variations = await product.getVariation();
+
     if (variations) {
       variationFormat.title = variations.title;
       variationFormat.variation_id = variations.variation_id;
@@ -169,7 +173,7 @@ export const getProductById = async (req: Request, res: Response) => {
 
 export const getProductForCategory = async (req: Request, res: Response) => {
   const { category_id, category_value } = req.query;
-  const { user_id } = req.body;
+  const user_id = req.user;
   try {
     const user = await User.findByPk(user_id || "");
     const products = user?.getProducts() ? await user.getProducts() : [];

@@ -9,7 +9,7 @@ const Variation = db.Variation;
 export const addImagesCollection = async (req: Request, res: Response) => {
   const { id: variationId } = req.params;
   const { collection_id } = req.query;
-  const { user_id } = req.body;
+  const user_id = req.user;
   const file = req.file as Express.Multer.File;
   try {
     if (!user_id)
@@ -124,7 +124,8 @@ export const removeImagesCollection = async (req: Request, res: Response) => {
 };
 
 export const insertNewCollection = async (req: Request, res: Response) => {
-  const { label, user_id } = req.body;
+  const user_id = req.user;
+  const { label } = req.body;
   const files = req.files as Express.Multer.File[];
   const { id: variationId } = req.params;
   try {

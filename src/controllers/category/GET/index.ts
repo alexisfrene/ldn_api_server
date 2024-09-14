@@ -5,7 +5,7 @@ import { getSecureUrl } from "../../../lib";
 const User = db.User;
 
 export const getAllCategories = async (req: Request, res: Response) => {
-  const { user_id } = req.body;
+  const user_id = req.user;
 
   if (!user_id) {
     return res.status(401).json({ error: "No authority" });
@@ -31,7 +31,10 @@ export const getAllCategories = async (req: Request, res: Response) => {
         const values = category.values.map(
           (value: { icon_url: string; value: string; id: string }) => {
             return {
-              icon_url: getSecureUrl(value.icon_url, user_id),
+              icon_url:
+                value.id === "default"
+                  ? "https://res.cloudinary.com/daxkizsj3/image/upload/v1714359418/default_image.webp"
+                  : getSecureUrl(value.icon_url, user_id),
               value: value.value,
               id: value.id,
             };
@@ -55,7 +58,7 @@ export const getAllCategories = async (req: Request, res: Response) => {
 };
 
 export const getByIdCategory = async (req: Request, res: Response) => {
-  const { user_id } = req.body;
+  const user_id = req.user;
   const { id } = req.params;
 
   if (!user_id) {
@@ -93,7 +96,7 @@ export const getByIdCategory = async (req: Request, res: Response) => {
 };
 
 export const getByIdCategoryValue = async (req: Request, res: Response) => {
-  const { user_id } = req.body;
+  const user_id = req.user;
   const { id } = req.params;
 
   if (!user_id) {
@@ -137,7 +140,7 @@ export const getByIdCategoryValue = async (req: Request, res: Response) => {
 };
 
 export const getByIdValueImageURL = async (req: Request, res: Response) => {
-  const { user_id } = req.body;
+  const user_id = req.user;
   const { id } = req.params;
 
   if (!user_id) {
@@ -175,7 +178,10 @@ export const getByIdValueImageURL = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "Value not found" });
     }
 
-    const url = getSecureUrl(selectedValue.icon_url, user_id);
+    const url =
+      selectedValue.id === "default"
+        ? "https://res.cloudinary.com/daxkizsj3/image/upload/v1714359418/default_image.webp"
+        : getSecureUrl(selectedValue.icon_url, user_id);
 
     return res.status(200).json(url);
   } catch (error) {

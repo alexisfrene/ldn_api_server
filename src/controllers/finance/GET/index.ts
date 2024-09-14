@@ -3,8 +3,8 @@ import db from "../../../lib/sequelize";
 
 const User = db.User;
 
-const getAllSell = async (req: Request, res: Response) => {
-  const { user_id } = req.body;
+export const getAllSell = async (req: Request, res: Response) => {
+  const user_id = req.user;
 
   if (!user_id) {
     return res.status(401).json({ message: "No authority", error: true });
@@ -27,4 +27,18 @@ const getAllSell = async (req: Request, res: Response) => {
   }
 };
 
-export { getAllSell };
+export const getFinancialAccounts = async (req: Request, res: Response) => {
+  const user_id = req.user;
+
+  try {
+    const user = await User.findByPk(user_id);
+    const financialAccounts = await user.getFinancial_accounts();
+
+    return res.status(200).json({ financialAccounts });
+  } catch (error) {
+    console.error("Error fetching sizes:", error);
+    return res
+      .status(500)
+      .json({ message: "Internal server error", error: true });
+  }
+};

@@ -23,7 +23,6 @@ export default (sequelize: Sequelize) => {
     declare label: string;
     declare value: number;
     declare type: "inflow_of_money" | "money outflow";
-    declare financial_id: Uuid;
     declare updatedAt: Date;
     declare createdAt: Date;
     declare user_id?: NonAttribute<Uuid>;
@@ -47,10 +46,6 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
-      },
-      financial_id: {
-        type: DataTypes.STRING,
-        allowNull: false,
       },
       label: {
         type: DataTypes.STRING,

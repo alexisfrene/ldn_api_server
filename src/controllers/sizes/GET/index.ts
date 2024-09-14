@@ -4,7 +4,7 @@ import db from "../../../lib/sequelize";
 const User = db.User;
 
 const getAllSizes = async (req: Request, res: Response) => {
-  const { user_id } = req.body;
+  const user_id = req.user;
 
   if (!user_id) {
     return res.status(401).json({ message: "No authority", error: true });

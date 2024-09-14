@@ -36,7 +36,7 @@ export const getFinancialAccounts = async (req: Request, res: Response) => {
     const user = await User.findByPk(user_id);
     const financialAccounts = await user.getFinancial_accounts();
 
-    return res.status(200).json({ financialAccounts });
+    return res.status(200).json(financialAccounts);
   } catch (error) {
     console.error("Error fetching sizes:", error);
     return res
@@ -52,7 +52,7 @@ export const getPaymentMethods = async (req: Request, res: Response) => {
     const user = await User.findByPk(user_id);
     const PaymentMethods = await user.getPayment_methods();
 
-    return res.status(200).json({ PaymentMethods });
+    return res.status(200).json(PaymentMethods);
   } catch (error) {
     console.error("Error fetching PaymentMethods:", error);
     return res

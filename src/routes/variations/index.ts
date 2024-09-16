@@ -10,9 +10,9 @@ import {
   getVariationForCategory,
   removeImagesCollection,
   insertNewCollection,
-} from "../controllers";
-import { authenticateToken } from "../middleware";
-import { upload } from "../lib/multer";
+} from "../../controllers";
+import { authenticateToken } from "../../middleware";
+import { upload } from "../../lib/multer";
 
 const router = express.Router();
 

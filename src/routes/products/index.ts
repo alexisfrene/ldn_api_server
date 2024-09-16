@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import { authenticateToken } from "../middleware";
+import { authenticateToken } from "../../middleware";
 import {
   getImageProduct,
   deleteProduct,
@@ -11,8 +11,8 @@ import {
   getProductById,
   linkVariation,
   getProductForCategory,
-} from "../controllers";
-import { upload } from "../lib/multer";
+} from "../../controllers";
+import { upload } from "../../lib/multer";
 
 const router = express.Router();
 

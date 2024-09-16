@@ -6,8 +6,8 @@ import {
   deleteSizeValue,
   getAllSizes,
   modifyTitleCollectionSize,
-} from "../controllers";
-import { authenticateToken } from "../middleware";
+} from "../../controllers";
+import { authenticateToken } from "../../middleware";
 
 const router = express.Router();
 

@@ -1,6 +1,6 @@
-export { router as variationsRoutes } from "./variations.routes";
-export { router as usersRoutes } from "./users.routes";
-export { router as productsRoutes } from "./products.routes";
-export { router as categoriesRoutes } from "./categories.routes";
-export { router as sizeRoutes } from "./sizes.routes";
-export { router as financeRoutes } from "./finance.routes";
+export { router as variationsRoutes } from "./variations";
+export { router as usersRoutes } from "./users";
+export { router as productsRoutes } from "./products";
+export { router as categoriesRoutes } from "./categories";
+export { router as sizeRoutes } from "./sizes";
+export { router as financeRoutes } from "./finance";

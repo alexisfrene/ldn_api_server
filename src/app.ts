@@ -8,6 +8,7 @@ import {
   sizeRoutes,
   financeRoutes,
 } from "./routes";
+import { errorHandler } from "./middleware";
 export const app = express();
 app.use(cors());
 app.use(express.json());
@@ -22,3 +23,4 @@ app.use(
   sizeRoutes,
   financeRoutes
 );
+app.use(errorHandler);

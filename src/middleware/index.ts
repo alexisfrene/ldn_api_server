@@ -1,6 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { Uuid } from "../types";
+interface CustomError extends Error {
+  status?: number;
+}
+type AsyncFunction = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => Promise<any>;
 
 export const authenticateToken = async (
   req: Request,
@@ -30,4 +38,56 @@ export const authenticateToken = async (
       return next();
     }
   );
+};
+
+export const asyncHandler =
+  (fn: AsyncFunction) => (req: Request, res: Response, next: NextFunction) => {
+    Promise.resolve(fn(req, res, next)).catch(next);
+  };
+
+export const errorHandler = (
+  err: CustomError,
+  _req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
+  console.error(err.stack);
+
+  const statusCode = err.status || 500;
+  res.status(statusCode).json({ message: "Error del servidor" });
+};
+
+export const validateCategoryQuery = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { type } = req.query;
+
+  if (!type) {
+    return res.status(400).json({ error: true, message: "Falta query 'type'" });
+  }
+
+  return next();
+};
+
+export const handleCategoryRequest = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { type } = req.query;
+
+  switch (type) {
+    case "collection":
+      return next();
+    case "value":
+      return next();
+    case "icon":
+      return next();
+    default:
+      return res
+        .status(400)
+        .json({ error: true, message: "Tipo de consulta inválida" });
+  }
 };

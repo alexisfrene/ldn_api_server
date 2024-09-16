@@ -87,7 +87,6 @@ export const getImageProduct = async (req: Request, res: Response) => {
 
 export const getProductById = async (req: Request, res: Response) => {
   const productId = req.params.id;
-  const userId = req.body.user_id;
   const user_id = req.user;
   try {
     if (!user_id) return res.status(400).json({ error: "Falta user_id" });
@@ -113,7 +112,7 @@ export const getProductById = async (req: Request, res: Response) => {
       : null;
 
     const detail = await product.getDetail();
-    const urlCloudinary = getSecureUrl(product.primary_image, userId);
+    const urlCloudinary = getSecureUrl(product.primary_image, user_id);
     let variationFormat = {
       variation_id: "",
       title: "",

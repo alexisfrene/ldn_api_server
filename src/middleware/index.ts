@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { Uuid } from "../types";
+import { upload } from "../lib/multer";
 interface CustomError extends Error {
   status?: number;
 }
@@ -90,4 +91,46 @@ export const handleCategoryRequest = (
         .status(400)
         .json({ error: true, message: "Tipo de consulta inválida" });
   }
+};
+
+export const conditionalUpload = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { type } = req.query;
+  if (type === "image") {
+    upload.single("file")(req, res, next);
+  } else {
+    next();
+  }
+};
+
+export const handleProductType = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { type } = req.query as { type: string };
+
+  if (!type) {
+    return res.status(400).json({ error: true, message: "Falta query 'type'" });
+  }
+
+  req.productType = type;
+  return next();
+};
+
+export const validateSizeQuery = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { type } = req.query as { type: string };
+  if (!type)
+    return res.status(400).json({ error: true, message: "Falta query 'type'" });
+
+  req.sizeType = type;
+
+  return next();
 };

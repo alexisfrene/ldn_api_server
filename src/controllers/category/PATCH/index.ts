@@ -76,7 +76,8 @@ export const modifyTitleCollectionCategory = async (
 ) => {
   try {
     const category_id = req.params.id;
-    const { user_id, title } = req.body;
+    const user_id = req.user;
+    const { title } = req.body;
     if (!user_id)
       return res
         .status(401)

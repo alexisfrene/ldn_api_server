@@ -59,6 +59,8 @@ declare global {
   namespace Express {
     interface Request {
       user?: Uuid;
+      productType?: string;
+      sizeType?: string;
     }
   }
 }

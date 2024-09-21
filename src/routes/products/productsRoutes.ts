@@ -1,9 +1,5 @@
-import express, { Request, Response } from "express";
-import {
-  asyncHandler,
-  conditionalUpload,
-  handleProductType,
-} from "../../middleware";
+import express from "express";
+import { conditionalUpload, handleProductType } from "../../middleware";
 import {
   deleteProduct,
   createProducts,
@@ -19,48 +15,45 @@ import {
 import { upload } from "../../lib";
 const router = express.Router();
 
-router.get(
-  "/",
-  asyncHandler(async (req, res) => {
-    const { category_value, category_id } = req.query;
-    if (category_id && category_value) {
-      return getProductForCategory(req, res);
-    }
-    return getAllProducts(req, res);
-  })
-);
+router.get("/", async (req, res, next) => {
+  const { category_value, category_id } = req.query;
+  if (category_id && category_value) {
+    return getProductForCategory(req, res, next);
+  }
+  return getAllProducts(req, res, next);
+});
 
-router.get("/:id", asyncHandler(getProductById));
+router.get("/:id", getProductById);
 
 router.post(
   "/",
 
   upload.single("file"),
-  asyncHandler(createProducts)
+  createProducts
 );
 
-router.delete("/:id", asyncHandler(deleteProduct));
+router.delete("/:id", deleteProduct);
 
 router.patch(
   "/:id",
   conditionalUpload,
   handleProductType,
-  asyncHandler(async (req: Request, res: Response) => {
+  async (req, res, next) => {
     const { productType } = req;
 
     switch (productType) {
       case "data":
-        return editProductData(req, res);
+        return editProductData(req, res, next);
       case "details":
-        return editProductDetails(req, res);
+        return editProductDetails(req, res, next);
       case "image":
-        return changeImageProduct(req, res);
+        return changeImageProduct(req, res, next);
       case "variation":
-        return linkVariation(req, res);
+        return linkVariation(req, res, next);
       default:
         return res.status(400).json({ error: "Tipo de operación no válido" });
     }
-  })
+  }
 );
 
 router.get("/image", getImageProduct);

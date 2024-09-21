@@ -7,51 +7,42 @@ import {
   getAllSizes,
   modifyTitleCollectionSize,
 } from "../../controllers";
-import { validateSizeQuery, asyncHandler } from "../../middleware";
+import { validateSizeQuery } from "../../middleware";
 
 const router = express.Router();
 
-router.get("/", asyncHandler(getAllSizes));
+router.get("/", getAllSizes);
 
-router.post("/", asyncHandler(createSize));
+router.post("/", createSize);
 
-router.patch(
-  "/:id",
-  validateSizeQuery,
-  asyncHandler(async (req, res) => {
-    const { sizeType } = req;
+router.patch("/:id", validateSizeQuery, async (req, res, next) => {
+  const { sizeType } = req;
 
-    switch (sizeType) {
-      case "add":
-        return addSizeValue(req, res);
-      case "title":
-        return modifyTitleCollectionSize(req, res);
-      default:
-        return res
-          .status(400)
-          .json({ error: true, message: "Query 'type' inválido" });
-    }
-  })
-);
+  switch (sizeType) {
+    case "add":
+      return addSizeValue(req, res, next);
+    case "title":
+      return modifyTitleCollectionSize(req, res, next);
+    default:
+      return res
+        .status(400)
+        .json({ error: true, message: "Query 'type' inválido" });
+  }
+});
 
-router.delete(
-  "/:id",
-  validateSizeQuery,
-  asyncHandler(async (req, res) => {
-    const { sizeType } = req;
-
-    switch (sizeType) {
-      case "collection":
-        return deleteSizeCollection(req, res);
-      case "value":
-        return deleteSizeValue(req, res);
-      default:
-        return res.status(400).json({
-          error: true,
-          message: "Tipo de eliminación no especificado o inválido",
-        });
-    }
-  })
-);
+router.delete("/:id", validateSizeQuery, async (req, res, next) => {
+  const { sizeType } = req;
+  switch (sizeType) {
+    case "collection":
+      return deleteSizeCollection(req, res, next);
+    case "value":
+      return deleteSizeValue(req, res, next);
+    default:
+      return res.status(400).json({
+        error: true,
+        message: "Tipo de eliminación no especificado o inválido",
+      });
+  }
+});
 
 export default router;

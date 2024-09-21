@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { uploadToCloudinary, db, deleteImageToCloudinary } from "../../../lib";
+import { asyncHandler } from "../../../middleware";
 
 const Variation = db.Variation;
 
-export const addImagesCollection = async (req: Request, res: Response) => {
-  const { id: variationId } = req.params;
-  const { collection_id } = req.query;
-  const user_id = req.user;
-  const file = req.file as Express.Multer.File;
-  try {
+export const addImagesCollection = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { id: variationId } = req.params;
+    const { collection_id } = req.query;
+    const user_id = req.user;
+    const file = req.file as Express.Multer.File;
     if (!user_id)
       return res.status(401).json({ error: true, message: "No autorizado" });
     if (!file)
@@ -54,20 +55,15 @@ export const addImagesCollection = async (req: Request, res: Response) => {
       error: false,
       message: "Todo Ok",
     });
-  } catch (error) {
-    console.error("Error in addImagesCollection:", error);
-    return res
-      .status(500)
-      .json({ error: true, message: "Error in change image collection" });
   }
-};
+);
 
-export const removeImagesCollection = async (req: Request, res: Response) => {
-  const { id: variationId } = req.params;
-  const { collection_id } = req.query;
-  const { user_id, public_id } = req.body;
+export const removeImagesCollection = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { id: variationId } = req.params;
+    const { collection_id } = req.query;
+    const { user_id, public_id } = req.body;
 
-  try {
     if (!user_id)
       return res.status(401).json({ error: true, message: "No autorizado" });
     if (!public_id)
@@ -113,20 +109,15 @@ export const removeImagesCollection = async (req: Request, res: Response) => {
       message: "Todo Ok",
       updateVariation,
     });
-  } catch (error) {
-    console.error("Error in addImagesCollection:", error);
-    return res
-      .status(500)
-      .json({ error: true, message: "Error in change image collection" });
   }
-};
+);
 
-export const insertNewCollection = async (req: Request, res: Response) => {
-  const user_id = req.user;
-  const { label } = req.body;
-  const files = req.files as Express.Multer.File[];
-  const { id: variationId } = req.params;
-  try {
+export const insertNewCollection = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user_id = req.user;
+    const { label } = req.body;
+    const files = req.files as Express.Multer.File[];
+    const { id: variationId } = req.params;
     const variation = await Variation.findByPk(variationId);
     if (!variation)
       return res
@@ -146,10 +137,5 @@ export const insertNewCollection = async (req: Request, res: Response) => {
     await variation.update({ values: [...variation.values, newCollection] });
 
     return res.status(200).json({ newCollection });
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ error: true, message: "Error al buscar los productos" });
   }
-};
+);

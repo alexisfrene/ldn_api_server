@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import { db, deleteImageToCloudinary } from "../../../lib";
+import { asyncHandler } from "../../../middleware";
 
 const Category = db.Category;
 const User = db.User;
 
-export const deleteCategoryCollection = async (req: Request, res: Response) => {
-  try {
+export const deleteCategoryCollection = asyncHandler(
+  async (req: Request, res: Response) => {
     const user_id = req.user;
     const category_id = req.params.id;
 
@@ -39,14 +40,11 @@ export const deleteCategoryCollection = async (req: Request, res: Response) => {
     const destroyCategory = await categorySelected.destroy();
 
     return res.status(200).json({ message: destroyCategory });
-  } catch (error) {
-    console.log("Error in deleteCategory ->", error);
-    return res.status(500).json({ error: true, message: error });
   }
-};
+);
 
-export const deleteCategoryValue = async (req: Request, res: Response) => {
-  try {
+export const deleteCategoryValue = asyncHandler(
+  async (req: Request, res: Response) => {
     const user_id = req.user;
     const category_id = req.params.id;
     const category_value = req.query.value_id;
@@ -89,8 +87,5 @@ export const deleteCategoryValue = async (req: Request, res: Response) => {
       values: newValues,
     });
     return res.status(200).json({ message: newValuesInCategory });
-  } catch (error) {
-    console.log("Error in deleteCategory ->", error);
-    return res.status(500).json({ error: true, message: error });
   }
-};
+);

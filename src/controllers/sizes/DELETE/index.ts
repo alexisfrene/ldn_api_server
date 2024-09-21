@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import { db } from "../../../lib";
+import { asyncHandler } from "../../../middleware";
 
 const Size = db.Size;
 const User = db.User;
 
-export const deleteSizeCollection = async (req: Request, res: Response) => {
-  try {
+export const deleteSizeCollection = asyncHandler(
+  async (req: Request, res: Response) => {
     const user_id = req.user;
     const size_id = req.params.id;
     if (!size_id)
@@ -33,14 +34,11 @@ export const deleteSizeCollection = async (req: Request, res: Response) => {
     const destroySize = await sizeSelected.destroy();
 
     return res.status(200).json({ message: destroySize });
-  } catch (error) {
-    console.log("Error in deleteSizeCollection ->", error);
-    return res.status(500).json({ error: true, message: error });
   }
-};
+);
 
-export const deleteSizeValue = async (req: Request, res: Response) => {
-  try {
+export const deleteSizeValue = asyncHandler(
+  async (req: Request, res: Response) => {
     const user_id = req.user;
     const size_id = req.params.id;
     const size_value = req.query.value_id;
@@ -79,8 +77,5 @@ export const deleteSizeValue = async (req: Request, res: Response) => {
       values: newValues,
     });
     return res.status(200).json({ message: newValuesInSize });
-  } catch (error) {
-    console.log("Error in deleteSizeValue ->", error);
-    return res.status(500).json({ error: true, message: error });
   }
-};
+);

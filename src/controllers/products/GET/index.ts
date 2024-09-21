@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import { getSecureUrl, db } from "../../../lib";
+import { asyncHandler } from "../../../middleware";
 
 const User = db.User;
 const Product = db.Product;
 const Category = db.Category;
 
-export const getAllProducts = async (req: Request, res: Response) => {
-  const user_id = req.user;
-  try {
+export const getAllProducts = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user_id = req.user;
     const user = await User.findByPk(user_id || "");
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -56,14 +57,11 @@ export const getAllProducts = async (req: Request, res: Response) => {
     }
 
     return res.status(400).json({ error: "No hay productos cargados" });
-  } catch (error) {
-    console.error("Error in getProducts:", error);
-    return res.status(500).json({ error: "Internal server error" });
   }
-};
+);
 
-export const getImageProduct = async (req: Request, res: Response) => {
-  try {
+export const getImageProduct = asyncHandler(
+  async (req: Request, res: Response) => {
     const user_id = req.user;
     const query = req.query;
     if (!user_id) return res.status(400).json({ error: "Falta user_id" });
@@ -78,16 +76,14 @@ export const getImageProduct = async (req: Request, res: Response) => {
     }
 
     return res.status(200).json(image_url);
-  } catch (error) {
-    console.error("Error in getImageProduct:", error);
-    return res.status(500).json({ error: "Internal server error" });
   }
-};
+);
 
-export const getProductById = async (req: Request, res: Response) => {
-  const productId = req.params.id;
-  const user_id = req.user;
-  try {
+export const getProductById = asyncHandler(
+  async (req: Request, res: Response) => {
+    const productId = req.params.id;
+    const user_id = req.user;
+
     if (!user_id) return res.status(400).json({ error: "Falta user_id" });
     if (!productId)
       return res
@@ -162,17 +158,14 @@ export const getProductById = async (req: Request, res: Response) => {
       discount,
       variation: variationFormat,
     });
-  } catch (error) {
-    return res
-      .status(400)
-      .json({ error: true, message: "Error al buscar el producto" });
   }
-};
+);
 
-export const getProductForCategory = async (req: Request, res: Response) => {
-  const { category_id, category_value } = req.query;
-  const user_id = req.user;
-  try {
+export const getProductForCategory = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { category_id, category_value } = req.query;
+    const user_id = req.user;
+
     const user = await User.findByPk(user_id || "");
     const products = user?.getProducts() ? await user.getProducts() : [];
     if (!products)
@@ -200,10 +193,5 @@ export const getProductForCategory = async (req: Request, res: Response) => {
         product.category_value === category_value
     );
     return res.status(200).json({ res: productsForCAtegory });
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ error: true, message: "Error al buscar los productos" });
   }
-};
+);

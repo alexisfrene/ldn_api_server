@@ -1,30 +1,24 @@
 import { Request, Response } from "express";
 import { db } from "../../../lib";
+import { asyncHandler } from "../../../middleware";
 
 const User = db.User;
 
-export const getAvatar = async (req: Request, res: Response) => {
+export const getAvatar = asyncHandler(async (req: Request, res: Response) => {
   const user_id = req.user;
-  try {
-    if (user_id) {
-      const avatar = await User.findByPk(user_id);
 
-      return res.status(200).json(avatar.avatar_url);
-    }
+  if (user_id) {
+    const avatar = await User.findByPk(user_id);
 
-    return res.status(401).json({ error: "Falta token" });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ error: "Error al pedir la url del avatar" });
+    return res.status(200).json(avatar.avatar_url);
   }
-};
 
-export const getPreferenceInProductView = async (
-  req: Request,
-  res: Response
-) => {
-  const user_id = req.user;
-  try {
+  return res.status(401).json({ error: "Falta token" });
+});
+
+export const getPreferenceInProductView = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user_id = req.user;
     if (user_id) {
       const user = await User.findByPk(user_id);
 
@@ -35,10 +29,5 @@ export const getPreferenceInProductView = async (
     }
 
     return res.status(401).json({ error: "Falta token" });
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(500)
-      .json({ error: "Error al pedir la url getPreferenceInProductView" });
   }
-};
+);

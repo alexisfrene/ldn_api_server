@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { db } from "../../../lib";
+import { asyncHandler } from "../../../middleware";
 
 const User = db.User;
 
-const getAllSizes = async (req: Request, res: Response) => {
+const getAllSizes = asyncHandler(async (req: Request, res: Response) => {
   const user_id = req.user;
 
   if (!user_id) {
@@ -18,6 +19,6 @@ const getAllSizes = async (req: Request, res: Response) => {
   const sizes = await user.getSizes({ order: [["size_id", "ASC"]] });
 
   return res.status(200).json(sizes);
-};
+});
 
 export { getAllSizes };

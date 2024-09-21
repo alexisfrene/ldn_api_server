@@ -1,15 +1,16 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../../../lib";
+import { asyncHandler } from "../../../middleware";
 
 const Size = db.Size;
 const User = db.User;
 
-export const addSizeValue = async (req: Request, res: Response) => {
-  const size_id = req.params.id;
-  const user_id = req.user;
-  const { value } = req.body;
-  try {
+export const addSizeValue = asyncHandler(
+  async (req: Request, res: Response) => {
+    const size_id = req.params.id;
+    const user_id = req.user;
+    const { value } = req.body;
     if (!user_id)
       return res
         .status(401)
@@ -46,17 +47,11 @@ export const addSizeValue = async (req: Request, res: Response) => {
     });
 
     return res.status(200).json(updateSize);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ error: true, message: "Error in addValue" });
   }
-};
+);
 
-export const modifyTitleCollectionSize = async (
-  req: Request,
-  res: Response
-) => {
-  try {
+export const modifyTitleCollectionSize = asyncHandler(
+  async (req: Request, res: Response) => {
     const size_id = req.params.id;
     const { user_id, title } = req.body;
     if (!user_id)
@@ -77,7 +72,5 @@ export const modifyTitleCollectionSize = async (
       title,
     });
     return res.status(200).json(updateSize);
-  } catch (error) {
-    return res.status(500).json({ error: true, message: error });
   }
-};
+);

@@ -43,7 +43,9 @@ export const getPaymentMethods = asyncHandler(
   }
 );
 
-export const getTotalMonth = async (_req: Request, _res: Response) => {
-  //const currentMonth = new Date().toLocaleDateString();
-  //  await getAllTheMoves(req, res);
-};
+export const getTotalMonth = asyncHandler(
+  async (_req: Request, _res: Response) => {
+    //const currentMonth = new Date().toLocaleDateString();
+    //  await getAllTheMoves(req, res);
+  }
+);

@@ -1,15 +1,17 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { uploadToCloudinary, db } from "../../../lib";
+import { asyncHandler } from "../../../middleware";
 
 const Category = db.Category;
 const User = db.User;
 
-export const addCategoryValue = async (req: Request, res: Response) => {
-  const category_id = req.params.id;
-  const user_id = req.user;
-  const { value } = req.body;
-  try {
+export const addCategoryValue = asyncHandler(
+  async (req: Request, res: Response) => {
+    const category_id = req.params.id;
+    const user_id = req.user;
+    const { value } = req.body;
+
     if (!user_id)
       return res
         .status(401)
@@ -63,17 +65,11 @@ export const addCategoryValue = async (req: Request, res: Response) => {
     return res
       .status(200)
       .json({ msj: "Hola", updateCategory, files: files[0] });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ error: true, message: "Error in addValue" });
   }
-};
+);
 
-export const modifyTitleCollectionCategory = async (
-  req: Request,
-  res: Response
-) => {
-  try {
+export const modifyTitleCollectionCategory = asyncHandler(
+  async (req: Request, res: Response) => {
     const category_id = req.params.id;
     const user_id = req.user;
     const { title } = req.body;
@@ -94,7 +90,5 @@ export const modifyTitleCollectionCategory = async (
       title,
     });
     return res.status(200).json(updateCategory);
-  } catch (error) {
-    return res.status(500).json({ error: true, message: error });
   }
-};
+);

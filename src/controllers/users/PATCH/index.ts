@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import db from "../../../lib/sequelize";
-import { getSecureUrl, uploadToCloudinary } from "../../../lib";
+import { getSecureUrl, uploadToCloudinary, db } from "../../../lib";
 
 const User = db.User;
 

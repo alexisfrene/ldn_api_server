@@ -11,7 +11,7 @@ import {
   getByIdValueImageURL,
   modifyTitleCollectionCategory,
 } from "../../controllers";
-import { upload } from "../../lib/multer";
+import { upload } from "../../lib";
 import { validateCategoryQuery, asyncHandler } from "../../middleware";
 
 const router = express.Router();

@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import axios from "axios";
-import db from "../../../lib/sequelize";
-import { uploadToCloudinary } from "../../../lib";
+import { uploadToCloudinary, db } from "../../../lib";
 
 const Product = db.Product;
 const Category = db.Category;

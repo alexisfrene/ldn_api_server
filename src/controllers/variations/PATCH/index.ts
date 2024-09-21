@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import db from "../../../lib/sequelize";
-import { uploadToCloudinary } from "../../../lib";
-import { deleteImageToCloudinary } from "../../../lib/cloudinary";
+import { uploadToCloudinary, db, deleteImageToCloudinary } from "../../../lib";
 
 const Variation = db.Variation;
 

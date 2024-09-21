@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import db from "../../../lib/sequelize";
-import { deleteImageToCloudinary } from "../../../lib/cloudinary";
+import { deleteImageToCloudinary, db } from "../../../lib";
 
 const Variation = db.Variation;
 

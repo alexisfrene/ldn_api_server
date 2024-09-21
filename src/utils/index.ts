@@ -3,6 +3,9 @@ import path from "node:path";
 import fs from "node:fs";
 import sharp from "sharp";
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 interface ImageDestinationOptions {
   categoryFolder?: string;

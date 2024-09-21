@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { Uuid } from "../types";
-import { upload } from "../lib/multer";
+import { upload } from "../lib";
 interface CustomError extends Error {
   status?: number;
 }

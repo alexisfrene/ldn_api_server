@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import db from "../../../lib/sequelize";
+import { db } from "../../../lib";
 
 const User = db.User;
 

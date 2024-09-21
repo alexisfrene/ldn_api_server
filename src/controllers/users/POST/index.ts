@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { hashPassword } from "../../../utils";
-import db from "../../../lib/sequelize";
+import { db } from "../../../lib";
 
 const User = db.User;
 const Category = db.Category;

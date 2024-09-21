@@ -11,7 +11,7 @@ import {
   removeImagesCollection,
   insertNewCollection,
 } from "../../controllers";
-import { upload } from "../../lib/multer";
+import { upload } from "../../lib";
 
 const router = express.Router();
 

@@ -8,7 +8,7 @@ import {
   userLogin,
 } from "../../controllers";
 import { changeAvatar } from "../../controllers/users/PATCH";
-import { upload } from "../../lib/multer";
+import { upload } from "../../lib";
 
 const router = express.Router();
 

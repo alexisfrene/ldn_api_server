@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import { cleanObject, isNumber } from "../../../utils";
-import db from "../../../lib/sequelize";
-import { uploadToCloudinary } from "../../../lib";
-import { deleteImageToCloudinary } from "../../../lib/cloudinary";
+import { uploadToCloudinary, db, deleteImageToCloudinary } from "../../../lib";
 
 const Product = db.Product;
 const Detail = db.Detail;

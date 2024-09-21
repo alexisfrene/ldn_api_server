@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import db from "../../../lib/sequelize";
-import { getSecureUrl } from "../../../lib";
+import { getSecureUrl, db } from "../../../lib";
 
 const User = db.User;
 const Product = db.Product;

@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import db from "../../../lib/sequelize";
-import { deleteImageToCloudinary } from "../../../lib/cloudinary";
+import { db, deleteImageToCloudinary } from "../../../lib";
 
 const Category = db.Category;
 const User = db.User;

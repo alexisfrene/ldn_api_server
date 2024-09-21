@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
 import axios from "axios";
-import db from "../../../lib/sequelize";
-import { uploadToCloudinary } from "../../../lib";
+import { uploadToCloudinary, db } from "../../../lib";
+import { asyncHandler } from "../../../middleware";
 
 const Product = db.Product;
 const Category = db.Category;
 const Size = db.Size;
 const Detail = db.Detail;
 
-export const createProducts = async (req: Request, res: Response) => {
-  try {
+export const createProducts = asyncHandler(
+  async (req: Request, res: Response) => {
     const file = req.file as Express.Multer.File;
     const user_id = req.user;
     if (!user_id) return new Error("Falta id user");
@@ -74,8 +74,5 @@ export const createProducts = async (req: Request, res: Response) => {
     const newProduct = await Product.create(dataNewProduct);
 
     return res.status(200).json(newProduct);
-  } catch (error) {
-    console.log(error);
-    return res.status(400).json({ msj: "err" });
   }
-};
+);

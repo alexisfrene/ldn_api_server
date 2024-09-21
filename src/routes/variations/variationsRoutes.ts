@@ -10,9 +10,8 @@ import {
   getVariationForCategory,
   removeImagesCollection,
   insertNewCollection,
-} from "../controllers";
-import { authenticateToken } from "../middleware";
-import { upload } from "../lib/multer";
+} from "../../controllers";
+import { upload } from "../../lib";
 
 const router = express.Router();
 
@@ -25,7 +24,7 @@ const conditionalUpload = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-router.get("/variations", authenticateToken, async (req, res) => {
+router.get("/", async (req, res) => {
   const { query } = req;
   if (query.category && query.value) {
     return getVariationForCategory(req, res);
@@ -33,11 +32,10 @@ router.get("/variations", authenticateToken, async (req, res) => {
     return getAllVariations(req, res);
   }
 });
-router.get("/variations/:id", authenticateToken, getVariationById);
+router.get("/:id", getVariationById);
 router.post(
-  "/variations/:id",
+  "/:id",
   upload.array("files", 10),
-  authenticateToken,
   async (req: Request, res: Response) => {
     const productId = req.query.product_id;
     const variationId = req.params.id;
@@ -50,39 +48,24 @@ router.post(
     }
   }
 );
-router.post(
-  "/variations",
-  upload.array("files", 10),
-  authenticateToken,
-  createVariation
-);
+router.post("/", upload.array("files", 10), createVariation);
 router.put(
-  "/variations/:id",
-  authenticateToken,
+  "/:id",
   upload.array("files", 10),
   async (req: Request, res: Response) => {
     return updateProduct(req, res);
   }
 );
-router.patch(
-  "/variations/:id",
-  conditionalUpload,
-  authenticateToken,
-  async (req: Request, res: Response) => {
-    const { edit } = req.query;
-    if (edit === "add_image") return addImagesCollection(req, res);
-    if (edit === "add_collection") return insertNewCollection(req, res);
-    if (edit === "remove_image") return removeImagesCollection(req, res);
-    return res.status(500).json({ msj: "nada que ver pa" });
-  }
-);
+router.patch("/:id", conditionalUpload, async (req: Request, res: Response) => {
+  const { edit } = req.query;
+  if (edit === "add_image") return addImagesCollection(req, res);
+  if (edit === "add_collection") return insertNewCollection(req, res);
+  if (edit === "remove_image") return removeImagesCollection(req, res);
+  return res.status(500).json({ msj: "nada que ver pa" });
+});
 
-router.delete(
-  "/variations/:id",
-  authenticateToken,
-  async (req: Request, res: Response) => {
-    return deleteVariationById(req, res);
-  }
-);
+router.delete("/:id", async (req: Request, res: Response) => {
+  return deleteVariationById(req, res);
+});
 
-export { router };
+export default router;

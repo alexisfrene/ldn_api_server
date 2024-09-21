@@ -1,44 +1,51 @@
 import { Request, Response } from "express";
-import db from "../../../lib/sequelize";
+import { db } from "../../../lib";
+import { asyncHandler } from "../../../middleware";
 
 const User = db.User;
 
-export const getAllSell = async (req: Request, res: Response) => {
-  const user_id = req.user;
+export const getAllTheMoves = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user_id = req.user;
 
-  if (!user_id) {
-    return res.status(401).json({ message: "No authority", error: true });
-  }
-
-  try {
+    if (!user_id) {
+      return res.status(401).json({ message: "No authority", error: true });
+    }
     const user = await User.findByPk(user_id);
     if (!user) {
       return res.status(404).json({ message: "User not found", error: true });
     }
+    const movements = await user.getMovements({
+      order: [["movements_id", "ASC"]],
+    });
 
-    const sizes = await user.getSizes({ order: [["size_id", "ASC"]] });
-
-    return res.status(200).json(sizes);
-  } catch (error) {
-    console.error("Error fetching sizes:", error);
-    return res
-      .status(500)
-      .json({ message: "Internal server error", error: true });
+    return res.status(200).json(movements);
   }
-};
+);
 
-export const getFinancialAccounts = async (req: Request, res: Response) => {
-  const user_id = req.user;
-
-  try {
+export const getFinancialAccounts = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user_id = req.user;
     const user = await User.findByPk(user_id);
     const financialAccounts = await user.getFinancial_accounts();
 
-    return res.status(200).json({ financialAccounts });
-  } catch (error) {
-    console.error("Error fetching sizes:", error);
-    return res
-      .status(500)
-      .json({ message: "Internal server error", error: true });
+    return res.status(200).json(financialAccounts);
   }
-};
+);
+
+export const getPaymentMethods = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user_id = req.user;
+    const user = await User.findByPk(user_id);
+    const PaymentMethods = await user.getPayment_methods();
+
+    return res.status(200).json(PaymentMethods);
+  }
+);
+
+export const getTotalMonth = asyncHandler(
+  async (_req: Request, _res: Response) => {
+    //const currentMonth = new Date().toLocaleDateString();
+    //  await getAllTheMoves(req, res);
+  }
+);

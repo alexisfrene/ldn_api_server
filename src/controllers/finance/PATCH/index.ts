@@ -1,13 +1,15 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import db from "../../../lib/sequelize";
+import { db } from "../../../lib";
+import { asyncHandler } from "../../../middleware";
 
 const FinancialAccounts = db.FinancialAccounts;
 
-export const addFinancialAccount = async (req: Request, res: Response) => {
-  const user_id = req.user;
-  const { financial_accounts_id, value } = req.body;
-  try {
+export const addFinancialAccount = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user_id = req.user;
+    const { financial_accounts_id, value } = req.body;
+
     if (!financial_accounts_id)
       res.status(400).json({
         message: "Error al agregar una cuenta financiera",
@@ -29,7 +31,5 @@ export const addFinancialAccount = async (req: Request, res: Response) => {
       ],
     });
     return res.status(200).json({ financial_accounts_id, value, user_id });
-  } catch (error) {
-    return res.status(501).json({ message: error });
   }
-};
+);

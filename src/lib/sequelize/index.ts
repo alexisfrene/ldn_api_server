@@ -62,9 +62,9 @@ Object.keys(db).forEach((modelName) => {
 //Variation.sync({ force: true });
 // Movements.sync({ force: true });
 //FinancialAccounts.sync({ force: true });
-// PaymentMethods.sync({});
-//User.sync({ alter: true });
+// PaymentMethods.sync({ force: true });
+// User.sync({ force: true });
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-export default db;
+export { db };

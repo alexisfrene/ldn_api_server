@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import db from "../../../lib/sequelize";
-import { uploadToCloudinary } from "../../../lib";
+import { uploadToCloudinary, db } from "../../../lib";
+import { asyncHandler } from "../../../middleware";
 
 const Category = db.Category;
 
-export const createCategories = async (req: Request, res: Response) => {
-  try {
+export const createCategories = asyncHandler(
+  async (req: Request, res: Response) => {
     const user_id = req.user;
     const { title, values } = req.body;
     const files = req.files as Express.Multer.File[];
@@ -35,7 +35,5 @@ export const createCategories = async (req: Request, res: Response) => {
     const category = await Category.create(newCategory);
 
     return res.status(200).json({ category });
-  } catch (error) {
-    return res.status(501).json({ message: error });
   }
-};
+);

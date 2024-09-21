@@ -53,6 +53,14 @@ export default (sequelize: Sequelize) => {
         as: "financial_accounts",
         foreignKey: "user_id",
       });
+      User.hasMany(models.PaymentMethods, {
+        as: "payment_methods",
+        foreignKey: "user_id",
+      });
+      User.hasMany(models.Movements, {
+        as: "movements",
+        foreignKey: "user_id",
+      });
     }
   }
   User.init(

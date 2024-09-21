@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import db from "../../../lib/sequelize";
-import { deleteImageToCloudinary } from "../../../lib/cloudinary";
+import { deleteImageToCloudinary, db } from "../../../lib";
+import { asyncHandler } from "../../../middleware";
 
 const Variation = db.Variation;
 
-export const deleteVariationById = async (req: Request, res: Response) => {
-  const variationId = req.params.id;
-  const user_id = req.user;
-  try {
+export const deleteVariationById = asyncHandler(
+  async (req: Request, res: Response) => {
+    const variationId = req.params.id;
+    const user_id = req.user;
     const variation = await Variation.findByPk(variationId);
     if (!user_id)
       return res.status(500).json({ message: "No autorizado", error: true });
@@ -28,10 +28,5 @@ export const deleteVariationById = async (req: Request, res: Response) => {
     return res
       .status(200)
       .json({ message: "variación eliminado correctamente" });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Error al eliminar el producto",
-      error: error,
-    });
   }
-};
+);

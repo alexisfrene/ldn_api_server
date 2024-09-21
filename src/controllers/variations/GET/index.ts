@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import db from "../../../lib/sequelize";
-import { getSecureUrl } from "../../../lib";
+import { getSecureUrl, db } from "../../../lib";
+import { asyncHandler } from "../../../middleware";
 
 const User = db.User;
 
-export const getAllVariations = async (req: Request, res: Response) => {
-  const user_id = req.user;
-  try {
+export const getAllVariations = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user_id = req.user;
     const user = await User.findByPk(user_id);
     if (!user)
       return res.status(400).json({ error: true, message: "No autorizado" });
@@ -44,15 +44,11 @@ export const getAllVariations = async (req: Request, res: Response) => {
     );
 
     return res.status(200).json(variationsMapper);
-  } catch (error) {
-    console.error("Error al obtener la lista de productos:", error);
-
-    return res.status(500).json({ error: true, message: error });
   }
-};
+);
 
-export const getVariationForCategory = async (req: Request, res: Response) => {
-  try {
+export const getVariationForCategory = asyncHandler(
+  async (req: Request, res: Response) => {
     const user_id = req.user;
     const { category, value } = req.query as {
       category: string | undefined;
@@ -63,9 +59,10 @@ export const getVariationForCategory = async (req: Request, res: Response) => {
     if (!user)
       return res.status(400).json({ error: true, message: "No autorizado" });
     if (!category || !value)
-      return res
-        .status(400)
-        .json({ error: true, message: "No se paso los parámetros esperados" });
+      return res.status(400).json({
+        error: true,
+        message: "No se paso los parámetros esperados",
+      });
     const categories = await user?.getCategories();
     const categoryForCategory = categories.filter(
       (item: { category_id: string; values: any[] }) =>
@@ -89,19 +86,13 @@ export const getVariationForCategory = async (req: Request, res: Response) => {
         .json({ error: true, message: "No se encontraron variaciones" });
 
     return res.status(200).json({ variations, hola: "hola" });
-  } catch (error) {
-    console.error("Error al obtener la lista de productos:", error);
-    return res
-      .status(500)
-      .json({ error: "No se pudo obtener la lista de productos" });
   }
-};
+);
 
-export const getVariationById = async (req: Request, res: Response) => {
-  const variationId = req.params.id;
-  const userId = req.user;
-
-  try {
+export const getVariationById = asyncHandler(
+  async (req: Request, res: Response) => {
+    const variationId = req.params.id;
+    const userId = req.user;
     const user = await User.findByPk(userId);
     if (!user)
       return res
@@ -143,9 +134,5 @@ export const getVariationById = async (req: Request, res: Response) => {
       variation_id: variationSelected[0].variation_id,
       values,
     });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Error al buscar el producto", error: error });
   }
-};
+);

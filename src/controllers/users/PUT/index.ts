@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
-import db from "../../../lib/sequelize";
+import { db } from "../../../lib";
+import { asyncHandler } from "../../../middleware";
 
 const User = db.User;
 
-export const preferenceInProductView = async (req: Request, res: Response) => {
-  const user_id = req.user;
-  const { preferenceInProductView } = req.query;
-  try {
+export const preferenceInProductView = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user_id = req.user;
+    const { preferenceInProductView } = req.query;
     const user = await User.findByPk(user_id);
 
     await user.update({
@@ -16,10 +17,5 @@ export const preferenceInProductView = async (req: Request, res: Response) => {
       },
     });
     return res.status(200).json({ error: false, message: "Todo ok " });
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ error: true, message: "Error al buscar los productos" });
   }
-};
+);

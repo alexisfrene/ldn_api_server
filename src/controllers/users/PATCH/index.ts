@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import db from "../../../lib/sequelize";
-import { getSecureUrl, uploadToCloudinary } from "../../../lib";
+import { getSecureUrl, uploadToCloudinary, db } from "../../../lib";
+import { asyncHandler } from "../../../middleware";
 
 const User = db.User;
 
-export const changeAvatar = async (req: Request, res: Response) => {
-  const user_id = req.user;
-  const file = req.file;
-  try {
+export const changeAvatar = asyncHandler(
+  async (req: Request, res: Response) => {
+    const user_id = req.user;
+    const file = req.file;
     if (!user_id) return res.status(400).json({ error: "Falta user_id" });
     const user = await User.findByPk(user_id);
     if (!file)
@@ -27,46 +27,27 @@ export const changeAvatar = async (req: Request, res: Response) => {
     const url = getSecureUrl(`avatar/${public_id}`, user_id);
     await user.update({ avatar_url: url });
     return res.status(200).json({ error: false, message: "Todo oK", url });
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ error: true, message: "Error al cambiar avatar" });
   }
-};
+);
 
-export const changePassword = async (req: Request, res: Response) => {
-  const { category_id, category_value } = req.body;
-  try {
-    return res.status(200).json({ category_id, category_value });
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ error: true, message: "Error al buscar los productos" });
-  }
-};
+export const changePassword = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { category_id, category_value } = req.body;
 
-export const recoveryPassword = async (req: Request, res: Response) => {
-  const { category_id, category_value } = req.body;
-  try {
     return res.status(200).json({ category_id, category_value });
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ error: true, message: "Error al buscar los productos" });
   }
-};
+);
 
-export const changeName = async (req: Request, res: Response) => {
-  const { category_id, category_value } = req.body;
-  try {
+export const recoveryPassword = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { category_id, category_value } = req.body;
+
     return res.status(200).json({ category_id, category_value });
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ error: true, message: "Error al buscar los productos" });
   }
-};
+);
+
+export const changeName = asyncHandler(async (req: Request, res: Response) => {
+  const { category_id, category_value } = req.body;
+
+  return res.status(200).json({ category_id, category_value });
+});

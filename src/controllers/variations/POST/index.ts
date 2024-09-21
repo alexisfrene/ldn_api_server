@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import db from "../../../lib/sequelize";
-import { uploadToCloudinary } from "../../../lib";
+import { uploadToCloudinary, db } from "../../../lib";
+import { asyncHandler } from "../../../middleware";
 
 const User = db.User;
 const Variation = db.Variation;
 const Category = db.Category;
 const Product = db.Product;
 
-export const createVariation = async (req: Request, res: Response) => {
-  try {
+export const createVariation = asyncHandler(
+  async (req: Request, res: Response) => {
     const user_id = req.user;
     const { title, label, category_id, category_value } = req.body;
     const files = req.files as Express.Multer.File[];
@@ -47,14 +47,11 @@ export const createVariation = async (req: Request, res: Response) => {
     const variation = await Variation.create(newVariation);
 
     return res.status(200).json({ variation });
-  } catch (error) {
-    console.log("Error en crear un producto:", error);
-    return res.status(500).json({ error: true, message: error });
   }
-};
+);
 
-export const insertVariants = async (req: Request, res: Response) => {
-  try {
+export const insertVariants = asyncHandler(
+  async (req: Request, res: Response) => {
     const productId = req.query.product_id;
     const variationId = req.params.id;
     const variation = await Variation.findByPk(variationId);
@@ -68,9 +65,7 @@ export const insertVariants = async (req: Request, res: Response) => {
         .status(400)
         .json({ error: true, message: "User no autorizado" });
     await product.update({ variation_id: variationId });
+
     return res.status(200).json({ error: false, message: "Todo child" });
-  } catch (error) {
-    console.log("Error en insertar ID de imágenes de variantes:", error);
-    return res.status(500).send({ error: "Internal Server Error" });
   }
-};
+);

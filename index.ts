@@ -1,6 +1,6 @@
 import { app } from "./src/app";
 import dotenv from "dotenv";
-import db from "./src/lib/sequelize";
+import { db } from "./src/lib";
 
 dotenv.config();
 

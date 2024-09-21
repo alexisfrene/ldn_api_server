@@ -4,6 +4,6 @@ import sizeRoutes from "./sizesRoutes";
 
 const router = express.Router();
 
-router.use("/sizes", authenticateToken, sizeRoutes);
+router.use("/size", authenticateToken, sizeRoutes);
 
 export { router };

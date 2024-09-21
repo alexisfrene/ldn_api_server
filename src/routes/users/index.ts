@@ -4,6 +4,6 @@ import usersRoutes from "./usersRoutes";
 
 const router = express.Router();
 
-router.get("/user", authenticateToken, usersRoutes);
+router.use("/user", authenticateToken, usersRoutes);
 
 export { router };

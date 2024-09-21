@@ -9,7 +9,7 @@ import {
   financeRoutes,
 } from "./routes";
 import { errorHandler } from "./middleware";
-export const app = express();
+const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -24,3 +24,5 @@ app.use(
   financeRoutes
 );
 app.use(errorHandler);
+
+export { app };

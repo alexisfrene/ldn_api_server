@@ -3,13 +3,12 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { hashPassword } from "../../../utils";
 import { db } from "../../../lib";
-import { asyncHandler } from "../../../middleware";
 
 const User = db.User;
 const Category = db.Category;
 const Size = db.Size;
 
-export const createUser = asyncHandler(async (req: Request, res: Response) => {
+export const createUser = async (req: Request, res: Response) => {
   const {
     first_name,
     last_name,
@@ -88,9 +87,9 @@ export const createUser = asyncHandler(async (req: Request, res: Response) => {
   });
 
   return res.status(201).send({ message: "User create" });
-});
+};
 
-export const userLogin = asyncHandler(async (req: Request, res: Response) => {
+export const userLogin = async (req: Request, res: Response) => {
   const { email_or_user, password } = req.body;
   let emailOrUser: "email" | "username" | "" = "";
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -139,4 +138,4 @@ export const userLogin = asyncHandler(async (req: Request, res: Response) => {
   } else {
     return res.status(400).json({ message: "invalid user or email" });
   }
-});
+};

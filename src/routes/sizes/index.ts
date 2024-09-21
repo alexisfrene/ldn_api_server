@@ -1,9 +1,13 @@
 import express from "express";
-import { authenticateToken } from "../../middleware";
+import { asyncHandler, authenticateToken } from "../../middleware";
 import sizeRoutes from "./sizesRoutes";
 
 const router = express.Router();
 
-router.use("/size", authenticateToken, sizeRoutes);
+router.use(
+  "/size",
+  authenticateToken,
+  asyncHandler(async (req, res, next) => sizeRoutes(req, res, next))
+);
 
 export { router };

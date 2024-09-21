@@ -1,9 +1,13 @@
 import express from "express";
 import categoriesRoutes from "./categoriesRoutes";
-import { authenticateToken } from "../../middleware";
+import { asyncHandler, authenticateToken } from "../../middleware";
 
 const router = express.Router();
 
-router.use("/categories", authenticateToken, categoriesRoutes);
+router.use(
+  "/categories",
+  authenticateToken,
+  asyncHandler(async (req, res, next) => categoriesRoutes(req, res, next))
+);
 
 export { router };

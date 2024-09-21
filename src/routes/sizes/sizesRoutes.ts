@@ -15,14 +15,14 @@ router.get("/", getAllSizes);
 
 router.post("/", createSize);
 
-router.patch("/:id", validateSizeQuery, async (req, res, next) => {
+router.patch("/:id", validateSizeQuery, async (req, res) => {
   const { sizeType } = req;
 
   switch (sizeType) {
     case "add":
-      return addSizeValue(req, res, next);
+      return addSizeValue(req, res);
     case "title":
-      return modifyTitleCollectionSize(req, res, next);
+      return modifyTitleCollectionSize(req, res);
     default:
       return res
         .status(400)
@@ -30,13 +30,13 @@ router.patch("/:id", validateSizeQuery, async (req, res, next) => {
   }
 });
 
-router.delete("/:id", validateSizeQuery, async (req, res, next) => {
+router.delete("/:id", validateSizeQuery, async (req, res) => {
   const { sizeType } = req;
   switch (sizeType) {
     case "collection":
-      return deleteSizeCollection(req, res, next);
+      return deleteSizeCollection(req, res);
     case "value":
-      return deleteSizeValue(req, res, next);
+      return deleteSizeValue(req, res);
     default:
       return res.status(400).json({
         error: true,

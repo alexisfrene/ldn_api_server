@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
 import { db } from "../../../lib";
-import { asyncHandler } from "../../../middleware";
 
 const User = db.User;
 
-export const getAvatar = asyncHandler(async (req: Request, res: Response) => {
+export const getAvatar = async (req: Request, res: Response) => {
   const user_id = req.user;
 
   if (user_id) {
@@ -14,20 +13,21 @@ export const getAvatar = asyncHandler(async (req: Request, res: Response) => {
   }
 
   return res.status(401).json({ error: "Falta token" });
-});
+};
 
-export const getPreferenceInProductView = asyncHandler(
-  async (req: Request, res: Response) => {
-    const user_id = req.user;
-    if (user_id) {
-      const user = await User.findByPk(user_id);
+export const getPreferenceInProductView = async (
+  req: Request,
+  res: Response
+) => {
+  const user_id = req.user;
+  if (user_id) {
+    const user = await User.findByPk(user_id);
 
-      return res.status(200).json({
-        preference_in_product_view:
-          user.config.preference_in_product_view || false,
-      });
-    }
-
-    return res.status(401).json({ error: "Falta token" });
+    return res.status(200).json({
+      preference_in_product_view:
+        user.config.preference_in_product_view || false,
+    });
   }
-);
+
+  return res.status(401).json({ error: "Falta token" });
+};

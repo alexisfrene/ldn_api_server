@@ -24,38 +24,38 @@ const conditionalUpload = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-router.get("/", async (req, res, next) => {
+router.get("/", async (req, res) => {
   const { query } = req;
   if (query.category && query.value) {
-    return getVariationForCategory(req, res, next);
+    return getVariationForCategory(req, res);
   } else {
-    return getAllVariations(req, res, next);
+    return getAllVariations(req, res);
   }
 });
 router.get("/:id", getVariationById);
-router.post("/:id", upload.array("files", 10), async (req, res, next) => {
+router.post("/:id", upload.array("files", 10), async (req, res) => {
   const productId = req.query.product_id;
   const variationId = req.params.id;
   if (productId && variationId) {
-    return insertVariants(req, res, next);
+    return insertVariants(req, res);
   } else {
     return res.status(400).json({ error: true, message: "Faltan parámetros" });
   }
 });
 router.post("/", upload.array("files", 10), createVariation);
-router.put("/:id", upload.array("files", 10), async (req, res, next) => {
-  return updateProduct(req, res, next);
+router.put("/:id", upload.array("files", 10), async (req, res) => {
+  return updateProduct(req, res);
 });
-router.patch("/:id", conditionalUpload, async (req, res, next) => {
+router.patch("/:id", conditionalUpload, async (req, res) => {
   const { edit } = req.query;
-  if (edit === "add_image") return addImagesCollection(req, res, next);
-  if (edit === "add_collection") return insertNewCollection(req, res, next);
-  if (edit === "remove_image") return removeImagesCollection(req, res, next);
+  if (edit === "add_image") return addImagesCollection(req, res);
+  if (edit === "add_collection") return insertNewCollection(req, res);
+  if (edit === "remove_image") return removeImagesCollection(req, res);
   return res.status(500).json({ msj: "nada que ver pa" });
 });
 
-router.delete("/:id", async (req, res, next) => {
-  return deleteVariationById(req, res, next);
+router.delete("/:id", async (req, res) => {
+  return deleteVariationById(req, res);
 });
 
 export default router;

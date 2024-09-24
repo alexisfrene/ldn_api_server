@@ -18,7 +18,7 @@ import { errorHandler } from "./middleware";
 const app = express();
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
+  windowMs: 10 * 60 * 1000,
   limit: 150,
   standardHeaders: "draft-7",
   legacyHeaders: false,
@@ -30,7 +30,7 @@ const accessLogStream = fs.createWriteStream(
 
 app.use(limiter);
 app.use(helmet());
-app.use(morgan("combined", { stream: accessLogStream }));
+app.use(morgan("dev", { stream: accessLogStream }));
 app.use(
   morgan((tokens, req, res) => {
     return [

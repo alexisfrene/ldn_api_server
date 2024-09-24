@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { db } from "../../../lib";
 
 const User = db.User;
+const paymentMethod = db.PaymentMethods;
+const FinancialAccounts = db.FinancialAccounts;
 
 export const getAllTheMoves = async (req: Request, res: Response) => {
   const user_id = req.user;
@@ -16,8 +18,35 @@ export const getAllTheMoves = async (req: Request, res: Response) => {
   const movements = await user.getMovements({
     order: [["movements_id", "ASC"]],
   });
+  const mappedMovements = await Promise.all(
+    movements.map(
+      async (movement: {
+        getFinancial_accounts: () => any;
+        label: string;
+        value: string;
+        type: string;
+        payment_method_id: string;
+        financial_accounts_id: string;
+      }) => {
+        const [paymentMethodRecord, financialAccountRecord] = await Promise.all(
+          [
+            paymentMethod.findByPk(movement.payment_method_id),
+            FinancialAccounts.findByPk(movement.financial_accounts_id),
+          ]
+        );
 
-  return res.status(200).json(movements);
+        return {
+          label: movement.label,
+          value: movement.value,
+          type: movement.type,
+          payment_method: paymentMethodRecord?.name,
+          account: financialAccountRecord?.name,
+        };
+      }
+    )
+  );
+
+  return res.status(200).json(mappedMovements);
 };
 
 export const getFinancialAccounts = async (req: Request, res: Response) => {

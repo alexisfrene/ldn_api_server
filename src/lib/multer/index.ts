@@ -2,7 +2,7 @@ import path from "node:path";
 import multer from "multer";
 
 export const upload = multer({
-  limits: { fileSize: 10 * 1024 * 1024, files: 10 },
+  limits: { fileSize: 15 * 1024 * 1024, files: 10 },
   fileFilter: (__, file, cb) => {
     if (file.mimetype.startsWith("image/")) {
       cb(null, true);

@@ -25,6 +25,7 @@ export const getAllTheMoves = async (req: Request, res: Response) => {
         label: string;
         value: string;
         type: string;
+        movements_id: string;
         payment_method_id: string;
         financial_accounts_id: string;
       }) => {
@@ -41,6 +42,7 @@ export const getAllTheMoves = async (req: Request, res: Response) => {
           type: movement.type,
           payment_method: paymentMethodRecord?.name,
           account: financialAccountRecord?.name,
+          id: movement.movements_id,
         };
       }
     )

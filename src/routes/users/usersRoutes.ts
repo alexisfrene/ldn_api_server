@@ -1,10 +1,8 @@
 import express from "express";
 import {
-  createUser,
   getAvatar,
   getPreferenceInProductView,
   preferenceInProductView,
-  userLogin,
 } from "../../controllers";
 import { changeAvatar } from "../../controllers/users/PATCH";
 import { upload } from "../../lib";
@@ -19,8 +17,6 @@ router.patch(
 
   changeAvatar
 );
-router.post("/", createUser);
-router.post("/login", userLogin);
 router.put("/preference", preferenceInProductView);
 
 export default router;

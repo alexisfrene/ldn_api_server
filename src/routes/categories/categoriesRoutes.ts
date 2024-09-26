@@ -32,8 +32,11 @@ router.get(
     return res.status(400).json({ errors: result.array() });
   }
 );
+
 router.get("/", getAllCategories);
+
 router.post("/", upload.array("files"), createCategories);
+
 router.patch("/:id", upload.array("files"), async (req, res) => {
   const { type } = req.query;
   if (type === "add") return addCategoryValue(req, res);
@@ -43,6 +46,7 @@ router.patch("/:id", upload.array("files"), async (req, res) => {
     .status(400)
     .json({ error: true, message: "Tipo de consulta inválido" });
 });
+
 router.delete("/:id", validateCategoryQuery, async (req, res) => {
   const { type } = req.query;
   if (type === "collection") return deleteCategoryCollection(req, res);

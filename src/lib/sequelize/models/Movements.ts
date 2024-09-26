@@ -20,6 +20,7 @@ export default (sequelize: Sequelize) => {
     >
   > {
     declare movements_id: Uuid;
+    declare entry_date: Date;
     declare label: string;
     declare value: number;
     declare type: "inflow_of_money" | "money_outflow";
@@ -47,6 +48,7 @@ export default (sequelize: Sequelize) => {
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
       },
+      entry_date: DataTypes.DATE,
       label: {
         type: DataTypes.STRING,
         allowNull: false,

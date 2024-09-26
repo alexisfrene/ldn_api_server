@@ -9,8 +9,14 @@ const Movement = db.Movements;
 
 export const createMovement = async (req: Request, res: Response) => {
   const user_id = req.user;
-  const { label, value, type, payment_method_id, financial_accounts_id } =
-    req.body;
+  const {
+    label,
+    value,
+    type,
+    payment_method_id,
+    financial_accounts_id,
+    entry_date,
+  } = req.body;
 
   const newMovement = await Movement.create({
     label,
@@ -19,6 +25,7 @@ export const createMovement = async (req: Request, res: Response) => {
     payment_method_id,
     financial_accounts_id,
     user_id,
+    entry_date,
   });
   return res.status(200).json({ newMovement });
 };
@@ -27,7 +34,11 @@ export const createFinancialAccounts = async (req: Request, res: Response) => {
   const user_id = req.user;
   const { name, type } = req.body;
 
-  if (type === "inflow_of_money" || type === "money_outflow") {
+  if (
+    type === "inflow_of_money" ||
+    type === "money_outflow" ||
+    type === "debt"
+  ) {
     const newFinancialAccounts = await FinancialAccounts.create({
       name,
       type,

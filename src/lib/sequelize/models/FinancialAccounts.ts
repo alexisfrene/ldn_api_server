@@ -24,7 +24,7 @@ export default (sequelize: Sequelize) => {
   > {
     declare financial_accounts_id: Uuid;
     declare name: string;
-    declare type: "inflow_of_money" | "money_outflow";
+    declare type: "inflow_of_money" | "money_outflow" | "debt";
     declare values: FinancialItem[];
     declare user_id?: NonAttribute<Uuid>;
   }

@@ -7,7 +7,7 @@ import {
   NonAttribute,
   Sequelize,
 } from "sequelize";
-import { Uuid } from "../../../types";
+import { Uuid } from "../types";
 
 type SizeItem = {
   id: Uuid;

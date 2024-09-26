@@ -1,13 +1,13 @@
 import { Sequelize } from "sequelize";
-import userModel from "./models/Users";
-import sizeModel from "./models/Sizes";
-import productModel from "./models/Products";
-import categoryModel from "./models/Categories";
-import detailModel from "./models/Details";
-import variationModel from "./models/Variations";
-import movementsModel from "./models/Movements";
-import paymentMethodsModel from "./models/PaymentMethods";
-import financialAccountsModel from "./models/FinancialAccounts";
+import userModel from "../../models/Users";
+import sizeModel from "../../models/Sizes";
+import productModel from "../../models/Products";
+import categoryModel from "../../models/Categories";
+import detailModel from "../../models/Details";
+import variationModel from "../../models/Variations";
+import movementsModel from "../../models/Movements";
+import paymentMethodsModel from "../../models/PaymentMethods";
+import financialAccountsModel from "../../models/FinancialAccounts";
 import { config as connectionPSQL } from "./config";
 
 const env = "development";

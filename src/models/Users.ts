@@ -7,7 +7,7 @@ import {
   NonAttribute,
   DataTypes,
 } from "sequelize";
-import { Uuid } from "../../../types";
+import { Uuid } from "../types";
 
 export default (sequelize: Sequelize) => {
   class User extends Model<

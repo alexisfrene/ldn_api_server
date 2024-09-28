@@ -33,7 +33,7 @@ export default (sequelize: Sequelize) => {
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
       },
-      title: { type: DataTypes.STRING, defaultValue: "" },
+      title: { type: DataTypes.STRING(50), defaultValue: "" },
       values: {
         type: DataTypes.ARRAY(DataTypes.JSONB),
         defaultValue: [],

@@ -4,5 +4,5 @@ export * from "./conditionalUpload";
 export * from "./errorHandler";
 export * from "./handleCategoryRequest";
 export * from "./handleProductType";
-export * from "./validateCategoryQuery";
 export * from "./validateSizeQuery";
+export * from "./validate";

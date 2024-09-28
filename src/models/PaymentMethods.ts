@@ -6,7 +6,7 @@ import {
   NonAttribute,
   Sequelize,
 } from "sequelize";
-import { Uuid } from "../../../types";
+import { Uuid } from "../types";
 
 export default (sequelize: Sequelize) => {
   class PaymentMethods extends Model<

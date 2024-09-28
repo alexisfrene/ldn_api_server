@@ -1,0 +1,76 @@
+import { Request, Response } from "express";
+import { getSecureUrl, db } from "../../../lib";
+
+const Product = db.Product;
+
+export const getProductById = async (req: Request, res: Response) => {
+  const productId = req.params.id;
+  const user_id = req.user;
+
+  if (!user_id) return res.status(400).json({ error: "Falta user_id" });
+  if (!productId)
+    return res
+      .status(400)
+      .json({ error: true, message: "No se paso un id de producto" });
+  const product = await Product.findByPk(productId);
+  if (!product)
+    return res
+      .status(400)
+      .json({ error: true, message: "No se encontró producto" });
+
+  const category = await product.getCategory();
+  const categoryValue = category
+    ? category.values.find(
+        (e: { id: string }) => e.id === product.category_value
+      )
+    : null;
+  const size = await product.getSize();
+  const sizeValue = size
+    ? size.values.find((e: { id: string }) => e.id === product.size_value)
+    : null;
+
+  const detail = await product.getDetail();
+  const urlCloudinary = getSecureUrl(product.primary_image, user_id);
+  let variationFormat = {
+    variation_id: "",
+    title: "",
+    values: [] as { id: string; label: string; images: string[] }[],
+  };
+  const variations = await product.getVariation();
+
+  if (variations) {
+    variationFormat.title = variations.title;
+    variationFormat.variation_id = variations.variation_id;
+    variations.values.forEach(
+      (value: { id: string; label: string; images: string[] }) => {
+        variationFormat.values.push({
+          id: value.id,
+          label: value.label,
+          images: value.images.map(
+            (image: string) =>
+              getSecureUrl(`variations/${image}`, user_id) || ""
+          ),
+        });
+      }
+    );
+  }
+
+  const { name, product_id, description, price, state, code, stock, discount } =
+    product;
+
+  return res.status(200).json({
+    category: categoryValue?.value || null,
+    detail,
+    size: sizeValue?.value || null,
+    name,
+    product_id,
+    description,
+    primary_image: urlCloudinary || "",
+    price,
+    state,
+    code,
+    stock,
+    discount,
+    variation: variationFormat,
+  });
+};

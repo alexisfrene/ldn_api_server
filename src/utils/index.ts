@@ -1,7 +1,10 @@
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import fs from "node:fs";
+import path from "node:path";
 
 dotenv.config();
+const tempDir = path.join(process.cwd(), "temp");
 
 const saltRoundsString = process.env.SALT_ROUNDS;
 if (!saltRoundsString) {
@@ -73,4 +76,31 @@ export const formatDate = () => {
   const offsetMinutes: string = pad(Math.abs(timezoneOffset) % 60);
 
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}${sign}${offsetHours}${offsetMinutes}`;
+};
+
+export const deleteFilesInTemp = () => {
+  fs.readdir(tempDir, (err, files) => {
+    if (err) {
+      console.error(`Error leyendo los archivos de la carpeta: ${err.message}`);
+      return;
+    }
+
+    if (files.length === 0) {
+      console.log(
+        'La carpeta "temp" está vacía, no hay archivos para eliminar.'
+      );
+      return;
+    }
+    files.forEach((file) => {
+      const filePath = path.join(tempDir, file);
+
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          console.error(`Error eliminando el archivo ${file}: ${err.message}`);
+        } else {
+          console.log(`Archivo eliminado: ${file}`);
+        }
+      });
+    });
+  });
 };

@@ -34,7 +34,7 @@ export default (sequelize: Sequelize) => {
         defaultValue: DataTypes.UUIDV4,
       },
       title: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(50),
         allowNull: false,
         defaultValue: "Sin nombre",
       },

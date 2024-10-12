@@ -5,7 +5,6 @@ export const createFinancialAccountValidations = [
   body("type")
     .isIn(["inflow_of_money", "money_outflow", "debt"])
     .withMessage("Tipo debe ser uno de: inflow_of_money, money_outflow, debt."),
-  body("values").isArray().withMessage("Los valores deben ser un arreglo."),
 ];
 
 export const editFinancialAccountValidations = [

@@ -5,3 +5,4 @@ temp/
 package-lock.json
 .env
 .env.example
+access.log

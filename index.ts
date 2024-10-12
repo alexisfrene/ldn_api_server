@@ -1,19 +1,21 @@
-import { app } from "./src/app";
 import dotenv from "dotenv";
-import db from "./src/lib/sequelize";
+import { app } from "./src/app";
+import { db } from "./src/lib";
+import { initializeDB } from "./src/initializeDB";
+import { startServer } from "./src/startServer";
 
 dotenv.config();
 
-const PORT = process.env.PORT || 3210;
-const main = async () => {
-  try {
-    await db.sequelize.sync({ force: false });
+const PORT: string | number = process.env.PORT || 3210;
 
-    app.listen(PORT, () => {
-      console.log(`Servidor en ejecución en http://localhost:${PORT}`);
-    });
+const main = async (): Promise<void> => {
+  try {
+    await initializeDB(db.sequelize);
+    await startServer(app, PORT);
   } catch (error) {
-    console.log("Error", error);
+    console.error("Error en la inicialización de la aplicación:", error);
+    process.exit(1);
   }
 };
+
 main();

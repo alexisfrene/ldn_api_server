@@ -1,6 +1,7 @@
-import { v2 as cloudinary } from "cloudinary";
 import fs from "node:fs";
+import { v2 as cloudinary } from "cloudinary";
 import { getFileNameWithoutExtension } from "../../utils";
+import { Uuid } from "../../types";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -44,7 +45,7 @@ export const deleteImageToCloudinary = async (publicId: string) => {
 
 export const getSecureUrl = (
   fileName: string,
-  user_id: string,
+  user_id: Uuid,
   width = 300,
   height = 225
 ): string | null => {

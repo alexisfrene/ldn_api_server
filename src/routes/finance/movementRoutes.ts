@@ -18,4 +18,5 @@ router.get("/", getAllTheMoves);
 router.post("/", runValidate(createMovementValidations), createMovement);
 router.put("/:id", runValidate(editMovementValidations), editMovement);
 router.delete("/:id", runValidate(deleteMovementValidations), deleteMovement);
+
 export default router;

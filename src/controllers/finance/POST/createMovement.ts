@@ -23,5 +23,6 @@ export const createMovement = async (req: Request, res: Response) => {
     user_id,
     entry_date,
   });
+
   return res.status(200).json({ newMovement });
 };

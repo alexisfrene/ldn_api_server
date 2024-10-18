@@ -1,11 +1,13 @@
 import { Sequelize } from "sequelize";
 import userModel from "../../models/Users";
 import sizeModel from "../../models/Sizes";
-import productModel from "../../models/Products";
-import categoryModel from "../../models/Categories";
+import debtsModel from "../../models/Debts";
 import detailModel from "../../models/Details";
-import variationModel from "../../models/Variations";
+import productModel from "../../models/Products";
 import movementsModel from "../../models/Movements";
+import categoryModel from "../../models/Categories";
+import variationModel from "../../models/Variations";
+import installmentsModel from "../../models/Installments";
 import paymentMethodsModel from "../../models/PaymentMethods";
 import financialAccountsModel from "../../models/FinancialAccounts";
 import { config as connectionPSQL } from "./config";
@@ -41,6 +43,8 @@ const Variation = variationModel(sequelize);
 const Movements = movementsModel(sequelize);
 const PaymentMethods = paymentMethodsModel(sequelize);
 const FinancialAccounts = financialAccountsModel(sequelize);
+const Debts = debtsModel(sequelize);
+const Installments = installmentsModel(sequelize);
 
 db[User.name] = User;
 db[Size.name] = Size;
@@ -51,6 +55,8 @@ db[Variation.name] = Variation;
 db[Movements.name] = Movements;
 db[PaymentMethods.name] = PaymentMethods;
 db[FinancialAccounts.name] = FinancialAccounts;
+db[Debts.name] = Debts;
+db[Installments.name] = Installments;
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
@@ -58,12 +64,8 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
-//Size.sync({ force: true });
-//Variation.sync({ force: true });
-// Movements.sync({ force: true });
-//FinancialAccounts.sync({ force: true });
-// PaymentMethods.sync({ force: true });
-// User.sync({ force: true });
+//Installments.sync({ force: true });
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

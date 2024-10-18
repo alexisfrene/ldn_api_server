@@ -17,7 +17,7 @@ export const getProductForCategory = async (req: Request, res: Response) => {
       message: "El usuario no tiene productos cargados",
     });
   const category = await Category.findByPk(category_id || "");
-  console.log(category);
+
   if (!category)
     return res
       .status(400)

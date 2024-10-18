@@ -8,15 +8,6 @@ import {
 } from "sequelize";
 import { Uuid } from "../types";
 
-type FinancialItem = {
-  name: string;
-  updatedAt?: Date;
-  createdAt?: Date;
-  expiration?: Date;
-  id: string;
-  value: number;
-};
-
 export default (sequelize: Sequelize) => {
   class FinancialAccounts extends Model<
     InferAttributes<FinancialAccounts, { omit: "user_id" }>,
@@ -24,8 +15,7 @@ export default (sequelize: Sequelize) => {
   > {
     declare financial_accounts_id: Uuid;
     declare name: string;
-    declare type: "inflow_of_money" | "money_outflow" | "debt";
-    declare values: FinancialItem[];
+    declare type: "inflow_of_money" | "money_outflow" | "debts";
     declare user_id?: NonAttribute<Uuid>;
   }
 
@@ -46,16 +36,12 @@ export default (sequelize: Sequelize) => {
         allowNull: false,
         defaultValue: 0,
       },
-      values: {
-        type: DataTypes.ARRAY(DataTypes.JSONB),
-        defaultValue: [],
-      },
     },
     {
       sequelize,
       modelName: "FinancialAccounts",
       tableName: "financialAccounts",
-      timestamps: false,
+      timestamps: true,
     }
   );
   return FinancialAccounts;

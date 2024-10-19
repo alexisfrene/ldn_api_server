@@ -63,12 +63,12 @@ export default (sequelize: Sequelize) => {
         defaultValue: DataTypes.UUIDV4,
       },
       name: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(50),
         allowNull: false,
         defaultValue: "Sin nombre",
       },
       description: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         defaultValue: "Sin descripción",
       },
       primary_image: {

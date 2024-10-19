@@ -27,8 +27,8 @@ export const getVariationById = async (req: Request, res: Response) => {
       .status(400)
       .json({ error: true, message: "No se encontró ninguna variación " });
 
-  const values = variationSelected[0].values.map(
-    (collection: { images: string[]; label: string; id: string }) => {
+  const values = variationSelected[0].values
+    .map((collection: { images: string[]; label: string; id: string }) => {
       const images = collection.images.map((image: string) =>
         getSecureUrl(`variations/${image}`, user.user_id)
       );
@@ -37,8 +37,8 @@ export const getVariationById = async (req: Request, res: Response) => {
         label: collection.label,
         images,
       };
-    }
-  );
+    })
+    .sort((a: { id: string }, b: { id: string }) => a.id.localeCompare(b.id));
 
   return res.status(200).json({
     title: variationSelected[0].title,

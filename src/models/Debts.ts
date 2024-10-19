@@ -15,9 +15,7 @@ export default (sequelize: Sequelize) => {
   > {
     declare debt_id: Uuid;
     declare interest_rate: number;
-    declare due_date: Date;
-    declare minimum_payment: number;
-    declare quotas_value: number;
+    declare minimum_payment?: number;
     declare total_debt: number;
     declare notes?: string;
     declare payment_frequency: "monthly" | "bi-weekly" | "weekly";
@@ -25,7 +23,6 @@ export default (sequelize: Sequelize) => {
     declare current_quota?: number;
     declare updatedAt: Date;
     declare createdAt: Date;
-    declare status?: "active" | "paid" | "delinquent";
     declare financial_accounts_id?: NonAttribute<Uuid>;
 
     static associate(models: any) {
@@ -45,16 +42,7 @@ export default (sequelize: Sequelize) => {
       },
       interest_rate: {
         type: DataTypes.FLOAT,
-        allowNull: false,
-      },
-      quotas_value: { type: DataTypes.FLOAT, allowNull: false },
-      closing_date: {
-        type: DataTypes.DATE,
         allowNull: true,
-      },
-      due_date: {
-        type: DataTypes.DATE,
-        allowNull: false,
       },
       payment_frequency: {
         type: DataTypes.ENUM,
@@ -64,13 +52,7 @@ export default (sequelize: Sequelize) => {
       },
       minimum_payment: {
         type: DataTypes.FLOAT,
-        allowNull: false,
-      },
-      status: {
-        type: DataTypes.ENUM,
-        values: ["active", "paid", "delinquent"],
-        allowNull: false,
-        defaultValue: "active",
+        allowNull: true,
       },
       notes: {
         type: DataTypes.STRING,
@@ -78,6 +60,7 @@ export default (sequelize: Sequelize) => {
       },
       total_debt: {
         type: DataTypes.FLOAT,
+        defaultValue: 0,
         allowNull: false,
       },
       current_quota: {

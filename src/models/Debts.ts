@@ -26,11 +26,11 @@ export default (sequelize: Sequelize) => {
 
     static associate(models: any) {
       Debt.hasMany(models.Installment, {
-        as: "debt_installments",
+        as: "DebtInstallments",
         foreignKey: "debt_id",
       });
       Debt.belongsTo(models.FinancialAccount, {
-        as: "financial_account_debts",
+        as: "FinancialAccountDebts",
         foreignKey: "financial_accounts_id",
       });
     }

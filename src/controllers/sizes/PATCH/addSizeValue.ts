@@ -19,7 +19,7 @@ export const addSizeValue = async (req: Request, res: Response) => {
       .json({ error: true, message: "No se proporciono un id de categoría" });
 
   const user = await User.findByPk(user_id);
-  const userSizes = await user.getUser_sizes();
+  const userSizes = await user.getUserSizes();
   const validateExistSize = userSizes.find(
     (size: { size_id: string }) => size.size_id === size_id
   );

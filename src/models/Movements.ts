@@ -31,15 +31,15 @@ export default (sequelize: Sequelize) => {
     declare financial_accounts_id?: NonAttribute<Uuid>;
     static associate(models: any) {
       Movement.belongsTo(models.FinancialAccount, {
-        as: "financial_account_movements",
+        as: "FinancialAccountMovements",
         foreignKey: "financial_accounts_id",
       });
       Movement.belongsTo(models.PaymentMethod, {
-        as: "movement_payment_methods",
+        as: "PaymentMethodMovements",
         foreignKey: "payment_method_id",
       });
       Movement.belongsTo(models.User, {
-        as: "user_movements",
+        as: "MovementUser",
         foreignKey: "user_id",
       });
     }

@@ -28,7 +28,7 @@ export const getVariationForCategory = async (req: Request, res: Response) => {
     return res
       .status(400)
       .json({ error: true, message: "No se encontró la categoría" });
-  const variations = await user?.getUser_variations().then((res: any[]) => {
+  const variations = await user?.getUserVariations().then((res: any[]) => {
     return res.filter(
       (variation: { category_id: string; category_value: string }) =>
         variation.category_id === category && variation.category_value === value

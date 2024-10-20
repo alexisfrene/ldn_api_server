@@ -23,7 +23,7 @@ export default (sequelize: Sequelize) => {
 
     static associate(models: any) {
       Detail.belongsTo(models.Product, {
-        as: "product_detail",
+        as: "DetailProduct",
         foreignKey: "product_id",
       });
     }

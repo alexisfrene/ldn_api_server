@@ -36,29 +36,29 @@ export default (sequelize: Sequelize) => {
     }
 
     static associate(models: any) {
-      User.hasMany(models.Size, { as: "user_sizes", foreignKey: "user_id" });
+      User.hasMany(models.Size, { as: "UserSizes", foreignKey: "user_id" });
       User.hasMany(models.Product, {
-        as: "user_products",
+        as: "UserProducts",
         foreignKey: "user_id",
       });
       User.hasMany(models.Category, {
-        as: "user_categories",
+        as: "UserCategories",
         foreignKey: "user_id",
       });
       User.hasMany(models.Variation, {
-        as: "user_variations",
+        as: "UserVariations",
         foreignKey: "user_id",
       });
       User.hasMany(models.FinancialAccount, {
-        as: "user_financial_accounts",
+        as: "UserFinancialAccounts",
         foreignKey: "user_id",
       });
       User.hasMany(models.PaymentMethod, {
-        as: "user_payment_methods",
+        as: "UserPaymentMethods",
         foreignKey: "user_id",
       });
       User.hasMany(models.Movement, {
-        as: "user_movements",
+        as: "UserMovements",
         foreignKey: "user_id",
       });
     }

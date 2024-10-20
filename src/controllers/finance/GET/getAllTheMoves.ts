@@ -15,7 +15,7 @@ export const getAllTheMoves = async (req: Request, res: Response) => {
   if (!user) {
     return res.status(404).json({ message: "User not found", error: true });
   }
-  const movements = await user.getUser_movements({
+  const movements = await user.getUserMovements({
     order: [["movements_id", "ASC"]],
   });
   const mappedMovements = await Promise.all(

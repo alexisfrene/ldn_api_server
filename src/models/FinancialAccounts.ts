@@ -20,15 +20,15 @@ export default (sequelize: Sequelize) => {
 
     static associate(models: any) {
       FinancialAccount.hasMany(models.Debt, {
-        as: "financial_account_debts",
+        as: "FinancialAccountDebts",
         foreignKey: "financial_accounts_id",
       });
       FinancialAccount.belongsTo(models.User, {
-        as: "user_financial_accounts",
+        as: "FinancialAccountUser",
         foreignKey: "user_id",
       });
       FinancialAccount.hasMany(models.Movement, {
-        as: "financial_account_movements",
+        as: "FinancialAccountMovements",
         foreignKey: "financial_accounts_id",
       });
     }

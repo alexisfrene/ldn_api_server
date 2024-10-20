@@ -26,11 +26,11 @@ export default (sequelize: Sequelize) => {
 
     static associate(models: any) {
       Size.hasMany(models.Product, {
-        as: "product_sizes",
+        as: "SizeProducts",
         foreignKey: "size_id",
       });
       Size.belongsTo(models.User, {
-        as: "user_sizes",
+        as: "SizeUser",
         foreignKey: "user_id",
       });
     }

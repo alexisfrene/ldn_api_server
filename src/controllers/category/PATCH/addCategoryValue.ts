@@ -21,7 +21,7 @@ export const addCategoryValue = async (req: Request, res: Response) => {
   const files = req.files as Express.Multer.File[];
   if (!files) return res.status(400).json({ error: "Fatal image" });
   const user = await User.findByPk(user_id);
-  const userCategories = await user.getUser_categories();
+  const userCategories = await user.getUserCategories();
   const validateExistCategory = userCategories.find(
     (category: { category_id: string }) => category.category_id === category_id
   );

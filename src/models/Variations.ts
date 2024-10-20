@@ -30,15 +30,15 @@ export default (sequelize: Sequelize) => {
     declare category_value: Uuid;
     static associate(models: any) {
       Variation.belongsTo(models.Category, {
-        as: "categories",
+        as: "CategoryVariations",
         foreignKey: "category_id",
       });
       Variation.belongsTo(models.User, {
-        as: "user_variations",
+        as: "VariationUser",
         foreignKey: "user_id",
       });
       Variation.hasMany(models.Product, {
-        as: "product_variations",
+        as: "VariationProducts",
         foreignKey: "variation_id",
       });
     }

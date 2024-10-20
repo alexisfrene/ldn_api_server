@@ -19,11 +19,11 @@ export default (sequelize: Sequelize) => {
 
     static associate(models: any) {
       PaymentMethod.belongsTo(models.User, {
-        as: "user_payment_methods",
+        as: "PaymentMethodUser",
         foreignKey: "user_id",
       });
       PaymentMethod.hasMany(models.Movement, {
-        as: "movement_payment_methods",
+        as: "PaymentMethodMovements",
         foreignKey: "payment_method_id",
       });
     }

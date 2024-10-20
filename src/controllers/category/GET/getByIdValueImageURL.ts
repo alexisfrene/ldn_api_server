@@ -23,7 +23,7 @@ export const getByIdValueImageURL = async (req: Request, res: Response) => {
       .json({ error: true, message: "El usuario no tiene categorías" });
   }
 
-  const categories = await user.getUser_categories({
+  const categories = await user.getUserCategories({
     order: [["category_id", "ASC"]],
   });
   const selectedValue = categories.reduce(

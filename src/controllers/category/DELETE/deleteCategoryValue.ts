@@ -29,7 +29,7 @@ export const deleteCategoryValue = async (req: Request, res: Response) => {
     (value: { id: string }) => value.id !== category_value
   );
   const userProducts = await User.findByPk(user_id)
-    .then((user: { getUser_products: () => any }) => user.getUser_products())
+    .then((user: { getUserProducts: () => any }) => user.getUserProducts())
     .then((products: any[]) =>
       products.filter(
         (product: { category_id: string; category_value: string }) =>

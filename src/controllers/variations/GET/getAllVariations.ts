@@ -8,7 +8,7 @@ export const getAllVariations = async (req: Request, res: Response) => {
   const user = await User.findByPk(user_id);
   if (!user)
     return res.status(400).json({ error: true, message: "No autorizado" });
-  const variations = await user?.getUser_variations();
+  const variations = await user?.getUserVariations();
   if (!variations)
     return res
       .status(400)

@@ -37,23 +37,23 @@ export default (sequelize: Sequelize) => {
     declare detail_id?: NonAttribute<Uuid>;
     static associate(models: any) {
       Product.belongsTo(models.Category, {
-        as: "category",
+        as: "CategoryProducts",
         foreignKey: "category_id",
       });
       Product.belongsTo(models.Size, {
-        as: "product_sizes",
+        as: "SizeProducts",
         foreignKey: "size_id",
       });
       Product.hasOne(models.Detail, {
-        as: "product_detail",
+        as: "DetailProduct",
         foreignKey: "product_id",
       });
       Product.belongsTo(models.Variation, {
-        as: "product_variations",
+        as: "VariationProducts",
         foreignKey: "variation_id",
       });
       Product.belongsTo(models.User, {
-        as: "user_products",
+        as: "UserProducts",
         foreignKey: "user_id",
       });
     }

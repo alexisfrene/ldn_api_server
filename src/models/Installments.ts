@@ -21,7 +21,7 @@ export default (sequelize: Sequelize) => {
 
     static associate(models: any) {
       Installment.belongsTo(models.Debt, {
-        as: "debt_installments",
+        as: "DebtInstallments",
         foreignKey: "debt_id",
       });
     }

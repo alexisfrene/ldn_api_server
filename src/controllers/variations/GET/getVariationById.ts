@@ -13,7 +13,7 @@ export const getVariationById = async (req: Request, res: Response) => {
     return res
       .status(400)
       .json({ error: true, message: "Usuario no registrado" });
-  const userVariations = await user.getUser_variations();
+  const userVariations = await user.getUserVariations();
   if (!userVariations)
     return res
       .status(400)

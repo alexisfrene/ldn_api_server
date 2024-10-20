@@ -26,12 +26,16 @@ export default (sequelize: Sequelize) => {
 
     static associate(models: any) {
       Category.hasMany(models.Product, {
-        as: "category",
+        as: "CategoryProducts",
         foreignKey: "category_id",
       });
       Category.belongsTo(models.User, {
-        as: "user_categories",
+        as: "CategoryUser",
         foreignKey: "user_id",
+      });
+      Category.hasMany(models.Variation, {
+        as: "CategoryVariations",
+        foreignKey: "category_id",
       });
     }
   }

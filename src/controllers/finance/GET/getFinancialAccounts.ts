@@ -14,12 +14,12 @@ export const getFinancialAccounts = async (req: Request, res: Response) => {
     return res.status(404).json({ error: "User not found" });
   }
 
-  const financialAccounts = await user.getUser_financial_accounts();
+  const financialAccounts = await user.getUserFinancialAccounts();
   if (!financialAccounts || financialAccounts.length === 0) {
     return res.status(200).json([]);
   }
 
-  const movements = await user.getUser_movements();
+  const movements = await user.getUserMovements();
 
   const formatter = await Promise.all(
     financialAccounts.map(async (account: any) => {

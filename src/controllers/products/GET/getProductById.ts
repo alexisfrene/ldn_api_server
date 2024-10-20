@@ -18,7 +18,7 @@ export const getProductById = async (req: Request, res: Response) => {
       .status(400)
       .json({ error: true, message: "No se encontró producto" });
 
-  const category = await product.getCategory();
+  const category = await product.getCategoryProducts();
   const categoryValue = category
     ? category.values.find(
         (e: { id: string }) => e.id === product.category_value

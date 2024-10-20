@@ -9,13 +9,13 @@ import {
 import { Uuid } from "../types";
 
 export default (sequelize: Sequelize) => {
-  class Movements extends Model<
+  class Movement extends Model<
     InferAttributes<
-      Movements,
+      Movement,
       { omit: "user_id" | "payment_method_id" | "financial_accounts_id" }
     >,
     InferCreationAttributes<
-      Movements,
+      Movement,
       { omit: "user_id" | "payment_method_id" | "financial_accounts_id" }
     >
   > {
@@ -30,18 +30,22 @@ export default (sequelize: Sequelize) => {
     declare payment_method_id?: NonAttribute<Uuid>;
     declare financial_accounts_id?: NonAttribute<Uuid>;
     static associate(models: any) {
-      Movements.belongsTo(models.FinancialAccounts, {
-        as: "financial_accounts",
+      Movement.belongsTo(models.FinancialAccount, {
+        as: "financial_account_movements",
         foreignKey: "financial_accounts_id",
       });
-      Movements.belongsTo(models.PaymentMethods, {
-        as: "payment_methods",
+      Movement.belongsTo(models.PaymentMethod, {
+        as: "movement_payment_methods",
         foreignKey: "payment_method_id",
+      });
+      Movement.belongsTo(models.User, {
+        as: "user_movements",
+        foreignKey: "user_id",
       });
     }
   }
 
-  Movements.init(
+  Movement.init(
     {
       movements_id: {
         type: DataTypes.UUID,
@@ -69,10 +73,10 @@ export default (sequelize: Sequelize) => {
     },
     {
       sequelize,
-      modelName: "Movements",
+      modelName: "Movement",
       tableName: "movements",
       timestamps: true,
     }
   );
-  return Movements;
+  return Movement;
 };

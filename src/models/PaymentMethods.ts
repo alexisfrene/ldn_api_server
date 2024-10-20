@@ -9,15 +9,26 @@ import {
 import { Uuid } from "../types";
 
 export default (sequelize: Sequelize) => {
-  class PaymentMethods extends Model<
-    InferAttributes<PaymentMethods, { omit: "user_id" }>,
-    InferCreationAttributes<PaymentMethods, { omit: "user_id" }>
+  class PaymentMethod extends Model<
+    InferAttributes<PaymentMethod, { omit: "user_id" }>,
+    InferCreationAttributes<PaymentMethod, { omit: "user_id" }>
   > {
     declare payment_method_id: Uuid;
     declare name: string;
     declare user_id?: NonAttribute<Uuid>;
+
+    static associate(models: any) {
+      PaymentMethod.belongsTo(models.User, {
+        as: "user_payment_methods",
+        foreignKey: "user_id",
+      });
+      PaymentMethod.hasMany(models.Movement, {
+        as: "movement_payment_methods",
+        foreignKey: "payment_method_id",
+      });
+    }
   }
-  PaymentMethods.init(
+  PaymentMethod.init(
     {
       payment_method_id: {
         type: DataTypes.UUID,
@@ -33,10 +44,10 @@ export default (sequelize: Sequelize) => {
     },
     {
       sequelize,
-      modelName: "PaymentMethods",
+      modelName: "PaymentMethod",
       tableName: "paymentMethods",
       timestamps: false,
     }
   );
-  return PaymentMethods;
+  return PaymentMethod;
 };

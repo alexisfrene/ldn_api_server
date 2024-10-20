@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { db } from "../../../lib";
 
-const Movements = db.Movements;
+const Movements = db.Movement;
 
 export const deleteMovement = async (req: Request, res: Response) => {
   const { id } = req.params;

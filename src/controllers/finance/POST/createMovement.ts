@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { db } from "../../../lib";
 
-const Movement = db.Movements;
+const Movement = db.Movement;
 
 export const createMovement = async (req: Request, res: Response) => {
   const user_id = req.user;

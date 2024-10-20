@@ -26,7 +26,7 @@ export const deleteSizeValue = async (req: Request, res: Response) => {
     (value: { id: string }) => value.id !== size_value
   );
   const userProducts = await User.findByPk(user_id)
-    .then((user: { getProducts: () => any }) => user.getProducts())
+    .then((user: { getUser_products: () => any }) => user.getUser_products())
     .then((products: any[]) =>
       products.filter(
         (product: { size_id: string; size_value: string }) =>

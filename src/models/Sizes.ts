@@ -22,8 +22,18 @@ export default (sequelize: Sequelize) => {
     declare size_id: Uuid;
     declare title: string;
     declare values: SizeItem[];
-
     declare user_id?: NonAttribute<Uuid>;
+
+    static associate(models: any) {
+      Size.hasMany(models.Product, {
+        as: "product_sizes",
+        foreignKey: "size_id",
+      });
+      Size.belongsTo(models.User, {
+        as: "user_sizes",
+        foreignKey: "user_id",
+      });
+    }
   }
 
   Size.init(

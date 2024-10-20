@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { db } from "../../../lib";
 
-const FinancialAccounts = db.FinancialAccounts;
+const FinancialAccounts = db.FinancialAccount;
 
 export const editFinancialAccount = async (req: Request, res: Response) => {
   const { financial_accounts_id } = req.params;
@@ -17,11 +17,9 @@ export const editFinancialAccount = async (req: Request, res: Response) => {
   }
 
   if (financialAccount.user_id !== user_id) {
-    return res
-      .status(403)
-      .json({
-        message: "No tienes permiso para editar esta cuenta financiera.",
-      });
+    return res.status(403).json({
+      message: "No tienes permiso para editar esta cuenta financiera.",
+    });
   }
 
   financialAccount.name = name || financialAccount.name;

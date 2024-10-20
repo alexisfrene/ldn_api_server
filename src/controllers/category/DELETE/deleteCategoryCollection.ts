@@ -19,7 +19,7 @@ export const deleteCategoryCollection = async (req: Request, res: Response) => {
   const categorySelected = await Category.findByPk(category_id);
 
   const userProducts = await User.findByPk(user_id)
-    .then((user: { getProducts: () => any }) => user.getProducts())
+    .then((user: { getUser_products: () => any }) => user.getUser_products())
     .then((products: any[]) =>
       products.filter(
         (product: { category_id: string; category_value: string }) =>

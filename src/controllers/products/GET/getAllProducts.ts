@@ -10,7 +10,9 @@ export const getAllProducts = async (req: Request, res: Response) => {
   if (!user) {
     return res.status(404).json({ error: "User not found" });
   }
-  const allProducts = user?.getProducts() ? await user.getProducts() : [];
+  const allProducts = user?.getUser_products()
+    ? await user.getUser_products()
+    : [];
   if (!allProducts)
     return res
       .status(400)

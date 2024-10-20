@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { db } from "../../../lib";
 
-const PaymentMethod = db.PaymentMethods;
+const PaymentMethod = db.PaymentMethod;
 
 export const createPaymentMethod = async (req: Request, res: Response) => {
   const user_id = req.user;

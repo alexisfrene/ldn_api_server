@@ -17,7 +17,7 @@ export const getAllCategories = async (req: Request, res: Response) => {
       .json({ error: true, message: "El usuario no tiene categorías" });
   }
 
-  const categories = await user.getCategories({
+  const categories = await user.getUser_categories({
     order: [["category_id", "ASC"]],
   });
   const formatterCategories = categories.map(

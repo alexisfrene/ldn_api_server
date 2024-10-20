@@ -41,16 +41,20 @@ export default (sequelize: Sequelize) => {
         foreignKey: "category_id",
       });
       Product.belongsTo(models.Size, {
-        as: "size",
+        as: "product_sizes",
         foreignKey: "size_id",
       });
-      Product.belongsTo(models.Detail, {
-        as: "detail",
-        foreignKey: "detail_id",
+      Product.hasOne(models.Detail, {
+        as: "product_detail",
+        foreignKey: "product_id",
       });
       Product.belongsTo(models.Variation, {
-        as: "variation",
+        as: "product_variations",
         foreignKey: "variation_id",
+      });
+      Product.belongsTo(models.User, {
+        as: "user_products",
+        foreignKey: "user_id",
       });
     }
   }

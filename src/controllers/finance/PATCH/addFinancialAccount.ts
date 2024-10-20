@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../../../lib";
 
-const FinancialAccounts = db.FinancialAccounts;
+const FinancialAccounts = db.FinancialAccount;
 
 export const addFinancialAccount = async (req: Request, res: Response) => {
   const user_id = req.user;

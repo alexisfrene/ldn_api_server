@@ -9,17 +9,32 @@ import {
 import { Uuid } from "../types";
 
 export default (sequelize: Sequelize) => {
-  class FinancialAccounts extends Model<
-    InferAttributes<FinancialAccounts, { omit: "user_id" }>,
-    InferCreationAttributes<FinancialAccounts, { omit: "user_id" }>
+  class FinancialAccount extends Model<
+    InferAttributes<FinancialAccount, { omit: "user_id" }>,
+    InferCreationAttributes<FinancialAccount, { omit: "user_id" }>
   > {
     declare financial_accounts_id: Uuid;
     declare name: string;
     declare type: "inflow_of_money" | "money_outflow" | "debts";
     declare user_id?: NonAttribute<Uuid>;
+
+    static associate(models: any) {
+      FinancialAccount.hasMany(models.Debt, {
+        as: "financial_account_debts",
+        foreignKey: "financial_accounts_id",
+      });
+      FinancialAccount.belongsTo(models.User, {
+        as: "user_financial_accounts",
+        foreignKey: "user_id",
+      });
+      FinancialAccount.hasMany(models.Movement, {
+        as: "financial_account_movements",
+        foreignKey: "financial_accounts_id",
+      });
+    }
   }
 
-  FinancialAccounts.init(
+  FinancialAccount.init(
     {
       financial_accounts_id: {
         type: DataTypes.UUID,
@@ -34,15 +49,14 @@ export default (sequelize: Sequelize) => {
       type: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: 0,
       },
     },
     {
       sequelize,
-      modelName: "FinancialAccounts",
+      modelName: "FinancialAccount",
       tableName: "financialAccounts",
       timestamps: true,
     }
   );
-  return FinancialAccounts;
+  return FinancialAccount;
 };

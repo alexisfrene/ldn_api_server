@@ -20,6 +20,13 @@ export default (sequelize: Sequelize) => {
     declare style: string;
     declare age: string;
     declare product_id?: NonAttribute<Uuid>;
+
+    static associate(models: any) {
+      Detail.belongsTo(models.Product, {
+        as: "product_detail",
+        foreignKey: "product_id",
+      });
+    }
   }
 
   Detail.init(

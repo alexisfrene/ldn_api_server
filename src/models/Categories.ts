@@ -22,8 +22,18 @@ export default (sequelize: Sequelize) => {
     declare category_id: Uuid;
     declare title: string;
     declare values: CategoriesItem[];
-
     declare user_id?: NonAttribute<Uuid>;
+
+    static associate(models: any) {
+      Category.hasMany(models.Product, {
+        as: "category",
+        foreignKey: "category_id",
+      });
+      Category.belongsTo(models.User, {
+        as: "user_categories",
+        foreignKey: "user_id",
+      });
+    }
   }
 
   Category.init(

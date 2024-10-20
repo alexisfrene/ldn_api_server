@@ -9,9 +9,9 @@ import {
 import { Uuid } from "../types";
 
 export default (sequelize: Sequelize) => {
-  class Installments extends Model<
-    InferAttributes<Installments>,
-    InferCreationAttributes<Installments>
+  class Installment extends Model<
+    InferAttributes<Installment>,
+    InferCreationAttributes<Installment>
   > {
     declare installment_id: Uuid;
     declare amount: number;
@@ -20,14 +20,14 @@ export default (sequelize: Sequelize) => {
     declare debt_id: NonAttribute<Uuid>;
 
     static associate(models: any) {
-      Installments.belongsTo(models.Debts, {
-        as: "debt",
+      Installment.belongsTo(models.Debt, {
+        as: "debt_installments",
         foreignKey: "debt_id",
       });
     }
   }
 
-  Installments.init(
+  Installment.init(
     {
       installment_id: {
         type: DataTypes.UUID,
@@ -50,10 +50,10 @@ export default (sequelize: Sequelize) => {
     },
     {
       sequelize,
-      modelName: "Installments",
+      modelName: "Installment",
       tableName: "installments",
       timestamps: false,
     }
   );
-  return Installments;
+  return Installment;
 };

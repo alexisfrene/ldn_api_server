@@ -7,7 +7,7 @@ import {
 } from "../../controllers";
 import { runValidate } from "../../middleware";
 import {
-  createFinancialAccountValidations,
+  //createFinancialAccountValidations,
   deleteFinancialAccountValidations,
   editFinancialAccountValidations,
 } from "../../validators";
@@ -15,11 +15,7 @@ import {
 const router = express.Router();
 
 router.get("/", getFinancialAccounts);
-router.post(
-  "/",
-  runValidate(createFinancialAccountValidations),
-  createFinancialAccounts
-);
+router.post("/", createFinancialAccounts);
 router.put(
   "/:id",
   runValidate(editFinancialAccountValidations),

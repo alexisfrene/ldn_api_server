@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { db } from "../../../lib";
 
-const FinancialAccounts = db.FinancialAccounts;
+const FinancialAccounts = db.FinancialAccount;
 
 export const deleteFinancialAccount = async (req: Request, res: Response) => {
   const { id } = req.params;

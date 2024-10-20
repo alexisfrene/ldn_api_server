@@ -17,7 +17,7 @@ export const deleteSizeCollection = async (req: Request, res: Response) => {
       .json({ error: true, message: "El usuario no esta autentificado" });
   const sizeSelected = await Size.findByPk(size_id);
   const userProducts = await User.findByPk(user_id)
-    .then((user: { getProducts: () => any }) => user.getProducts())
+    .then((user: { getUser_products: () => any }) => user.getUser_products())
     .then((products: any[]) =>
       products.filter(
         (product: { size_id: string; size_value: string }) =>

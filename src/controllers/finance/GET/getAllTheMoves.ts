@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import { db } from "../../../lib";
 
 const User = db.User;
-const paymentMethod = db.PaymentMethods;
-const FinancialAccounts = db.FinancialAccounts;
+const paymentMethod = db.PaymentMethod;
+const FinancialAccounts = db.FinancialAccount;
 
 export const getAllTheMoves = async (req: Request, res: Response) => {
   const user_id = req.user;
@@ -15,7 +15,7 @@ export const getAllTheMoves = async (req: Request, res: Response) => {
   if (!user) {
     return res.status(404).json({ message: "User not found", error: true });
   }
-  const movements = await user.getMovements({
+  const movements = await user.getUser_movements({
     order: [["movements_id", "ASC"]],
   });
   const mappedMovements = await Promise.all(

@@ -15,7 +15,7 @@ export const getAllSizes = async (req: Request, res: Response) => {
     return res.status(404).json({ message: "User not found", error: true });
   }
 
-  const sizes = await user.getSizes({ order: [["size_id", "ASC"]] });
+  const sizes = await user.getUser_sizes({ order: [["size_id", "ASC"]] });
 
   return res.status(200).json(sizes);
 };

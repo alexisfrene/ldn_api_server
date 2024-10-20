@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { db } from "../../../lib";
 import { Op } from "sequelize";
 
-const movements = db.Movements;
+const movements = db.Movement;
 interface Movement {
   type: string;
   value: number;

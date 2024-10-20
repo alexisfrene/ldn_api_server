@@ -33,6 +33,14 @@ export default (sequelize: Sequelize) => {
         as: "categories",
         foreignKey: "category_id",
       });
+      Variation.belongsTo(models.User, {
+        as: "user_variations",
+        foreignKey: "user_id",
+      });
+      Variation.hasMany(models.Product, {
+        as: "product_variations",
+        foreignKey: "variation_id",
+      });
     }
   }
 

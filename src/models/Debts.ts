@@ -9,9 +9,9 @@ import {
 import { Uuid } from "../types";
 
 export default (sequelize: Sequelize) => {
-  class Debts extends Model<
-    InferAttributes<Debts, { omit: "financial_accounts_id" }>,
-    InferCreationAttributes<Debts, { omit: "financial_accounts_id" }>
+  class Debt extends Model<
+    InferAttributes<Debt, { omit: "financial_accounts_id" }>,
+    InferCreationAttributes<Debt, { omit: "financial_accounts_id" }>
   > {
     declare debt_id: Uuid;
     declare interest_rate: number;
@@ -19,21 +19,24 @@ export default (sequelize: Sequelize) => {
     declare total_debt: number;
     declare notes?: string;
     declare payment_frequency: "monthly" | "bi-weekly" | "weekly";
-    declare closing_date?: Date;
     declare current_quota?: number;
     declare updatedAt: Date;
     declare createdAt: Date;
     declare financial_accounts_id?: NonAttribute<Uuid>;
 
     static associate(models: any) {
-      Debts.hasOne(models.FinancialAccounts, {
-        as: "debt",
+      Debt.hasMany(models.Installment, {
+        as: "debt_installments",
+        foreignKey: "debt_id",
+      });
+      Debt.belongsTo(models.FinancialAccount, {
+        as: "financial_account_debts",
         foreignKey: "financial_accounts_id",
       });
     }
   }
 
-  Debts.init(
+  Debt.init(
     {
       debt_id: {
         type: DataTypes.UUID,
@@ -81,10 +84,10 @@ export default (sequelize: Sequelize) => {
     },
     {
       sequelize,
-      modelName: "Debts",
+      modelName: "Debt",
       tableName: "debts",
       timestamps: true,
     }
   );
-  return Debts;
+  return Debt;
 };

@@ -56,6 +56,7 @@ db[Movements.name] = Movements;
 db[PaymentMethods.name] = PaymentMethods;
 db[FinancialAccounts.name] = FinancialAccounts;
 db[Debts.name] = Debts;
+console.log(Installments.name);
 db[Installments.name] = Installments;
 
 Object.keys(db).forEach((modelName) => {
@@ -64,7 +65,7 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
-//Debts.sync({ force: true });
+sequelize.sync({ force: false });
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

@@ -10,7 +10,9 @@ export const getProductForCategory = async (req: Request, res: Response) => {
   const user_id = req.user;
 
   const user = await User.findByPk(user_id || "");
-  const products = user?.getProducts() ? await user.getProducts() : [];
+  const products = user?.getUser_products()
+    ? await user.getUser_products()
+    : [];
   if (!products)
     return res.status(400).json({
       error: true,

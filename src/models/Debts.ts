@@ -45,7 +45,8 @@ export default (sequelize: Sequelize) => {
       },
       interest_rate: {
         type: DataTypes.FLOAT,
-        allowNull: true,
+        allowNull: false,
+        defaultValue: 0,
       },
       payment_frequency: {
         type: DataTypes.ENUM,

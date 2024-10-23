@@ -14,6 +14,9 @@ import {
   financeRoutes,
 } from "./routes";
 import { errorHandler } from "./middleware";
+import { initializeDB } from "./initializeDB";
+import { startServer } from "./startServer";
+import { db } from "./lib";
 
 const app = express();
 
@@ -59,5 +62,21 @@ app.use(
   financeRoutes
 );
 app.use(errorHandler);
+
+process.loadEnvFile();
+
+const PORT: string | number = process.env.PORT || 3210;
+
+const main = async (): Promise<void> => {
+  try {
+    await initializeDB(db.sequelize);
+    await startServer(app, PORT);
+  } catch (error) {
+    console.error("Error en la inicialización de la aplicación:", error);
+    process.exit(1);
+  }
+};
+
+main();
 
 export { app };

@@ -56,7 +56,6 @@ db[Movements.name] = Movements;
 db[PaymentMethods.name] = PaymentMethods;
 db[FinancialAccounts.name] = FinancialAccounts;
 db[Debts.name] = Debts;
-console.log(Installments.name);
 db[Installments.name] = Installments;
 
 Object.keys(db).forEach((modelName) => {

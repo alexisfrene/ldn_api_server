@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import { app } from "../src/app";
+import { app } from "../app";
 
 const api = supertest(app);
 console.log(api);

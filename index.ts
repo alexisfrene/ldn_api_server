@@ -1,10 +1,9 @@
-import dotenv from "dotenv";
 import { app } from "./src/app";
 import { db } from "./src/lib";
 import { initializeDB } from "./src/initializeDB";
 import { startServer } from "./src/startServer";
 
-dotenv.config();
+process.loadEnvFile();
 
 const PORT: string | number = process.env.PORT || 3210;
 

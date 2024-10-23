@@ -21,11 +21,11 @@ export const editProductDetails = async (req: Request, res: Response) => {
   if (!product) {
     return res.status(404).json({ error: "Product not found" });
   }
-  let selectorDetails = await product?.getDetail();
+  let selectorDetails = await product?.getDetailProduct();
   if (!selectorDetails) {
     const newDetail = await Detail.create();
     await product.update({ detail_id: newDetail.detail_id });
-    selectorDetails = await product?.getDetail();
+    selectorDetails = await product?.getDetailProduct();
   }
   const details = await Detail.findByPk(selectorDetails.detail_id);
   if (!details) {

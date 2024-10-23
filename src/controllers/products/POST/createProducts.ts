@@ -16,7 +16,7 @@ export const createProducts = async (req: Request, res: Response) => {
   const data = req.body;
   const dataNewProduct: Record<string, any> = {};
   const detail = data?.detail;
-  const newDetails = await Detail.create({
+  const newDetails = Detail.build({
     gender: detail?.gender || "unspecified",
     color: detail?.color || "unspecified",
     brand: detail?.brand || "unspecified",
@@ -70,6 +70,8 @@ export const createProducts = async (req: Request, res: Response) => {
   dataNewProduct["dollar_today"] =
     Math.floor(Number(dollarBlue.data?.venta)) || 1;
   const newProduct = await Product.create(dataNewProduct);
+  newDetails.product_id = newProduct.product_id;
+  await newDetails.save();
 
   return res.status(200).json(newProduct);
 };

@@ -24,7 +24,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
     const productDetails = await Promise.all(
       products.map(async (product) => {
         const productFromDB = await Product.findByPk(product.product_id);
-        const size = await productFromDB.getSize();
+        const size = await productFromDB.getSizeProducts();
         const sizeValue = size
           ? size.values.find(
               (e: { id: string }) => e.id === productFromDB.size_value

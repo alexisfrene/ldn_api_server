@@ -11,15 +11,11 @@ export const getAllCategories = async (req: Request, res: Response) => {
   }
 
   const user = await User.findByPk(user_id);
-  if (!user || !user.getCategories) {
-    return res
-      .status(400)
-      .json({ error: true, message: "El usuario no tiene categorías" });
-  }
 
   const categories = await user.getUserCategories({
     order: [["category_id", "ASC"]],
   });
+
   const formatterCategories = categories.map(
     (category: {
       values: { icon_url: string; value: string; id: string }[];

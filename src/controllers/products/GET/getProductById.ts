@@ -24,19 +24,19 @@ export const getProductById = async (req: Request, res: Response) => {
         (e: { id: string }) => e.id === product.category_value
       )
     : null;
-  const size = await product.getSize();
+  const size = await product.getSizeProducts();
   const sizeValue = size
     ? size.values.find((e: { id: string }) => e.id === product.size_value)
     : null;
 
-  const detail = await product.getDetail();
+  const detail = await product.getDetailProduct();
   const urlCloudinary = getSecureUrl(product.primary_image, user_id);
   let variationFormat = {
     variation_id: "",
     title: "",
     values: [] as { id: string; label: string; images: string[] }[],
   };
-  const variations = await product.getVariation();
+  const variations = await product.getVariationProducts();
 
   if (variations) {
     variationFormat.title = variations.title;

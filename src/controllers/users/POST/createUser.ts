@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { hashPassword } from "../../../utils";
-import { db } from "../../../lib";
+import { hashPassword } from "@utils";
+import { db } from "@lib";
 
 const User = db.User;
 const Category = db.Category;

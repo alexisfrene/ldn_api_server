@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getSecureUrl, db } from "../../../lib";
+import { getSecureUrl, db } from "@lib";
 
 const Product = db.Product;
 

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { db } from "../../../lib";
+import { db } from "@lib";
 //import { formatDate } from "../../../utils";
 
 const FinancialAccounts = db.FinancialAccount;

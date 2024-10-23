@@ -1,6 +1,6 @@
 import express from "express";
 import { matchedData, validationResult } from "express-validator";
-import { upload } from "../../lib";
+import { upload } from "@lib";
 import { runValidate } from "../../middleware";
 import {
   getByIdCategoryValidator,

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { cleanObject } from "../../../utils";
-import { db } from "../../../lib";
+import { cleanObject } from "@utils";
+import { db } from "@lib";
 
 const Product = db.Product;
 const Detail = db.Detail;

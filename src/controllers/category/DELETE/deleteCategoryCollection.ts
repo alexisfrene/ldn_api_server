@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { db, deleteImageToCloudinary } from "../../../lib";
+import { db, deleteImageToCloudinary } from "@lib";
 
 const Category = db.Category;
 const User = db.User;

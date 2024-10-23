@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { deleteImageToCloudinary, db } from "../../../lib";
+import { deleteImageToCloudinary, db } from "@lib";
 
 const Variation = db.Variation;
 

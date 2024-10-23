@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { uploadToCloudinary, db } from "../../../lib";
+import { uploadToCloudinary, db } from "@lib";
 
 const Category = db.Category;
 const User = db.User;

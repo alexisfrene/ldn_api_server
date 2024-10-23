@@ -1,16 +1,18 @@
 import { Sequelize } from "sequelize";
-import userModel from "../../models/Users";
-import sizeModel from "../../models/Sizes";
-import debtsModel from "../../models/Debts";
-import detailModel from "../../models/Details";
-import productModel from "../../models/Products";
-import movementsModel from "../../models/Movements";
-import categoryModel from "../../models/Categories";
-import variationModel from "../../models/Variations";
-import installmentsModel from "../../models/Installments";
-import paymentMethodsModel from "../../models/PaymentMethods";
-import financialAccountsModel from "../../models/FinancialAccounts";
 import { config as connectionPSQL } from "./config";
+import {
+  userModel,
+  sizeModel,
+  debtsModel,
+  detailModel,
+  productModel,
+  movementsModel,
+  categoryModel,
+  variationModel,
+  installmentsModel,
+  paymentMethodsModel,
+  financialAccountsModel,
+} from "@models";
 
 const env = "development";
 const config = connectionPSQL[env];

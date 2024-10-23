@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { cleanObject, isNumber } from "../../../utils";
-import { db } from "../../../lib";
+import { cleanObject, isNumber } from "@utils";
+import { db } from "@lib";
 
 const Product = db.Product;
 const Category = db.Category;

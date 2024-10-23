@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { db } from "../../../lib";
+import { db } from "@lib";
 
 const User = db.User;
 

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import axios from "axios";
-import { uploadToCloudinary, db } from "../../../lib";
+import { uploadToCloudinary, db } from "@lib";
 
 const Product = db.Product;
 const Category = db.Category;

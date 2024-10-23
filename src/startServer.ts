@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { Application } from "express";
-import { deleteFilesInTemp } from "./utils";
+import { deleteFilesInTemp } from "@utils";
 
 const tempDir = path.join(process.cwd(), "temp");
 

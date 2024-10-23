@@ -12,7 +12,7 @@ import {
   getProductForCategory,
   getImageProduct,
 } from "../../controllers";
-import { upload } from "../../lib";
+import { upload } from "@lib";
 const router = express.Router();
 
 router.get("/", async (req, res) => {

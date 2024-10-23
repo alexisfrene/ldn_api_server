@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { uploadToCloudinary, db } from "../../../lib";
+import { uploadToCloudinary, db } from "@lib";
 
 const Variation = db.Variation;
 

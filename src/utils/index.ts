@@ -1,8 +1,9 @@
-import bcrypt from "bcrypt";
 import fs from "node:fs";
 import path from "node:path";
+import bcrypt from "bcrypt";
 
 process.loadEnvFile();
+
 const tempDir = path.join(process.cwd(), "temp");
 
 const saltRoundsString = process.env.SALT_ROUNDS;

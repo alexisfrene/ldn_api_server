@@ -1,3 +1,4 @@
+import "tsconfig-paths/register";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
@@ -12,11 +13,11 @@ import {
   categoriesRoutes,
   sizeRoutes,
   financeRoutes,
-} from "./routes";
+} from "@routes";
 import { errorHandler } from "./middleware";
 import { initializeDB } from "./initializeDB";
 import { startServer } from "./startServer";
-import { db } from "./lib";
+import { db } from "@lib";
 
 const app = express();
 

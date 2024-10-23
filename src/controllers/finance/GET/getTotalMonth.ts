@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { db } from "../../../lib";
+import { db } from "@lib";
 import { Op } from "sequelize";
 
 const movements = db.Movement;

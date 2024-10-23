@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import { upload } from "../../lib";
+import { upload } from "@lib";
 import {
   getAllVariations,
   insertVariants,

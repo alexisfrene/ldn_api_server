@@ -8,25 +8,27 @@ import {
 } from "sequelize";
 import { Uuid } from "../types";
 
-export default (sequelize: Sequelize) => {
-  class Installment extends Model<
-    InferAttributes<Installment>,
-    InferCreationAttributes<Installment>
-  > {
-    declare installment_id: Uuid;
-    declare amount: number;
-    declare due_date: Date;
-    declare status: "paid" | "unpaid";
-    declare debt_id: NonAttribute<Uuid>;
+class Installment extends Model<
+  InferAttributes<Installment>,
+  InferCreationAttributes<Installment>
+> {
+  declare installment_id: Uuid;
+  declare amount: number;
+  declare due_date: Date;
+  declare status: "paid" | "unpaid";
+  declare debt_id: NonAttribute<Uuid>;
 
-    static associate(models: any) {
-      Installment.belongsTo(models.Debt, {
-        as: "DebtInstallments",
-        foreignKey: "debt_id",
-      });
-    }
+  static associate(models: any) {
+    Installment.belongsTo(models.Debt, {
+      as: "DebtInstallments",
+      foreignKey: "debt_id",
+    });
   }
-
+}
+export type InstallmentAttributes = InferAttributes<Installment>;
+export type InstallmentCreationAttributes =
+  InferCreationAttributes<Installment>;
+export default (sequelize: Sequelize) => {
   Installment.init(
     {
       installment_id: {

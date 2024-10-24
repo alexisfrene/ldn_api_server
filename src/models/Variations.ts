@@ -14,36 +14,44 @@ type VariationItem = {
   label: string;
   images: string[];
 };
+class Variation extends Model<
+  InferAttributes<Variation, { omit: "user_id" | "category_id" }>,
+  InferCreationAttributes<Variation, { omit: "user_id" | "category_id" }>
+> {
+  declare variation_id: Uuid;
+  declare title: string;
+  declare values: VariationItem[];
+  declare createdAt: CreationOptional<Date>;
+  declare updatedAt: CreationOptional<Date>;
+  declare user_id?: NonAttribute<Uuid>;
+  declare category_id?: NonAttribute<Uuid>;
+  declare category_value: Uuid;
+  static associate(models: any) {
+    Variation.belongsTo(models.Category, {
+      as: "CategoryVariations",
+      foreignKey: "category_id",
+    });
+    Variation.belongsTo(models.User, {
+      as: "VariationUser",
+      foreignKey: "user_id",
+    });
+    Variation.hasMany(models.Product, {
+      as: "VariationProducts",
+      foreignKey: "variation_id",
+    });
+  }
+}
+
+export type VariationAttributes = InferAttributes<
+  Variation,
+  { omit: "user_id" | "category_id" }
+>;
+export type VariationCreationAttributes = InferCreationAttributes<
+  Variation,
+  { omit: "user_id" | "category_id" }
+>;
 
 export default (sequelize: Sequelize) => {
-  class Variation extends Model<
-    InferAttributes<Variation, { omit: "user_id" | "category_id" }>,
-    InferCreationAttributes<Variation, { omit: "user_id" | "category_id" }>
-  > {
-    declare variation_id: Uuid;
-    declare title: string;
-    declare values: VariationItem[];
-    declare createdAt: CreationOptional<Date>;
-    declare updatedAt: CreationOptional<Date>;
-    declare user_id?: NonAttribute<Uuid>;
-    declare category_id?: NonAttribute<Uuid>;
-    declare category_value: Uuid;
-    static associate(models: any) {
-      Variation.belongsTo(models.Category, {
-        as: "CategoryVariations",
-        foreignKey: "category_id",
-      });
-      Variation.belongsTo(models.User, {
-        as: "VariationUser",
-        foreignKey: "user_id",
-      });
-      Variation.hasMany(models.Product, {
-        as: "VariationProducts",
-        foreignKey: "variation_id",
-      });
-    }
-  }
-
   Variation.init(
     {
       variation_id: {

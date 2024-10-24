@@ -13,29 +13,31 @@ type SizeItem = {
   id: Uuid;
   value: string;
 };
+class Size extends Model<SizeAttributes, SizeCreationAttributes> {
+  declare size_id: Uuid;
+  declare title: string;
+  declare values: SizeItem[];
+  declare user_id?: NonAttribute<Uuid>;
+
+  static associate(models: any) {
+    Size.hasMany(models.Product, {
+      as: "SizeProducts",
+      foreignKey: "size_id",
+    });
+    Size.belongsTo(models.User, {
+      as: "SizeUser",
+      foreignKey: "user_id",
+    });
+  }
+}
+
+export type SizeAttributes = InferAttributes<Size, { omit: "user_id" }>;
+export type SizeCreationAttributes = InferCreationAttributes<
+  Size,
+  { omit: "user_id" }
+>;
 
 export default (sequelize: Sequelize) => {
-  class Size extends Model<
-    InferAttributes<Size, { omit: "user_id" }>,
-    InferCreationAttributes<Size, { omit: "user_id" }>
-  > {
-    declare size_id: Uuid;
-    declare title: string;
-    declare values: SizeItem[];
-    declare user_id?: NonAttribute<Uuid>;
-
-    static associate(models: any) {
-      Size.hasMany(models.Product, {
-        as: "SizeProducts",
-        foreignKey: "size_id",
-      });
-      Size.belongsTo(models.User, {
-        as: "SizeUser",
-        foreignKey: "user_id",
-      });
-    }
-  }
-
   Size.init(
     {
       size_id: {

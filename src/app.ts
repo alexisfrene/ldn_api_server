@@ -15,9 +15,9 @@ import {
   financeRoutes,
 } from "@routes";
 import { errorHandler } from "@middlewares";
+import { db } from "@lib";
 import { initializeDB } from "./initializeDB";
 import { startServer } from "./startServer";
-import { db } from "@lib";
 
 const app = express();
 

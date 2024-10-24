@@ -1,64 +1,40 @@
 import { Sequelize } from "sequelize";
 import { config as connectionPSQL } from "./config";
-import {
-  userModel,
-  sizeModel,
-  debtsModel,
-  detailModel,
-  productModel,
-  movementsModel,
-  categoryModel,
-  variationModel,
-  installmentsModel,
-  paymentMethodsModel,
-  financialAccountsModel,
-} from "@models";
+import * as models from "@models";
 
-const env = "development";
+type Env = "development" | "production";
+
+const env: Env = (process.env.NODE_ENV as Env) || "development";
+
 const config = connectionPSQL[env];
-if (
-  !config.username ||
-  !config.password ||
-  !config.database ||
-  !config.host ||
-  !config.port
-) {
+
+if (!config) {
+  throw new Error(`Database configuration for environment ${env} not found.`);
+}
+
+const { database, username, password, host } = config;
+if (!database || !username || !password || !host) {
   throw new Error("Missing required connection configuration properties.");
 }
-const db: Record<string, any> = {};
 
 let sequelize: Sequelize;
+try {
+  sequelize = new Sequelize(database, username, password, {
+    host,
+    dialect: "postgres",
+    logging: false,
+  });
+} catch (error) {
+  console.error("Unable to connect to the database:", error);
+  throw error;
+}
 
-sequelize = new Sequelize(
-  config.database || "",
-  config.username || "",
-  config.password || "",
-  { host: config.host, dialect: "postgres", logging: false }
-);
+const db: { [key: string]: any } = {};
 
-const User = userModel(sequelize);
-const Size = sizeModel(sequelize);
-const Product = productModel(sequelize);
-const Category = categoryModel(sequelize);
-const Detail = detailModel(sequelize);
-const Variation = variationModel(sequelize);
-const Movements = movementsModel(sequelize);
-const PaymentMethods = paymentMethodsModel(sequelize);
-const FinancialAccounts = financialAccountsModel(sequelize);
-const Debts = debtsModel(sequelize);
-const Installments = installmentsModel(sequelize);
-
-db[User.name] = User;
-db[Size.name] = Size;
-db[Product.name] = Product;
-db[Category.name] = Category;
-db[Detail.name] = Detail;
-db[Variation.name] = Variation;
-db[Movements.name] = Movements;
-db[PaymentMethods.name] = PaymentMethods;
-db[FinancialAccounts.name] = FinancialAccounts;
-db[Debts.name] = Debts;
-db[Installments.name] = Installments;
+Object.keys(models).forEach((modelName) => {
+  const model = models[modelName as keyof typeof models](sequelize);
+  db[model.name] = model;
+});
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
@@ -66,7 +42,9 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
-sequelize.sync({ force: false });
+sequelize.sync({ force: false }).catch((error) => {
+  console.error("Error syncing the database:", error);
+});
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

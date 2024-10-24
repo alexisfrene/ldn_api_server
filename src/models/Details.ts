@@ -1,3 +1,4 @@
+// models/Details.ts
 import {
   DataTypes,
   InferAttributes,
@@ -8,27 +9,29 @@ import {
 } from "sequelize";
 import { Uuid } from "../types";
 
-export default (sequelize: Sequelize) => {
-  class Detail extends Model<
-    InferAttributes<Detail, { omit: "product_id" }>,
-    InferCreationAttributes<Detail, { omit: "product_id" }>
-  > {
-    declare detail_id: Uuid;
-    declare gender: string;
-    declare color: string;
-    declare brand: string;
-    declare style: string;
-    declare age: string;
-    declare product_id?: NonAttribute<Uuid>;
+class Detail extends Model<DetailAttributes, DetailCreationAttributes> {
+  declare detail_id: Uuid;
+  declare gender: string;
+  declare color: string;
+  declare brand: string;
+  declare style: string;
+  declare age: string;
+  declare product_id?: NonAttribute<Uuid>;
 
-    static associate(models: any) {
-      Detail.belongsTo(models.Product, {
-        as: "DetailProduct",
-        foreignKey: "product_id",
-      });
-    }
+  static associate(models: any) {
+    Detail.belongsTo(models.Product, {
+      as: "DetailProduct",
+      foreignKey: "product_id",
+    });
   }
+}
+export type DetailAttributes = InferAttributes<Detail, { omit: "product_id" }>;
+export type DetailCreationAttributes = InferCreationAttributes<
+  Detail,
+  { omit: "product_id" }
+>;
 
+export default (sequelize: Sequelize) => {
   Detail.init(
     {
       detail_id: {
@@ -64,5 +67,6 @@ export default (sequelize: Sequelize) => {
       timestamps: false,
     }
   );
+
   return Detail;
 };

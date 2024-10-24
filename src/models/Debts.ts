@@ -1,3 +1,4 @@
+// models/Debts.ts
 import {
   DataTypes,
   InferAttributes,
@@ -8,34 +9,39 @@ import {
 } from "sequelize";
 import { Uuid } from "../types";
 
-export default (sequelize: Sequelize) => {
-  class Debt extends Model<
-    InferAttributes<Debt, { omit: "financial_accounts_id" }>,
-    InferCreationAttributes<Debt, { omit: "financial_accounts_id" }>
-  > {
-    declare debt_id: Uuid;
-    declare interest_rate: number;
-    declare minimum_payment?: number;
-    declare total_debt: number;
-    declare notes?: string;
-    declare payment_frequency: "monthly" | "bi-weekly" | "weekly";
-    declare current_quota?: number;
-    declare updatedAt: Date;
-    declare createdAt: Date;
-    declare financial_accounts_id?: NonAttribute<Uuid>;
+class Debt extends Model<DebtAttributes, DebtCreationAttributes> {
+  declare debt_id: Uuid;
+  declare interest_rate: number;
+  declare minimum_payment?: number;
+  declare total_debt: number;
+  declare notes?: string;
+  declare payment_frequency: "monthly" | "bi-weekly" | "weekly";
+  declare current_quota?: number;
+  declare updatedAt: Date;
+  declare createdAt: Date;
+  declare financial_accounts_id?: NonAttribute<Uuid>;
 
-    static associate(models: any) {
-      Debt.hasMany(models.Installment, {
-        as: "DebtInstallments",
-        foreignKey: "debt_id",
-      });
-      Debt.belongsTo(models.FinancialAccount, {
-        as: "FinancialAccountDebts",
-        foreignKey: "financial_accounts_id",
-      });
-    }
+  static associate(models: any) {
+    Debt.hasMany(models.Installment, {
+      as: "DebtInstallments",
+      foreignKey: "debt_id",
+    });
+    Debt.belongsTo(models.FinancialAccount, {
+      as: "FinancialAccountDebts",
+      foreignKey: "financial_accounts_id",
+    });
   }
+}
+export type DebtAttributes = InferAttributes<
+  Debt,
+  { omit: "financial_accounts_id" }
+>;
+export type DebtCreationAttributes = InferCreationAttributes<
+  Debt,
+  { omit: "financial_accounts_id" }
+>;
 
+export default (sequelize: Sequelize) => {
   Debt.init(
     {
       debt_id: {
@@ -90,5 +96,6 @@ export default (sequelize: Sequelize) => {
       timestamps: true,
     }
   );
+
   return Debt;
 };

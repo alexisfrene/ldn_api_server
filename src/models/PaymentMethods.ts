@@ -8,26 +8,29 @@ import {
 } from "sequelize";
 import { Uuid } from "../types";
 
-export default (sequelize: Sequelize) => {
-  class PaymentMethod extends Model<
-    InferAttributes<PaymentMethod, { omit: "user_id" }>,
-    InferCreationAttributes<PaymentMethod, { omit: "user_id" }>
-  > {
-    declare payment_method_id: Uuid;
-    declare name: string;
-    declare user_id?: NonAttribute<Uuid>;
+class PaymentMethod extends Model<
+  InferAttributes<PaymentMethod, { omit: "user_id" }>,
+  InferCreationAttributes<PaymentMethod, { omit: "user_id" }>
+> {
+  declare payment_method_id: Uuid;
+  declare name: string;
+  declare user_id?: NonAttribute<Uuid>;
 
-    static associate(models: any) {
-      PaymentMethod.belongsTo(models.User, {
-        as: "PaymentMethodUser",
-        foreignKey: "user_id",
-      });
-      PaymentMethod.hasMany(models.Movement, {
-        as: "PaymentMethodMovements",
-        foreignKey: "payment_method_id",
-      });
-    }
+  static associate(models: any) {
+    PaymentMethod.belongsTo(models.User, {
+      as: "PaymentMethodUser",
+      foreignKey: "user_id",
+    });
+    PaymentMethod.hasMany(models.Movement, {
+      as: "PaymentMethodMovements",
+      foreignKey: "payment_method_id",
+    });
   }
+}
+export type PaymentMethodAttributes = InferAttributes<PaymentMethod>;
+export type PaymentMethodCreationAttributes =
+  InferCreationAttributes<PaymentMethod>;
+export default (sequelize: Sequelize) => {
   PaymentMethod.init(
     {
       payment_method_id: {

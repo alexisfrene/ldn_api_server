@@ -1,3 +1,4 @@
+// models/Category.ts
 import {
   DataTypes,
   InferAttributes,
@@ -13,33 +14,37 @@ type CategoriesItem = {
   value: string;
   icon_url: string;
 };
+class Category extends Model<
+  InferAttributes<Category, { omit: "user_id" }>,
+  InferCreationAttributes<Category, { omit: "user_id" }>
+> {
+  declare category_id: Uuid;
+  declare title: string;
+  declare values: CategoriesItem[];
+  declare user_id?: NonAttribute<Uuid>;
+
+  static associate(models: any) {
+    Category.hasMany(models.Product, {
+      as: "CategoryProducts",
+      foreignKey: "category_id",
+    });
+    Category.belongsTo(models.User, {
+      as: "CategoryUser",
+      foreignKey: "user_id",
+    });
+    Category.hasMany(models.Variation, {
+      as: "CategoryVariations",
+      foreignKey: "category_id",
+    });
+  }
+}
+export type CategoryAttributes = InferAttributes<Category, { omit: "user_id" }>;
+export type CategoryCreationAttributes = InferCreationAttributes<
+  Category,
+  { omit: "user_id" }
+>;
 
 export default (sequelize: Sequelize) => {
-  class Category extends Model<
-    InferAttributes<Category, { omit: "user_id" }>,
-    InferCreationAttributes<Category, { omit: "user_id" }>
-  > {
-    declare category_id: Uuid;
-    declare title: string;
-    declare values: CategoriesItem[];
-    declare user_id?: NonAttribute<Uuid>;
-
-    static associate(models: any) {
-      Category.hasMany(models.Product, {
-        as: "CategoryProducts",
-        foreignKey: "category_id",
-      });
-      Category.belongsTo(models.User, {
-        as: "CategoryUser",
-        foreignKey: "user_id",
-      });
-      Category.hasMany(models.Variation, {
-        as: "CategoryVariations",
-        foreignKey: "category_id",
-      });
-    }
-  }
-
   Category.init(
     {
       category_id: {
@@ -47,7 +52,10 @@ export default (sequelize: Sequelize) => {
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
       },
-      title: { type: DataTypes.STRING(50), defaultValue: "" },
+      title: {
+        type: DataTypes.STRING(50),
+        defaultValue: "",
+      },
       values: {
         type: DataTypes.ARRAY(DataTypes.JSONB),
         defaultValue: [],

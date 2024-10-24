@@ -1,5 +1,7 @@
 import {
   DataTypes,
+  HasManyGetAssociationsMixin,
+  HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
@@ -8,6 +10,9 @@ import {
 } from "sequelize";
 import { Uuid } from "../types";
 import { Models } from "@models";
+import { DebtAttributes } from "./Debts";
+import { UserAttributes } from "./Users";
+import { MovementAttributes } from "./Movements";
 class FinancialAccount extends Model<
   InferAttributes<FinancialAccount, { omit: "user_id" }>,
   InferCreationAttributes<FinancialAccount, { omit: "user_id" }>
@@ -16,6 +21,10 @@ class FinancialAccount extends Model<
   declare name: string;
   declare type: "inflow_of_money" | "money_outflow" | "debts";
   declare user_id?: NonAttribute<Uuid>;
+
+  declare getFinancialAccountDebts: HasManyGetAssociationsMixin<DebtAttributes>;
+  declare getFinancialAccountUser: HasOneGetAssociationMixin<UserAttributes>;
+  declare getFinancialAccountMovements: HasManyGetAssociationsMixin<MovementAttributes>;
 
   static associate(models: Models) {
     FinancialAccount.hasMany(models.Debt, {

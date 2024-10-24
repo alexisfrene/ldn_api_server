@@ -1,10 +1,8 @@
-// models/Size.ts
 import {
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
   Model,
-  NonAttribute,
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
@@ -14,11 +12,16 @@ type SizeItem = {
   id: Uuid;
   value: string;
 };
+export type SizeAttributes = InferAttributes<Size, { omit: "user_id" }>;
+export type SizeCreationAttributes = InferCreationAttributes<
+  Size,
+  { omit: "size_id" }
+>;
 class Size extends Model<SizeAttributes, SizeCreationAttributes> {
   declare size_id: Uuid;
   declare title: string;
   declare values: SizeItem[];
-  declare user_id?: NonAttribute<Uuid>;
+  declare user_id?: Uuid;
 
   static associate(models: Models) {
     Size.hasMany(models.Product, {
@@ -31,12 +34,6 @@ class Size extends Model<SizeAttributes, SizeCreationAttributes> {
     });
   }
 }
-
-export type SizeAttributes = InferAttributes<Size, { omit: "user_id" }>;
-export type SizeCreationAttributes = InferCreationAttributes<
-  Size,
-  { omit: "user_id" }
->;
 
 export default (sequelize: Sequelize) => {
   Size.init(

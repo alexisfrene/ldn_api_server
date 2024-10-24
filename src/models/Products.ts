@@ -5,7 +5,6 @@ import {
   InferAttributes,
   InferCreationAttributes,
   CreationOptional,
-  NonAttribute,
   DataTypes,
 } from "sequelize";
 import { Uuid } from "../types";
@@ -13,11 +12,11 @@ import { Models } from "@models";
 
 export type ProductAttributes = InferAttributes<
   Product,
-  { omit: "user_id" | "category_id" | "detail_id" }
+  { omit: "user_id" | "category_id" | "detail_id" | "size_id" }
 >;
 export type ProductCreationAttributes = InferCreationAttributes<
   Product,
-  { omit: "user_id" | "category_id" | "detail_id" }
+  { omit: "product_id" | "variation_id" | "createdAt" | "updatedAt" }
 >;
 
 class Product extends Model<ProductAttributes, ProductCreationAttributes> {
@@ -36,10 +35,11 @@ class Product extends Model<ProductAttributes, ProductCreationAttributes> {
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 
-  declare user_id?: NonAttribute<Uuid>;
-  declare category_id?: NonAttribute<Uuid>;
-  declare detail_id?: NonAttribute<Uuid>;
-  declare variation_id?: Uuid;
+  declare user_id: Uuid;
+  declare category_id: Uuid;
+  declare detail_id: Uuid;
+  declare size_id: Uuid;
+  declare variation_id?: CreationOptional<Uuid>;
 
   static associate(models: Models) {
     Product.belongsTo(models.Category, {

@@ -1,6 +1,8 @@
 import {
   CreationOptional,
   DataTypes,
+  HasManyGetAssociationsMixin,
+  HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
@@ -9,6 +11,8 @@ import {
 } from "sequelize";
 import { Uuid } from "../types";
 import { Models } from "@models";
+import { UserAttributes } from "./Users";
+import { ProductAttributes } from "./Products";
 
 type VariationItem = {
   id: Uuid;
@@ -34,6 +38,10 @@ class Variation extends Model<
   declare user_id?: NonAttribute<Uuid>;
   declare category_id?: NonAttribute<Uuid>;
   declare category_value: Uuid;
+
+  declare getCategoryVariations: HasOneGetAssociationMixin<VariationAttributes>;
+  declare getVariationUser: HasOneGetAssociationMixin<UserAttributes>;
+  declare getVariationProducts: HasManyGetAssociationsMixin<ProductAttributes>;
 
   static associate(models: Models) {
     Variation.belongsTo(models.Category, {

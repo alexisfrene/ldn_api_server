@@ -1,14 +1,19 @@
-// models/Details.ts
 import {
   DataTypes,
+  HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
-  NonAttribute,
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
 import { Models } from "@models";
+import { ProductAttributes } from "./Products";
+export type DetailAttributes = InferAttributes<Detail, { omit: "product_id" }>;
+export type DetailCreationAttributes = InferCreationAttributes<
+  Detail,
+  { omit: "detail_id" }
+>;
 
 class Detail extends Model<DetailAttributes, DetailCreationAttributes> {
   declare detail_id: Uuid;
@@ -17,7 +22,9 @@ class Detail extends Model<DetailAttributes, DetailCreationAttributes> {
   declare brand: string;
   declare style: string;
   declare age: string;
-  declare product_id?: NonAttribute<Uuid>;
+  declare product_id: Uuid;
+
+  declare getDetailProduct: HasOneGetAssociationMixin<ProductAttributes>;
 
   static associate(models: Models) {
     Detail.belongsTo(models.Product, {
@@ -26,11 +33,6 @@ class Detail extends Model<DetailAttributes, DetailCreationAttributes> {
     });
   }
 }
-export type DetailAttributes = InferAttributes<Detail, { omit: "product_id" }>;
-export type DetailCreationAttributes = InferCreationAttributes<
-  Detail,
-  { omit: "product_id" }
->;
 
 export default (sequelize: Sequelize) => {
   Detail.init(

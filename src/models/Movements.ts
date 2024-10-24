@@ -1,6 +1,6 @@
-// models/Movement.ts
 import {
   DataTypes,
+  HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
@@ -9,6 +9,9 @@ import {
 } from "sequelize";
 import { Uuid } from "../types";
 import { Models } from "@models";
+import { FinancialAccountAttributes } from "./FinancialAccounts";
+import { PaymentMethodAttributes } from "./PaymentMethods";
+import { UserAttributes } from "./Users";
 
 class Movement extends Model<MovementAttributes, MovementCreationAttributes> {
   declare movements_id: Uuid;
@@ -22,6 +25,10 @@ class Movement extends Model<MovementAttributes, MovementCreationAttributes> {
   declare user_id?: NonAttribute<Uuid>;
   declare payment_method_id?: NonAttribute<Uuid>;
   declare financial_accounts_id?: NonAttribute<Uuid>;
+
+  declare getFinancialAccountMovements: HasOneGetAssociationMixin<FinancialAccountAttributes>;
+  declare getPaymentMethodMovements: HasOneGetAssociationMixin<PaymentMethodAttributes>;
+  declare getMovementUser: HasOneGetAssociationMixin<UserAttributes>;
 
   static associate(models: Models) {
     Movement.belongsTo(models.FinancialAccount, {

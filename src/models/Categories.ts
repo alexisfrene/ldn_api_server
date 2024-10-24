@@ -1,14 +1,17 @@
-// models/Category.ts
 import {
   DataTypes,
+  HasManyGetAssociationsMixin,
+  HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
-  NonAttribute,
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
 import { Models } from "@models";
+import { ProductAttributes } from "./Products";
+import { UserAttributes } from "./Users";
+import { VariationAttributes } from "./Variations";
 
 type CategoriesItem = {
   id: string;
@@ -25,7 +28,11 @@ class Category extends Model<CategoryAttributes, CategoryCreationAttributes> {
   declare category_id: Uuid;
   declare title: string;
   declare values: CategoriesItem[];
-  declare user_id?: NonAttribute<Uuid>;
+  declare user_id: Uuid;
+
+  declare getCategoryProducts: HasManyGetAssociationsMixin<ProductAttributes>;
+  declare getCategoryUser: HasOneGetAssociationMixin<UserAttributes>;
+  declare getCategoryVariations: HasManyGetAssociationsMixin<VariationAttributes>;
 
   static associate(models: Models) {
     Category.hasMany(models.Product, {

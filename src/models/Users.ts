@@ -1,4 +1,3 @@
-// models/Users.ts
 import {
   Model,
   Sequelize,
@@ -13,6 +12,16 @@ import { Uuid } from "../types";
 import { Models } from "@models";
 import { CategoryAttributes } from "./Categories";
 import { VariationAttributes } from "./Variations";
+import { ProductAttributes } from "./Products";
+import { FinancialAccountAttributes } from "./FinancialAccounts";
+import { PaymentMethodAttributes } from "./PaymentMethods";
+import { MovementAttributes } from "./Movements";
+
+export type UserAttributes = InferAttributes<User>;
+export type UserCreationAttributes = InferCreationAttributes<
+  User,
+  { omit: "config" | "session_token" | "user_id" }
+>;
 
 class User extends Model<UserAttributes, UserCreationAttributes> {
   declare user_id: CreationOptional<Uuid>;
@@ -31,13 +40,18 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   declare phone_number: CreationOptional<string | null>;
   declare role: CreationOptional<string | null>;
   declare session_token: CreationOptional<string | null>;
-  declare config: Record<string, any>;
+  declare config: CreationOptional<Record<string, any>>;
 
   get fullName(): NonAttribute<string> {
     return `${this.first_name} ${this.last_name}`;
   }
   declare getUserCategories: HasManyGetAssociationsMixin<CategoryAttributes>;
   declare getUserVariations: HasManyGetAssociationsMixin<VariationAttributes>;
+  declare getUserProducts: HasManyGetAssociationsMixin<ProductAttributes>;
+  declare getUserFinancialAccounts: HasManyGetAssociationsMixin<FinancialAccountAttributes>;
+  declare getUserPaymentMethods: HasManyGetAssociationsMixin<PaymentMethodAttributes>;
+  declare getUserMovements: HasManyGetAssociationsMixin<MovementAttributes>;
+
   static associate(models: Models) {
     User.hasMany(models.Size, { as: "UserSizes", foreignKey: "user_id" });
     User.hasMany(models.Product, { as: "UserProducts", foreignKey: "user_id" });
@@ -63,9 +77,6 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
     });
   }
 }
-
-export type UserAttributes = InferAttributes<User>;
-export type UserCreationAttributes = InferCreationAttributes<User>;
 
 export default (sequelize: Sequelize) => {
   User.init(

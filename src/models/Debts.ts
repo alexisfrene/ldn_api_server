@@ -1,6 +1,7 @@
-// models/Debts.ts
 import {
   DataTypes,
+  HasManyGetAssociationsMixin,
+  HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
@@ -9,6 +10,8 @@ import {
 } from "sequelize";
 import { Uuid } from "../types";
 import { Models } from "@models";
+import { InstallmentAttributes } from "./Installments";
+import { FinancialAccountAttributes } from "./FinancialAccounts";
 
 class Debt extends Model<DebtAttributes, DebtCreationAttributes> {
   declare debt_id: Uuid;
@@ -21,6 +24,9 @@ class Debt extends Model<DebtAttributes, DebtCreationAttributes> {
   declare updatedAt: Date;
   declare createdAt: Date;
   declare financial_accounts_id?: NonAttribute<Uuid>;
+
+  declare getDebtInstallments: HasManyGetAssociationsMixin<InstallmentAttributes>;
+  declare getFinancialAccountDebts: HasOneGetAssociationMixin<FinancialAccountAttributes>;
 
   static associate(models: Models) {
     Debt.hasMany(models.Installment, {

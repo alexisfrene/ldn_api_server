@@ -1,5 +1,6 @@
 import {
   DataTypes,
+  HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
@@ -8,6 +9,11 @@ import {
 } from "sequelize";
 import { Uuid } from "../types";
 import { Models } from "@models";
+import { DebtAttributes } from "./Debts";
+
+export type InstallmentAttributes = InferAttributes<Installment>;
+export type InstallmentCreationAttributes =
+  InferCreationAttributes<Installment>;
 
 class Installment extends Model<
   InferAttributes<Installment>,
@@ -19,6 +25,8 @@ class Installment extends Model<
   declare status: "paid" | "unpaid";
   declare debt_id: NonAttribute<Uuid>;
 
+  declare getDebtInstallments: HasOneGetAssociationMixin<DebtAttributes>;
+
   static associate(models: Models) {
     Installment.belongsTo(models.Debt, {
       as: "DebtInstallments",
@@ -26,9 +34,7 @@ class Installment extends Model<
     });
   }
 }
-export type InstallmentAttributes = InferAttributes<Installment>;
-export type InstallmentCreationAttributes =
-  InferCreationAttributes<Installment>;
+
 export default (sequelize: Sequelize) => {
   Installment.init(
     {

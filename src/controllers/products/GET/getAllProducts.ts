@@ -7,12 +7,10 @@ const Product = models.Product;
 export const getAllProducts = async (req: Request, res: Response) => {
   const user_id = req.user;
   const user = await User.findByPk(user_id || "");
-  if (!user) {
-    return res.status(404).json({ error: "User not found" });
-  }
-  const allProducts = user?.getUserProducts()
-    ? await user.getUserProducts()
-    : [];
+  if (user)
+    const allProducts = user.getUserProducts()
+      ? await user.getUserProducts()
+      : [];
   if (!allProducts)
     return res
       .status(400)

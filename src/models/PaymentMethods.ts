@@ -1,5 +1,7 @@
 import {
   DataTypes,
+  HasManyGetAssociationsMixin,
+  HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
@@ -8,6 +10,12 @@ import {
 } from "sequelize";
 import { Uuid } from "../types";
 import { Models } from "@models";
+import { UserAttributes } from "./Users";
+import { MovementAttributes } from "./Movements";
+
+export type PaymentMethodAttributes = InferAttributes<PaymentMethod>;
+export type PaymentMethodCreationAttributes =
+  InferCreationAttributes<PaymentMethod>;
 
 class PaymentMethod extends Model<
   InferAttributes<PaymentMethod, { omit: "user_id" }>,
@@ -16,6 +24,9 @@ class PaymentMethod extends Model<
   declare payment_method_id: Uuid;
   declare name: string;
   declare user_id?: NonAttribute<Uuid>;
+
+  declare getPaymentMethodMovements: HasManyGetAssociationsMixin<MovementAttributes>;
+  declare getPaymentMethodUser: HasOneGetAssociationMixin<UserAttributes>;
 
   static associate(models: Models) {
     PaymentMethod.belongsTo(models.User, {
@@ -28,9 +39,7 @@ class PaymentMethod extends Model<
     });
   }
 }
-export type PaymentMethodAttributes = InferAttributes<PaymentMethod>;
-export type PaymentMethodCreationAttributes =
-  InferCreationAttributes<PaymentMethod>;
+
 export default (sequelize: Sequelize) => {
   PaymentMethod.init(
     {

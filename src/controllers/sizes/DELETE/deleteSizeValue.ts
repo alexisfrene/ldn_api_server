@@ -26,7 +26,13 @@ export const deleteSizeValue = async (req: Request, res: Response) => {
     (value: { id: string }) => value.id !== size_value
   );
   const userProducts = await User.findByPk(user_id)
-    .then((user: { getUserProducts: () => any }) => user.getUserProducts())
+    .then((user) => {
+      if (user) {
+        return user.getUserProducts();
+      } else {
+        return [];
+      }
+    })
     .then((products: any[]) =>
       products.filter(
         (product: { size_id: string; size_value: string }) =>
@@ -39,8 +45,14 @@ export const deleteSizeValue = async (req: Request, res: Response) => {
     });
   }
 
-  const newValuesInSize = await sizeSelected.update({
-    values: newValues,
+  if (sizeSelected) {
+    const newValuesInSize = await sizeSelected.update({
+      values: newValues,
+    });
+    return res.status(200).json({ message: newValuesInSize });
+  }
+  return res.status(400).json({
+    message: "Error al eliminar un valor de tallas",
+    error: true,
   });
-  return res.status(200).json({ message: newValuesInSize });
 };

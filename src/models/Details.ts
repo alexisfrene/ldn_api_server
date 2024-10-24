@@ -15,7 +15,7 @@ export type DetailCreationAttributes = InferCreationAttributes<
   { omit: "detail_id" }
 >;
 
-class Detail extends Model<DetailAttributes, DetailCreationAttributes> {
+export class Detail extends Model<DetailAttributes, DetailCreationAttributes> {
   declare detail_id: Uuid;
   declare gender: string;
   declare color: string;

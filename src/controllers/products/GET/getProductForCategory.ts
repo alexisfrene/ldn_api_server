@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
+import { Uuid } from "types";
 
 const User = models.User;
 
@@ -16,7 +17,7 @@ export const getProductForCategory = async (req: Request, res: Response) => {
       error: true,
       message: "El usuario no tiene productos cargados",
     });
-  const category = await Category.findByPk(category_id || "");
+  const category = await Category.findByPk((category_id as Uuid) || "");
 
   if (!category)
     return res

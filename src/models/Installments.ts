@@ -15,7 +15,7 @@ export type InstallmentAttributes = InferAttributes<Installment>;
 export type InstallmentCreationAttributes =
   InferCreationAttributes<Installment>;
 
-class Installment extends Model<
+export class Installment extends Model<
   InferAttributes<Installment>,
   InferCreationAttributes<Installment>
 > {

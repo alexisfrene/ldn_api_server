@@ -17,7 +17,7 @@ export type SizeCreationAttributes = InferCreationAttributes<
   Size,
   { omit: "size_id" }
 >;
-class Size extends Model<SizeAttributes, SizeCreationAttributes> {
+export class Size extends Model<SizeAttributes, SizeCreationAttributes> {
   declare size_id: Uuid;
   declare title: string;
   declare values: SizeItem[];

@@ -13,7 +13,7 @@ import { Models } from "@models";
 import { InstallmentAttributes } from "./Installments";
 import { FinancialAccountAttributes } from "./FinancialAccounts";
 
-class Debt extends Model<DebtAttributes, DebtCreationAttributes> {
+export class Debt extends Model<DebtAttributes, DebtCreationAttributes> {
   declare debt_id: Uuid;
   declare interest_rate: number;
   declare minimum_payment?: number;

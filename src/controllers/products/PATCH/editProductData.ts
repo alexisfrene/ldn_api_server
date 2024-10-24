@@ -32,47 +32,64 @@ export const editProductData = async (req: Request, res: Response) => {
 
   if (propertiesToEdit?.category_id && propertiesToEdit?.category_value) {
     const newCategory = await Category.findByPk(propertiesToEdit.category_id);
-    const valuesNewCategory = newCategory.values.find(
-      (value: { id: string }) => value.id === propertiesToEdit.category_value
-    );
+    if (newCategory) {
+      const valuesNewCategory = newCategory.values.find(
+        (value: { id: string }) => value.id === propertiesToEdit.category_value
+      );
 
-    if (!valuesNewCategory) {
-      return res.status(400).json({ error: "Categoría invalida" });
+      if (!valuesNewCategory) {
+        return res.status(400).json({ error: "Categoría invalida" });
+      }
+      nameProps.category = valuesNewCategory.value;
+    } else {
+      if (product) {
+        const category = await Category.findByPk(product.category_id);
+        if (category) {
+          const value = category.values.find(
+            (value: { id: string }) => value.id === product.category_value
+          );
+          nameProps.category = value?.value || "";
+        }
+      }
     }
-    nameProps.category = valuesNewCategory.value;
-  } else {
-    const category = await Category.findByPk(product.category_id);
-    const value = category.values.find(
-      (value: { id: string }) => value.id === product.category_value
-    );
-    nameProps.category = value.value;
-  }
-  if (propertiesToEdit?.size_id && propertiesToEdit?.size_value) {
-    const newSize = await Size.findByPk(propertiesToEdit.size_id);
-    const valuesNewSize = newSize.values.find(
-      (value: { id: string }) => value.id === propertiesToEdit.size_value
-    );
+    if (propertiesToEdit?.size_id && propertiesToEdit?.size_value) {
+      const newSize = await Size.findByPk(propertiesToEdit.size_id);
+      if (newSize) {
+        const valuesNewSize = newSize.values.find(
+          (value: { id: string }) => value.id === propertiesToEdit.size_value
+        );
+        if (!valuesNewSize) {
+          return res.status(400).json({ error: "Talla/numero invalida" });
+        }
+        nameProps.size = valuesNewSize.value;
+      }
+    } else {
+      if (product) {
+        const size = await Size.findByPk(product.size_id);
+        if (size) {
+          const value = size.values.find(
+            (value: { id: string }) => value.id === product.size_value
+          );
 
-    if (!valuesNewSize) {
-      return res.status(400).json({ error: "Talla/numero invalida" });
+          nameProps.size = value?.value || "";
+        }
+      }
     }
-    nameProps.size = valuesNewSize.value;
-  } else {
-    const size = await Size.findByPk(product.size_id);
-    const value = size.values.find(
-      (value: { id: string }) => value.id === product.size_value
-    );
-    nameProps.size = value.value;
+    if (product) {
+      const updateDataProduct = await product.update(propertiesToEdit);
+
+      return res.status(200).json({
+        name: updateDataProduct.name,
+        category: nameProps.category,
+        description: updateDataProduct.description,
+        price: updateDataProduct.price,
+        product_id: updateDataProduct.product_id,
+        size: nameProps.size,
+      });
+    }
   }
-
-  const updateDataProduct = await product.update(propertiesToEdit);
-
-  return res.status(200).json({
-    name: updateDataProduct.name,
-    category: nameProps.category,
-    description: updateDataProduct.description,
-    price: updateDataProduct.price,
-    product_id: updateDataProduct.product_id,
-    size: nameProps.size,
+  return res.status(400).json({
+    error: true,
+    message: "Se paso algo invalido para el valor de precio del producto",
   });
 };

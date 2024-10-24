@@ -24,7 +24,10 @@ export type CategoryCreationAttributes = InferCreationAttributes<
   { omit: "category_id" }
 >;
 
-class Category extends Model<CategoryAttributes, CategoryCreationAttributes> {
+export class Category extends Model<
+  CategoryAttributes,
+  CategoryCreationAttributes
+> {
   declare category_id: Uuid;
   declare title: string;
   declare values: CategoriesItem[];

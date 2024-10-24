@@ -6,14 +6,17 @@ import {
   InferCreationAttributes,
   CreationOptional,
   DataTypes,
+  HasOneGetAssociationMixin,
 } from "sequelize";
 import { Uuid } from "../types";
 import { Models } from "@models";
+import { Category, CategoryAttributes } from "./Categories";
+import { Size, SizeAttributes } from "./Sizes";
+import { Detail, DetailAttributes } from "./Details";
+import { Variation, VariationAttributes } from "./Variations";
+import { User, UserAttributes } from "./Users";
 
-export type ProductAttributes = InferAttributes<
-  Product,
-  { omit: "user_id" | "category_id" | "detail_id" | "size_id" }
->;
+export type ProductAttributes = InferAttributes<Product>;
 export type ProductCreationAttributes = InferCreationAttributes<
   Product,
   { omit: "product_id" | "variation_id" | "createdAt" | "updatedAt" }
@@ -40,6 +43,12 @@ class Product extends Model<ProductAttributes, ProductCreationAttributes> {
   declare detail_id: Uuid;
   declare size_id: Uuid;
   declare variation_id?: CreationOptional<Uuid>;
+
+  declare getCategoryProducts: HasOneGetAssociationMixin<CategoryAttributes>;
+  declare getSizeProducts: HasOneGetAssociationMixin<SizeAttributes>;
+  declare getDetailProduct: HasOneGetAssociationMixin<DetailAttributes>;
+  declare getVariationProducts: HasOneGetAssociationMixin<VariationAttributes>;
+  declare getUserProducts: HasOneGetAssociationMixin<UserAttributes>;
 
   static associate(models: Models) {
     Product.belongsTo(models.Category, {
@@ -119,6 +128,27 @@ export default (sequelize: Sequelize) => {
       },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
+      user_id: {
+        type: DataTypes.UUID,
+        references: { model: User, key: "user_id" },
+      },
+      category_id: {
+        type: DataTypes.UUID,
+        references: { model: Category, key: "category_id" },
+      },
+      detail_id: {
+        type: DataTypes.UUID,
+        references: { model: Detail, key: "detail_id" },
+      },
+      size_id: {
+        type: DataTypes.UUID,
+        references: { model: Size, key: "size_id" },
+      },
+      variation_id: {
+        type: DataTypes.UUID,
+        allowNull: true,
+        references: { model: Variation, key: "variation_id" },
+      },
     },
     {
       sequelize,

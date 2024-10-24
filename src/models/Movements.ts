@@ -13,7 +13,10 @@ import { FinancialAccountAttributes } from "./FinancialAccounts";
 import { PaymentMethodAttributes } from "./PaymentMethods";
 import { UserAttributes } from "./Users";
 
-class Movement extends Model<MovementAttributes, MovementCreationAttributes> {
+export class Movement extends Model<
+  MovementAttributes,
+  MovementCreationAttributes
+> {
   declare movements_id: Uuid;
   declare entry_date: Date;
   declare label: string;

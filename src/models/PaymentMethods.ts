@@ -17,7 +17,7 @@ export type PaymentMethodAttributes = InferAttributes<PaymentMethod>;
 export type PaymentMethodCreationAttributes =
   InferCreationAttributes<PaymentMethod>;
 
-class PaymentMethod extends Model<
+export class PaymentMethod extends Model<
   InferAttributes<PaymentMethod, { omit: "user_id" }>,
   InferCreationAttributes<PaymentMethod, { omit: "user_id" }>
 > {

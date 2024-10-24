@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
+import { Uuid } from "types";
 
 const Product = models.Product;
 
@@ -12,7 +13,7 @@ export const linkVariation = async (req: Request, res: Response) => {
     return res
       .status(400)
       .json({ error: true, message: "NO se paso id de la variación" });
-  const variation = await Variation.findByPk(variationId);
+  const variation = await Variation.findByPk(variationId as Uuid);
   if (!variation)
     return res
       .status(400)

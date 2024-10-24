@@ -17,8 +17,14 @@ export const deleteSizeCollection = async (req: Request, res: Response) => {
       .json({ error: true, message: "El usuario no esta autentificado" });
   const sizeSelected = await Size.findByPk(size_id);
   const userProducts = await User.findByPk(user_id)
-    .then((user: { getUserProducts: () => any }) => user.getUserProducts())
-    .then((products: any[]) =>
+    .then((user) => {
+      if (user) {
+        return user.getUserProducts();
+      } else {
+        return [];
+      }
+    })
+    .then((products) =>
       products.filter(
         (product: { size_id: string; size_value: string }) =>
           product.size_id === size_id
@@ -29,7 +35,15 @@ export const deleteSizeCollection = async (req: Request, res: Response) => {
       await product.update({ size_value: null, size_id: null });
     });
   }
-  const destroySize = await sizeSelected.destroy();
+  if (sizeSelected) {
+    const destroySize = await sizeSelected.destroy();
 
-  return res.status(200).json({ message: destroySize });
+    return res.status(200).json({ message: destroySize });
+  }
+  return res
+    .status(400)
+    .json({
+      message: "Error al eliminar una colección de tallas",
+      error: true,
+    });
 };

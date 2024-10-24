@@ -16,6 +16,7 @@ import { ProductAttributes } from "./Products";
 import { FinancialAccountAttributes } from "./FinancialAccounts";
 import { PaymentMethodAttributes } from "./PaymentMethods";
 import { MovementAttributes } from "./Movements";
+import { SizeAttributes } from "./Sizes";
 
 export type UserAttributes = InferAttributes<User>;
 export type UserCreationAttributes = InferCreationAttributes<
@@ -23,7 +24,7 @@ export type UserCreationAttributes = InferCreationAttributes<
   { omit: "config" | "session_token" | "user_id" }
 >;
 
-class User extends Model<UserAttributes, UserCreationAttributes> {
+export class User extends Model<UserAttributes, UserCreationAttributes> {
   declare user_id: CreationOptional<Uuid>;
   declare last_name: string;
   declare first_name: string;
@@ -51,6 +52,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   declare getUserFinancialAccounts: HasManyGetAssociationsMixin<FinancialAccountAttributes>;
   declare getUserPaymentMethods: HasManyGetAssociationsMixin<PaymentMethodAttributes>;
   declare getUserMovements: HasManyGetAssociationsMixin<MovementAttributes>;
+  declare getUserSizes: HasManyGetAssociationsMixin<SizeAttributes>;
 
   static associate(models: Models) {
     User.hasMany(models.Size, { as: "UserSizes", foreignKey: "user_id" });

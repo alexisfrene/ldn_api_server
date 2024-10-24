@@ -26,7 +26,7 @@ export type VariationCreationAttributes = InferCreationAttributes<
   { omit: "variation_id" | "createdAt" | "updatedAt" }
 >;
 
-class Variation extends Model<
+export class Variation extends Model<
   VariationAttributes,
   VariationCreationAttributes
 > {

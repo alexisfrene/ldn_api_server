@@ -13,7 +13,7 @@ import { Models } from "@models";
 import { DebtAttributes } from "./Debts";
 import { UserAttributes } from "./Users";
 import { MovementAttributes } from "./Movements";
-class FinancialAccount extends Model<
+export class FinancialAccount extends Model<
   InferAttributes<FinancialAccount, { omit: "user_id" }>,
   InferCreationAttributes<FinancialAccount, { omit: "user_id" }>
 > {

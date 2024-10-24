@@ -1,5 +1,5 @@
 import express from "express";
-import { conditionalUpload, handleProductType } from "../../middleware";
+import { conditionalUpload, handleProductType } from "@middlewares";
 import {
   deleteProduct,
   createProducts,
@@ -11,7 +11,7 @@ import {
   linkVariation,
   getProductForCategory,
   getImageProduct,
-} from "../../controllers";
+} from "@controllers";
 import { upload } from "@lib";
 const router = express.Router();
 

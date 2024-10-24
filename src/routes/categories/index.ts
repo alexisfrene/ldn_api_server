@@ -1,6 +1,6 @@
 import express from "express";
 import categoriesRoutes from "./categoriesRoutes";
-import { asyncHandler, authenticateToken } from "../../middleware";
+import { asyncHandler, authenticateToken } from "@middlewares";
 
 const router = express.Router();
 

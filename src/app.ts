@@ -14,7 +14,7 @@ import {
   sizeRoutes,
   financeRoutes,
 } from "@routes";
-import { errorHandler } from "./middleware";
+import { errorHandler } from "@middlewares";
 import { initializeDB } from "./initializeDB";
 import { startServer } from "./startServer";
 import { db } from "@lib";

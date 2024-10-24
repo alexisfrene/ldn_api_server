@@ -4,7 +4,7 @@ import {
   getPreferenceInProductView,
   preferenceInProductView,
   changeAvatar,
-} from "../../controllers";
+} from "@controllers";
 import { upload } from "@lib";
 
 const router = express.Router();

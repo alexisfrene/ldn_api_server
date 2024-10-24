@@ -40,8 +40,8 @@ export const getAllTheMoves = async (req: Request, res: Response) => {
           label: movement.label,
           value: movement.value,
           type: movement.type,
-          payment_method: paymentMethodRecord?.name,
-          account: financialAccountRecord?.name,
+          payment_method: paymentMethodRecord?.name || "Sin método de pago",
+          account: financialAccountRecord?.name || "Sin cuenta",
           id: movement.movements_id,
         };
       }

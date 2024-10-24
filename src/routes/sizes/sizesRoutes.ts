@@ -7,13 +7,13 @@ import {
   deleteSizeValue,
   getAllSizes,
   modifyTitleCollectionSize,
-} from "../../controllers";
-import { runValidate } from "../../middleware";
+} from "@controllers";
+import { runValidate } from "@middlewares";
 import {
   createSizeValidator,
   deleteSizeValidator,
   editSizeValidator,
-} from "../../validators";
+} from "@validators";
 
 const router = express.Router();
 

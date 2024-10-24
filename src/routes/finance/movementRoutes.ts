@@ -4,13 +4,13 @@ import {
   deleteMovement,
   editMovement,
   getAllTheMoves,
-} from "../../controllers";
-import { runValidate } from "../../middleware";
+} from "@controllers";
+import { runValidate } from "@middlewares";
 import {
   createMovementValidations,
   deleteMovementValidations,
   editMovementValidations,
-} from "../../validators";
+} from "@validators";
 
 const router = express.Router();
 

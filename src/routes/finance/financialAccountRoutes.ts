@@ -4,13 +4,13 @@ import {
   getFinancialAccounts,
   deleteFinancialAccount,
   editFinancialAccount,
-} from "../../controllers";
-import { runValidate } from "../../middleware";
+} from "@controllers";
+import { runValidate } from "@middlewares";
 import {
   //createFinancialAccountValidations,
   deleteFinancialAccountValidations,
   editFinancialAccountValidations,
-} from "../../validators";
+} from "@validators";
 
 const router = express.Router();
 

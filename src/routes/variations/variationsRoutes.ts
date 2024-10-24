@@ -11,7 +11,7 @@ import {
   getVariationForCategory,
   removeImagesCollection,
   insertNewCollection,
-} from "../../controllers";
+} from "@controllers";
 
 const router = express.Router();
 

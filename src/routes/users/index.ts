@@ -1,5 +1,5 @@
 import express from "express";
-import { asyncHandler, authenticateToken } from "../../middleware";
+import { asyncHandler, authenticateToken } from "@middlewares";
 import usersRoutes from "./usersRoutes";
 import loginRoutes from "./loginRoutes";
 import registerRoutes from "./registerRouter";

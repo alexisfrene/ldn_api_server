@@ -1,6 +1,6 @@
 import express from "express";
-import { asyncHandler, authenticateToken } from "../../middleware";
-import { getTotalMonth } from "../../controllers";
+import { asyncHandler, authenticateToken } from "@middlewares";
+import { getTotalMonth } from "@controllers";
 import financialAccountRoutes from "./financialAccountRoutes";
 import paymentMethodRoutes from "./paymentMethodRoutes";
 import movementRoutes from "./movementRoutes";

@@ -5,7 +5,6 @@ import {
   InferAttributes,
   InferCreationAttributes,
   Model,
-  NonAttribute,
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
@@ -14,16 +13,18 @@ import { UserAttributes } from "./Users";
 import { MovementAttributes } from "./Movements";
 
 export type PaymentMethodAttributes = InferAttributes<PaymentMethod>;
-export type PaymentMethodCreationAttributes =
-  InferCreationAttributes<PaymentMethod>;
+export type PaymentMethodCreationAttributes = InferCreationAttributes<
+  PaymentMethod,
+  { omit: "payment_method_id" }
+>;
 
 export class PaymentMethod extends Model<
-  InferAttributes<PaymentMethod, { omit: "user_id" }>,
-  InferCreationAttributes<PaymentMethod, { omit: "user_id" }>
+  PaymentMethodAttributes,
+  PaymentMethodCreationAttributes
 > {
   declare payment_method_id: Uuid;
   declare name: string;
-  declare user_id?: NonAttribute<Uuid>;
+  declare user_id: Uuid;
 
   declare getPaymentMethodMovements: HasManyGetAssociationsMixin<MovementAttributes>;
   declare getPaymentMethodUser: HasOneGetAssociationMixin<UserAttributes>;
@@ -52,7 +53,10 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: "Sin nombre",
-        unique: true,
+      },
+      user_id: {
+        type: DataTypes.UUID,
+        references: { model: "users", key: "user_id" },
       },
     },
     {

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
+import { Uuid } from "types";
 //import { formatDate } from "../../../utils";
 
 const FinancialAccounts = models.FinancialAccount;
@@ -8,13 +9,17 @@ const Installments = models.Installment;
 
 export const createFinancialAccounts = async (req: Request, res: Response) => {
   const user_id = req.user;
-  const { name, type } = req.body;
+  const {
+    name,
+    type,
+  }: { name: string; type: "inflow_of_money" | "money_outflow" | "debts" } =
+    req.body;
   const newFinancialAccount = await FinancialAccounts.create({
     name,
     type,
-    user_id,
+    user_id: user_id as Uuid,
   });
-  if (type === "debt") {
+  if (type === "debts") {
     const newDebts = await Debts.create({
       notes: req.body.notes || "Sin nota",
       total_debt: req.body.total_debt || 0,
@@ -23,7 +28,11 @@ export const createFinancialAccounts = async (req: Request, res: Response) => {
       financial_accounts_id: newFinancialAccount.financial_accounts_id,
     });
     const promiseInstallment = req.body.installments.map(
-      async (installment: { amount: number; due_date: Date; status: string }) =>
+      async (installment: {
+        amount: number;
+        due_date: Date;
+        status: "paid" | "unpaid";
+      }) =>
         Installments.create({
           amount: installment.amount,
           due_date: installment.due_date,

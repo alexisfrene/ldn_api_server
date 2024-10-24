@@ -1,4 +1,3 @@
-// models/Product.ts
 import {
   Model,
   Sequelize,
@@ -10,19 +9,22 @@ import {
 } from "sequelize";
 import { Uuid } from "../types";
 import { Models } from "@models";
-import { Category, CategoryAttributes } from "./Categories";
-import { Size, SizeAttributes } from "./Sizes";
-import { Detail, DetailAttributes } from "./Details";
-import { Variation, VariationAttributes } from "./Variations";
-import { User, UserAttributes } from "./Users";
+import { SizeAttributes } from "./Sizes";
+import { Variation } from "./Variations";
+import { CategoryAttributes } from "./Categories";
+import { User } from "./Users";
+import { DetailAttributes } from "./Details";
 
 export type ProductAttributes = InferAttributes<Product>;
 export type ProductCreationAttributes = InferCreationAttributes<
   Product,
-  { omit: "product_id" | "variation_id" | "createdAt" | "updatedAt" }
+  { omit: "product_id" | "code" }
 >;
 
-class Product extends Model<ProductAttributes, ProductCreationAttributes> {
+export class Product extends Model<
+  ProductAttributes,
+  ProductCreationAttributes
+> {
   declare product_id: CreationOptional<string>;
   declare name: string;
   declare description: string;
@@ -38,17 +40,19 @@ class Product extends Model<ProductAttributes, ProductCreationAttributes> {
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 
+  // Foreign keys
   declare user_id: Uuid;
   declare category_id: Uuid;
   declare detail_id: Uuid;
   declare size_id: Uuid;
   declare variation_id?: CreationOptional<Uuid>;
 
+  // Association Mixins
   declare getCategoryProducts: HasOneGetAssociationMixin<CategoryAttributes>;
   declare getSizeProducts: HasOneGetAssociationMixin<SizeAttributes>;
   declare getDetailProduct: HasOneGetAssociationMixin<DetailAttributes>;
-  declare getVariationProducts: HasOneGetAssociationMixin<VariationAttributes>;
-  declare getUserProducts: HasOneGetAssociationMixin<UserAttributes>;
+  declare getVariationProducts: HasOneGetAssociationMixin<Variation>;
+  declare getUserProducts: HasOneGetAssociationMixin<User>;
 
   static associate(models: Models) {
     Product.belongsTo(models.Category, {
@@ -106,7 +110,7 @@ export default (sequelize: Sequelize) => {
       },
       code: {
         type: DataTypes.INTEGER,
-        autoIncrement: true,
+        defaultValue: Sequelize.literal("nextval('products_code')"),
       },
       stock: {
         type: DataTypes.INTEGER,
@@ -130,24 +134,24 @@ export default (sequelize: Sequelize) => {
       updatedAt: DataTypes.DATE,
       user_id: {
         type: DataTypes.UUID,
-        references: { model: User, key: "user_id" },
+        references: { model: "users", key: "user_id" },
       },
       category_id: {
         type: DataTypes.UUID,
-        references: { model: Category, key: "category_id" },
+        references: { model: "categories", key: "category_id" },
       },
       detail_id: {
         type: DataTypes.UUID,
-        references: { model: Detail, key: "detail_id" },
+        references: { model: "details", key: "detail_id" },
       },
       size_id: {
         type: DataTypes.UUID,
-        references: { model: Size, key: "size_id" },
+        references: { model: "sizes", key: "size_id" },
       },
       variation_id: {
         type: DataTypes.UUID,
         allowNull: true,
-        references: { model: Variation, key: "variation_id" },
+        references: { model: "variations", key: "variation_id" },
       },
     },
     {

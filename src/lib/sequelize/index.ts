@@ -17,22 +17,20 @@ if (!database || !username || !password || !host) {
   throw new Error("Missing required connection configuration properties.");
 }
 
-let sequelize: Sequelize;
-try {
-  sequelize = new Sequelize(database, username, password, {
-    host,
-    dialect: "postgres",
-    logging: false,
-  });
-} catch (error) {
-  console.error("Unable to connect to the database:", error);
-  throw error;
-}
+const sequelize = new Sequelize(database, username, password, {
+  host,
+  dialect: "postgres",
+  logging: false,
+});
 
 const models = initModels(sequelize);
 
-sequelize.sync({ force: false }).catch((error) => {
-  console.error("Error syncing the database:", error);
-});
-
+sequelize
+  .sync({ alter: true }) // O usar force: true para eliminar las tablas y recrearlas
+  .then(() => {
+    console.log("Database synchronized");
+  })
+  .catch((err) => {
+    console.error("Error synchronizing database:", err);
+  });
 export { models, sequelize };

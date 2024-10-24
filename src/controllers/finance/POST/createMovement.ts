@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
+import { Uuid } from "types";
 
 const Movement = models.Movement;
 
@@ -18,9 +19,9 @@ export const createMovement = async (req: Request, res: Response) => {
     label,
     value,
     type,
-    payment_method_id,
+    payment_method_id: payment_method_id as Uuid,
     financial_accounts_id,
-    user_id,
+    user_id: user_id as Uuid,
     entry_date,
   });
 

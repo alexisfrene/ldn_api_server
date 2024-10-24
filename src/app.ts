@@ -73,7 +73,7 @@ const main = async (): Promise<void> => {
     await initializeDB(sequelize);
     await startServer(app, PORT);
   } catch (error) {
-    console.error("Error en la inicialización de la aplicación:", error);
+    console.error("Error en la el comienzo de la aplicación:", error);
     process.exit(1);
   }
 };

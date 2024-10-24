@@ -1,10 +1,10 @@
 import {
+  CreateOptions,
   DataTypes,
   HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
-  NonAttribute,
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
@@ -12,18 +12,20 @@ import { Models } from "@models";
 import { DebtAttributes } from "./Debts";
 
 export type InstallmentAttributes = InferAttributes<Installment>;
-export type InstallmentCreationAttributes =
-  InferCreationAttributes<Installment>;
+export type InstallmentCreationAttributes = InferCreationAttributes<
+  Installment,
+  { omit: "installment_id" }
+>;
 
 export class Installment extends Model<
-  InferAttributes<Installment>,
-  InferCreationAttributes<Installment>
+  InstallmentAttributes,
+  InstallmentCreationAttributes
 > {
-  declare installment_id: Uuid;
+  declare installment_id: CreateOptions<Uuid>;
   declare amount: number;
   declare due_date: Date;
   declare status: "paid" | "unpaid";
-  declare debt_id: NonAttribute<Uuid>;
+  declare debt_id: Uuid;
 
   declare getDebtInstallments: HasOneGetAssociationMixin<DebtAttributes>;
 
@@ -55,6 +57,10 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.ENUM("paid", "unpaid"),
         allowNull: false,
         defaultValue: "unpaid",
+      },
+      debt_id: {
+        type: DataTypes.UUID,
+        references: { model: "debts", key: "debt_id" },
       },
     },
     {

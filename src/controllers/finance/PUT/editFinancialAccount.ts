@@ -5,7 +5,7 @@ const FinancialAccounts = models.FinancialAccount;
 
 export const editFinancialAccount = async (req: Request, res: Response) => {
   const { financial_accounts_id } = req.params;
-  const { name, type, values } = req.body;
+  const { name, type } = req.body;
   const user_id = req.user;
 
   const financialAccount = await FinancialAccounts.findByPk(
@@ -24,7 +24,6 @@ export const editFinancialAccount = async (req: Request, res: Response) => {
 
   financialAccount.name = name || financialAccount.name;
   financialAccount.type = type || financialAccount.type;
-  financialAccount.values = values || financialAccount.values;
 
   await financialAccount.save();
 

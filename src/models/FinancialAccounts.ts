@@ -5,7 +5,6 @@ import {
   InferAttributes,
   InferCreationAttributes,
   Model,
-  NonAttribute,
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
@@ -14,13 +13,13 @@ import { DebtAttributes } from "./Debts";
 import { UserAttributes } from "./Users";
 import { MovementAttributes } from "./Movements";
 export class FinancialAccount extends Model<
-  InferAttributes<FinancialAccount, { omit: "user_id" }>,
-  InferCreationAttributes<FinancialAccount, { omit: "user_id" }>
+  InferAttributes<FinancialAccount>,
+  InferCreationAttributes<FinancialAccount, { omit: "financial_accounts_id" }>
 > {
   declare financial_accounts_id: Uuid;
   declare name: string;
   declare type: "inflow_of_money" | "money_outflow" | "debts";
-  declare user_id?: NonAttribute<Uuid>;
+  declare user_id: Uuid;
 
   declare getFinancialAccountDebts: HasManyGetAssociationsMixin<DebtAttributes>;
   declare getFinancialAccountUser: HasOneGetAssociationMixin<UserAttributes>;
@@ -66,6 +65,10 @@ export default (sequelize: Sequelize) => {
       type: {
         type: DataTypes.STRING,
         allowNull: false,
+      },
+      user_id: {
+        type: DataTypes.UUID,
+        references: { model: "users", key: "user_id" },
       },
     },
     {

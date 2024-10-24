@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 import { uploadToCloudinary, models } from "@lib";
+import { Uuid } from "types";
 
 const Category = models.Category;
 
@@ -32,7 +33,7 @@ export const createCategories = async (req: Request, res: Response) => {
   const newCategory = {
     title,
     values: valuesFormatter,
-    user_id,
+    user_id: user_id as Uuid,
   };
   const category = await Category.create(newCategory);
 

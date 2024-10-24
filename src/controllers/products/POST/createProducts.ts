@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import axios from "axios";
 import { uploadToCloudinary, models } from "@lib";
-import { ProductAttributes, ProductCreationAttributes } from "@models/Products";
+import { ProductAttributes } from "@models/Products";
 import { Uuid } from "types";
 
 const Product = models.Product;
@@ -16,7 +16,7 @@ export const createProducts = async (req: Request, res: Response) => {
   if (!file) return new Error("fatal image");
   req.body.price = Number(req.body.price);
   const data = req.body;
-  const dataNewProduct: ProductCreationAttributes = {
+  const dataNewProduct = {
     category_value: "",
     code: 1,
     description: "",

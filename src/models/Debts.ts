@@ -1,11 +1,11 @@
 import {
+  CreationOptional,
   DataTypes,
   HasManyGetAssociationsMixin,
   HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
-  NonAttribute,
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
@@ -13,17 +13,24 @@ import { Models } from "@models";
 import { InstallmentAttributes } from "./Installments";
 import { FinancialAccountAttributes } from "./FinancialAccounts";
 
+export type DebtAttributes = InferAttributes<Debt>;
+export type DebtCreationAttributes = InferCreationAttributes<
+  Debt,
+  { omit: "debt_id" | "updatedAt" | "createdAt" }
+>;
 export class Debt extends Model<DebtAttributes, DebtCreationAttributes> {
   declare debt_id: Uuid;
-  declare interest_rate: number;
-  declare minimum_payment?: number;
-  declare total_debt: number;
-  declare notes?: string;
-  declare payment_frequency: "monthly" | "bi-weekly" | "weekly";
-  declare current_quota?: number;
+  declare interest_rate: CreationOptional<number>;
+  declare minimum_payment: CreationOptional<number>;
+  declare total_debt: CreationOptional<number>;
+  declare notes: CreationOptional<string>;
+  declare payment_frequency: CreationOptional<
+    "monthly" | "bi-weekly" | "weekly"
+  >;
+  declare current_quota: CreationOptional<number>;
   declare updatedAt: Date;
   declare createdAt: Date;
-  declare financial_accounts_id?: NonAttribute<Uuid>;
+  declare financial_accounts_id: Uuid;
 
   declare getDebtInstallments: HasManyGetAssociationsMixin<InstallmentAttributes>;
   declare getFinancialAccountDebts: HasOneGetAssociationMixin<FinancialAccountAttributes>;
@@ -39,14 +46,6 @@ export class Debt extends Model<DebtAttributes, DebtCreationAttributes> {
     });
   }
 }
-export type DebtAttributes = InferAttributes<
-  Debt,
-  { omit: "financial_accounts_id" }
->;
-export type DebtCreationAttributes = InferCreationAttributes<
-  Debt,
-  { omit: "financial_accounts_id" }
->;
 
 export default (sequelize: Sequelize) => {
   Debt.init(
@@ -84,6 +83,13 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 1,
+      },
+      financial_accounts_id: {
+        type: DataTypes.UUID,
+        references: {
+          model: "financialAccounts",
+          key: "financial_accounts_id",
+        },
       },
       createdAt: {
         type: DataTypes.DATE,

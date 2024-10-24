@@ -4,7 +4,6 @@ import {
   InferAttributes,
   InferCreationAttributes,
   Model,
-  NonAttribute,
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
@@ -13,6 +12,11 @@ import { FinancialAccountAttributes } from "./FinancialAccounts";
 import { PaymentMethodAttributes } from "./PaymentMethods";
 import { UserAttributes } from "./Users";
 
+export type MovementAttributes = InferAttributes<Movement>;
+export type MovementCreationAttributes = InferCreationAttributes<
+  Movement,
+  { omit: "movements_id" | "updatedAt" | "createdAt" }
+>;
 export class Movement extends Model<
   MovementAttributes,
   MovementCreationAttributes
@@ -25,9 +29,9 @@ export class Movement extends Model<
   declare updatedAt: Date;
   declare createdAt: Date;
 
-  declare user_id?: NonAttribute<Uuid>;
-  declare payment_method_id?: NonAttribute<Uuid>;
-  declare financial_accounts_id?: NonAttribute<Uuid>;
+  declare user_id: Uuid;
+  declare payment_method_id: Uuid;
+  declare financial_accounts_id: Uuid;
 
   declare getFinancialAccountMovements: HasOneGetAssociationMixin<FinancialAccountAttributes>;
   declare getPaymentMethodMovements: HasOneGetAssociationMixin<PaymentMethodAttributes>;
@@ -48,14 +52,6 @@ export class Movement extends Model<
     });
   }
 }
-export type MovementAttributes = InferAttributes<
-  Movement,
-  { omit: "user_id" | "payment_method_id" | "financial_accounts_id" }
->;
-export type MovementCreationAttributes = InferCreationAttributes<
-  Movement,
-  { omit: "user_id" | "payment_method_id" | "financial_accounts_id" }
->;
 
 export default (sequelize: Sequelize) => {
   Movement.init(
@@ -83,6 +79,26 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0,
+      },
+      payment_method_id: {
+        type: DataTypes.UUID,
+        allowNull: true,
+        references: { model: "paymentMethods", key: "payment_method_id" },
+      },
+      financial_accounts_id: {
+        type: DataTypes.UUID,
+        allowNull: true,
+        references: {
+          model: "financialAccounts",
+          key: "financial_accounts_id",
+        },
+      },
+      user_id: {
+        type: DataTypes.UUID,
+        references: {
+          model: "users",
+          key: "user_id",
+        },
       },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,

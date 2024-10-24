@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { db, deleteImageToCloudinary } from "@lib";
 
-const Category = db.Category;
-const User = db.User;
+const Category = models.Category;
+const User = models.User;
 
 export const deleteCategoryValue = async (req: Request, res: Response) => {
   const user_id = req.user;

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { db } from "@lib";
+import { models } from "@lib";
 
-const PaymentMethod = db.PaymentMethod;
+const PaymentMethod = models.PaymentMethod;
 
 export const createPaymentMethod = async (req: Request, res: Response) => {
   const user_id = req.user;

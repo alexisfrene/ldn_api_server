@@ -8,6 +8,7 @@ import {
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
+import { Models } from "@models";
 
 class Debt extends Model<DebtAttributes, DebtCreationAttributes> {
   declare debt_id: Uuid;
@@ -21,7 +22,7 @@ class Debt extends Model<DebtAttributes, DebtCreationAttributes> {
   declare createdAt: Date;
   declare financial_accounts_id?: NonAttribute<Uuid>;
 
-  static associate(models: any) {
+  static associate(models: Models) {
     Debt.hasMany(models.Installment, {
       as: "DebtInstallments",
       foreignKey: "debt_id",

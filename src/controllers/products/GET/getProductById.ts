@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { getSecureUrl, db } from "@lib";
+import { getSecureUrl, models } from "@lib";
 
-const Product = db.Product;
+const Product = models.Product;
 
 export const getProductById = async (req: Request, res: Response) => {
   const productId = req.params.id;

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { db } from "@lib";
+import { models } from "@lib";
 
-const FinancialAccounts = db.FinancialAccount;
+const FinancialAccounts = models.FinancialAccount;
 
 export const editFinancialAccount = async (req: Request, res: Response) => {
   const { financial_accounts_id } = req.params;

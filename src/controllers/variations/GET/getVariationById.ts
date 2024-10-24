@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { getSecureUrl, db } from "@lib";
+import { getSecureUrl, models } from "@lib";
 
-const User = db.User;
+const User = models.User;
 
 export const getVariationById = async (req: Request, res: Response) => {
   const variationId = req.params.id;

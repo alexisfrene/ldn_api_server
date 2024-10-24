@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { db } from "@lib";
+import { models } from "@lib";
 
-const Size = db.Size;
-const User = db.User;
+const Size = models.Size;
+const User = models.User;
 
 export const addSizeValue = async (req: Request, res: Response) => {
   const size_id = req.params.id;

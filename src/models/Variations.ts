@@ -8,15 +8,23 @@ import {
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
+import { Models } from "@models";
 
 type VariationItem = {
   id: Uuid;
   label: string;
   images: string[];
 };
+
+export type VariationAttributes = InferAttributes<Variation>;
+export type VariationCreationAttributes = InferCreationAttributes<
+  Variation,
+  { omit: "variation_id" | "createdAt" | "updatedAt" }
+>;
+
 class Variation extends Model<
-  InferAttributes<Variation, { omit: "user_id" | "category_id" }>,
-  InferCreationAttributes<Variation, { omit: "user_id" | "category_id" }>
+  VariationAttributes,
+  VariationCreationAttributes
 > {
   declare variation_id: Uuid;
   declare title: string;
@@ -26,7 +34,8 @@ class Variation extends Model<
   declare user_id?: NonAttribute<Uuid>;
   declare category_id?: NonAttribute<Uuid>;
   declare category_value: Uuid;
-  static associate(models: any) {
+
+  static associate(models: Models) {
     Variation.belongsTo(models.Category, {
       as: "CategoryVariations",
       foreignKey: "category_id",
@@ -41,15 +50,6 @@ class Variation extends Model<
     });
   }
 }
-
-export type VariationAttributes = InferAttributes<
-  Variation,
-  { omit: "user_id" | "category_id" }
->;
-export type VariationCreationAttributes = InferCreationAttributes<
-  Variation,
-  { omit: "user_id" | "category_id" }
->;
 
 export default (sequelize: Sequelize) => {
   Variation.init(

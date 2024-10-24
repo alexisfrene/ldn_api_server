@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { db } from "@lib";
+import { models } from "@lib";
 
-const User = db.User;
+const User = models.User;
 
 export const getFinancialAccounts = async (req: Request, res: Response) => {
   const user_id = req.user;

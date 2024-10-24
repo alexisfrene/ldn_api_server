@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { db } from "@lib";
+import { models } from "@lib";
 
-const User = db.User;
-const paymentMethod = db.PaymentMethod;
-const FinancialAccounts = db.FinancialAccount;
+const User = models.User;
+const paymentMethod = models.PaymentMethod;
+const FinancialAccounts = models.FinancialAccount;
 
 export const getAllTheMoves = async (req: Request, res: Response) => {
   const user_id = req.user;

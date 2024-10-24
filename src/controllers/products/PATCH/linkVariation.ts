@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { db } from "@lib";
+import { models } from "@lib";
 
-const Product = db.Product;
+const Product = models.Product;
 
-const Variation = db.Variation;
+const Variation = models.Variation;
 
 export const linkVariation = async (req: Request, res: Response) => {
   const productId = req.params.id;

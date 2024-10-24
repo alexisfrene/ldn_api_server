@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { db } from "@lib";
+import { models } from "@lib";
 
-const Category = db.Category;
+const Category = models.Category;
 
 export const modifyTitleCollectionCategory = async (
   req: Request,

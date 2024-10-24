@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { db } from "@lib";
+import { models } from "@lib";
 
-const Size = db.Size;
+const Size = models.Size;
 
 export const modifyTitleCollectionSize = async (
   req: Request,

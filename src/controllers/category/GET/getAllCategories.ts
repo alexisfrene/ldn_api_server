@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { getSecureUrl, db } from "@lib";
+import { getSecureUrl, models } from "@lib";
 
-const User = db.User;
+const User = models.User;
 
 export const getAllCategories = async (req: Request, res: Response) => {
   const user_id = req.user;
@@ -11,17 +11,12 @@ export const getAllCategories = async (req: Request, res: Response) => {
   }
 
   const user = await User.findByPk(user_id);
+  if (user) {
+    const categories = await user.getUserCategories({
+      order: [["category_id", "ASC"]],
+    });
 
-  const categories = await user.getUserCategories({
-    order: [["category_id", "ASC"]],
-  });
-
-  const formatterCategories = categories.map(
-    (category: {
-      values: { icon_url: string; value: string; id: string }[];
-      title: any;
-      category_id: any;
-    }) => {
+    const formatterCategories = categories.map((category) => {
       const values = category.values.map(
         (value: { icon_url: string; value: string; id: string }) => {
           return {
@@ -39,8 +34,12 @@ export const getAllCategories = async (req: Request, res: Response) => {
         values,
         category_id: category.category_id,
       };
-    }
-  );
+    });
 
-  return res.status(200).json(formatterCategories);
+    return res.status(200).json(formatterCategories);
+  } else {
+    return res
+      .status(400)
+      .json({ error: true, message: "Usuario no encontrado" });
+  }
 };

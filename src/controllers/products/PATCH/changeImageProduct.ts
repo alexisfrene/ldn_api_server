@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { uploadToCloudinary, db, deleteImageToCloudinary } from "@lib";
 
-const Product = db.Product;
+const Product = models.Product;
 
 export const changeImageProduct = async (req: Request, res: Response) => {
   const userId = req.user;

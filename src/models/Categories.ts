@@ -8,22 +8,26 @@ import {
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
+import { Models } from "@models";
 
 type CategoriesItem = {
   id: string;
   value: string;
   icon_url: string;
 };
-class Category extends Model<
-  InferAttributes<Category, { omit: "user_id" }>,
-  InferCreationAttributes<Category, { omit: "user_id" }>
-> {
+export type CategoryAttributes = InferAttributes<Category, { omit: "user_id" }>;
+export type CategoryCreationAttributes = InferCreationAttributes<
+  Category,
+  { omit: "category_id" }
+>;
+
+class Category extends Model<CategoryAttributes, CategoryCreationAttributes> {
   declare category_id: Uuid;
   declare title: string;
   declare values: CategoriesItem[];
   declare user_id?: NonAttribute<Uuid>;
 
-  static associate(models: any) {
+  static associate(models: Models) {
     Category.hasMany(models.Product, {
       as: "CategoryProducts",
       foreignKey: "category_id",
@@ -38,11 +42,6 @@ class Category extends Model<
     });
   }
 }
-export type CategoryAttributes = InferAttributes<Category, { omit: "user_id" }>;
-export type CategoryCreationAttributes = InferCreationAttributes<
-  Category,
-  { omit: "user_id" }
->;
 
 export default (sequelize: Sequelize) => {
   Category.init(

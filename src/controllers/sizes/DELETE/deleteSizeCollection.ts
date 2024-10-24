@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { db } from "@lib";
+import { models } from "@lib";
 
-const Size = db.Size;
-const User = db.User;
+const Size = models.Size;
+const User = models.User;
 
 export const deleteSizeCollection = async (req: Request, res: Response) => {
   const user_id = req.user;

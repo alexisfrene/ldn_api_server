@@ -15,7 +15,7 @@ import {
   financeRoutes,
 } from "@routes";
 import { errorHandler } from "@middlewares";
-import { db } from "@lib";
+import { sequelize } from "@lib";
 import { initializeDB } from "./initializeDB";
 import { startServer } from "./startServer";
 
@@ -70,7 +70,7 @@ const PORT: string | number = process.env.PORT || 3210;
 
 const main = async (): Promise<void> => {
   try {
-    await initializeDB(db.sequelize);
+    await initializeDB(sequelize);
     await startServer(app, PORT);
   } catch (error) {
     console.error("Error en la inicialización de la aplicación:", error);

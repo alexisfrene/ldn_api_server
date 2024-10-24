@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { db } from "@lib";
+import { models } from "@lib";
 //import { formatDate } from "../../../utils";
 
-const FinancialAccounts = db.FinancialAccount;
-const Debts = db.Debt;
-const Installments = db.Installment;
+const FinancialAccounts = models.FinancialAccount;
+const Debts = models.Debt;
+const Installments = models.Installment;
 
 export const createFinancialAccounts = async (req: Request, res: Response) => {
   const user_id = req.user;

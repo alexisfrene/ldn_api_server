@@ -1,65 +1,68 @@
-// models/index.ts
-import userModel, { UserAttributes } from "./Users"; // Asegúrate de exportar UserAttributes desde Users.ts
-import sizeModel, { SizeAttributes } from "./Sizes";
-import debtsModel, { DebtAttributes } from "./Debts"; // Asegúrate de exportar DebtsAttributes desde Debts.ts
-import detailModel, { DetailAttributes } from "./Details"; // Asegúrate de exportar DetailAttributes desde Details.ts
-import productModel, { ProductAttributes } from "./Products"; // Asegúrate de exportar ProductAttributes desde Products.ts
-import movementsModel, { MovementAttributes } from "./Movements"; // Asegúrate de exportar MovementsAttributes desde Movements.ts
-import categoryModel, { CategoryAttributes } from "./Categories"; // Asegúrate de exportar CategoryAttributes desde Categories.ts
-import variationModel, { VariationAttributes } from "./Variations"; // Asegúrate de exportar VariationAttributes desde Variations.ts
-import installmentsModel, { InstallmentAttributes } from "./Installments"; // Asegúrate de exportar InstallmentsAttributes desde Installments.ts
-import paymentMethodsModel, { PaymentMethodAttributes } from "./PaymentMethods"; // Asegúrate de exportar PaymentMethodsAttributes desde PaymentMethods.ts
-import financialAccountsModel, {
-  FinancialAccountAttributes,
-} from "./FinancialAccounts"; // Asegúrate de exportar FinancialAccountsAttributes desde FinancialAccounts.ts
+import userModel from "./Users";
+import sizeModel from "./Sizes";
+import debtsModel from "./Debts";
+import detailModel from "./Details";
+import productModel from "./Products";
+import movementsModel from "./Movements";
+import categoryModel from "./Categories";
+import variationModel from "./Variations";
+import installmentsModel from "./Installments";
+import paymentMethodsModel from "./PaymentMethods";
+import financialAccountsModel from "./FinancialAccounts";
 import { Sequelize } from "sequelize";
 
 export interface Models {
-  User: typeof userModel & {
-    new (sequelize: Sequelize): UserAttributes;
-  };
-  Size: typeof sizeModel & {
-    new (sequelize: Sequelize): SizeAttributes;
-  };
-  Debts: typeof debtsModel & {
-    new (sequelize: Sequelize): DebtAttributes;
-  };
-  Detail: typeof detailModel & {
-    new (sequelize: Sequelize): DetailAttributes;
-  };
-  Product: typeof productModel & {
-    new (sequelize: Sequelize): ProductAttributes;
-  };
-  Movements: typeof movementsModel & {
-    new (sequelize: Sequelize): MovementAttributes;
-  };
-  Category: typeof categoryModel & {
-    new (sequelize: Sequelize): CategoryAttributes;
-  };
-  Variation: typeof variationModel & {
-    new (sequelize: Sequelize): VariationAttributes;
-  };
-  Installments: typeof installmentsModel & {
-    new (sequelize: Sequelize): InstallmentAttributes;
-  };
-  PaymentMethods: typeof paymentMethodsModel & {
-    new (sequelize: Sequelize): PaymentMethodAttributes;
-  };
-  FinancialAccounts: typeof financialAccountsModel & {
-    new (sequelize: Sequelize): FinancialAccountAttributes;
-  };
+  User: ReturnType<typeof userModel>;
+  Size: ReturnType<typeof sizeModel>;
+  Debt: ReturnType<typeof debtsModel>;
+  Detail: ReturnType<typeof detailModel>;
+  Product: ReturnType<typeof productModel>;
+  Movement: ReturnType<typeof movementsModel>;
+  Category: ReturnType<typeof categoryModel>;
+  Variation: ReturnType<typeof variationModel>;
+  Installment: ReturnType<typeof installmentsModel>;
+  PaymentMethod: ReturnType<typeof paymentMethodsModel>;
+  FinancialAccount: ReturnType<typeof financialAccountsModel>;
 }
 
-export {
-  userModel,
-  sizeModel,
-  debtsModel,
-  detailModel,
-  productModel,
-  movementsModel,
-  categoryModel,
-  variationModel,
-  installmentsModel,
-  paymentMethodsModel,
-  financialAccountsModel,
+export const initModels = (sequelize: Sequelize): Models => {
+  const User = userModel(sequelize);
+  const Size = sizeModel(sequelize);
+  const Debt = debtsModel(sequelize);
+  const Detail = detailModel(sequelize);
+  const Product = productModel(sequelize);
+  const Movement = movementsModel(sequelize);
+  const Category = categoryModel(sequelize);
+  const Variation = variationModel(sequelize);
+  const Installment = installmentsModel(sequelize);
+  const PaymentMethod = paymentMethodsModel(sequelize);
+  const FinancialAccount = financialAccountsModel(sequelize);
+
+  const models = {
+    User,
+    Size,
+    Debt,
+    Detail,
+    Product,
+    Movement,
+    Category,
+    Variation,
+    Installment,
+    PaymentMethod,
+    FinancialAccount,
+  };
+
+  Category.associate(models);
+  Product.associate(models);
+  Size.associate(models);
+  Detail.associate(models);
+  Variation.associate(models);
+  Movement.associate(models);
+  Debt.associate(models);
+  Installment.associate(models);
+  PaymentMethod.associate(models);
+  FinancialAccount.associate(models);
+  User.associate(models);
+
+  return models;
 };

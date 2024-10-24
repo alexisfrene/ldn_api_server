@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 import { config as connectionPSQL } from "./config";
-import * as models from "@models";
+import { initModels } from "@models";
 
 type Env = "development" | "production";
 
@@ -29,24 +29,10 @@ try {
   throw error;
 }
 
-const db: { [key: string]: any } = {};
-
-Object.keys(models).forEach((modelName) => {
-  const model = models[modelName as keyof typeof models](sequelize);
-  db[model.name] = model;
-});
-
-Object.keys(db).forEach((modelName) => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
+const models = initModels(sequelize);
 
 sequelize.sync({ force: false }).catch((error) => {
   console.error("Error syncing the database:", error);
 });
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
-
-export { db };
+export { models, sequelize };

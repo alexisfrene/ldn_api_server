@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { getSecureUrl, uploadToCloudinary, db } from "@lib";
+import { getSecureUrl, uploadToCloudinary, models } from "@lib";
 
-const User = db.User;
+const User = models.User;
 
 export const changeAvatar = async (req: Request, res: Response) => {
   const user_id = req.user;
@@ -18,6 +18,6 @@ export const changeAvatar = async (req: Request, res: Response) => {
       .status(400)
       .json({ error: true, message: "Error al subir la imagen" });
   const url = getSecureUrl(`avatar/${public_id}`, user_id);
-  await user.update({ avatar_url: url });
+  if (user) await user.update({ avatar_url: url || "" });
   return res.status(200).json({ error: false, message: "Todo oK", url });
 };

@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { db } from "@lib";
+import { models } from "@lib";
 
-const User = db.User;
+const User = models.User;
 
-const Category = db.Category;
+const Category = models.Category;
 
 export const getProductForCategory = async (req: Request, res: Response) => {
   const { category_id, category_value } = req.query;

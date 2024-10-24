@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { db, deleteImageToCloudinary } from "@lib";
+import { models, deleteImageToCloudinary } from "@lib";
 
-const Variation = db.Variation;
+const Variation = models.Variation;
 
 export const removeImagesCollection = async (req: Request, res: Response) => {
   const { id: variationId } = req.params;

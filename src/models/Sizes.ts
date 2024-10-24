@@ -8,6 +8,7 @@ import {
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
+import { Models } from "@models";
 
 type SizeItem = {
   id: Uuid;
@@ -19,7 +20,7 @@ class Size extends Model<SizeAttributes, SizeCreationAttributes> {
   declare values: SizeItem[];
   declare user_id?: NonAttribute<Uuid>;
 
-  static associate(models: any) {
+  static associate(models: Models) {
     Size.hasMany(models.Product, {
       as: "SizeProducts",
       foreignKey: "size_id",

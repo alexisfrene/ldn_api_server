@@ -7,8 +7,12 @@ import {
   CreationOptional,
   NonAttribute,
   DataTypes,
+  HasManyGetAssociationsMixin,
 } from "sequelize";
 import { Uuid } from "../types";
+import { Models } from "@models";
+import { CategoryAttributes } from "./Categories";
+import { VariationAttributes } from "./Variations";
 
 class User extends Model<UserAttributes, UserCreationAttributes> {
   declare user_id: CreationOptional<Uuid>;
@@ -32,8 +36,9 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   get fullName(): NonAttribute<string> {
     return `${this.first_name} ${this.last_name}`;
   }
-
-  static associate(models: any) {
+  declare getUserCategories: HasManyGetAssociationsMixin<CategoryAttributes>;
+  declare getUserVariations: HasManyGetAssociationsMixin<VariationAttributes>;
+  static associate(models: Models) {
     User.hasMany(models.Size, { as: "UserSizes", foreignKey: "user_id" });
     User.hasMany(models.Product, { as: "UserProducts", foreignKey: "user_id" });
     User.hasMany(models.Category, {

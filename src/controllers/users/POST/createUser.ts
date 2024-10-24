@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { hashPassword } from "@utils";
-import { db } from "@lib";
+import { models } from "@lib";
 
-const User = db.User;
-const Category = db.Category;
-const Size = db.Size;
+const User = models.User;
+const Category = models.Category;
+const Size = models.Size;
 
 export const createUser = async (req: Request, res: Response) => {
   const {

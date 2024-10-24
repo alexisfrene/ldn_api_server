@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { db } from "@lib";
+import { models } from "@lib";
 
-const User = db.User;
+const User = models.User;
 
 export const getVariationForCategory = async (req: Request, res: Response) => {
   const user_id = req.user;
@@ -18,7 +18,7 @@ export const getVariationForCategory = async (req: Request, res: Response) => {
       error: true,
       message: "No se paso los parámetros esperados",
     });
-  const categories = await user?.getCategories();
+  const categories = await user?.getUserCategories();
   const categoryForCategory = categories.filter(
     (item: { category_id: string; values: any[] }) =>
       item.category_id === category &&

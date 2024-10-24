@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { db } from "@lib";
+import { models } from "@lib";
 
-const FinancialAccounts = db.FinancialAccount;
+const FinancialAccounts = models.FinancialAccount;
 
 export const addFinancialAccount = async (req: Request, res: Response) => {
   const user_id = req.user;

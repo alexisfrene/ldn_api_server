@@ -8,6 +8,7 @@ import {
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
+import { Models } from "@models";
 
 class Movement extends Model<MovementAttributes, MovementCreationAttributes> {
   declare movements_id: Uuid;
@@ -22,7 +23,7 @@ class Movement extends Model<MovementAttributes, MovementCreationAttributes> {
   declare payment_method_id?: NonAttribute<Uuid>;
   declare financial_accounts_id?: NonAttribute<Uuid>;
 
-  static associate(models: any) {
+  static associate(models: Models) {
     Movement.belongsTo(models.FinancialAccount, {
       as: "FinancialAccountMovements",
       foreignKey: "financial_accounts_id",

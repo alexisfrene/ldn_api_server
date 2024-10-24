@@ -7,6 +7,7 @@ import {
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
+import { Models } from "@models";
 class FinancialAccount extends Model<
   InferAttributes<FinancialAccount, { omit: "user_id" }>,
   InferCreationAttributes<FinancialAccount, { omit: "user_id" }>
@@ -16,7 +17,7 @@ class FinancialAccount extends Model<
   declare type: "inflow_of_money" | "money_outflow" | "debts";
   declare user_id?: NonAttribute<Uuid>;
 
-  static associate(models: any) {
+  static associate(models: Models) {
     FinancialAccount.hasMany(models.Debt, {
       as: "FinancialAccountDebts",
       foreignKey: "financial_accounts_id",

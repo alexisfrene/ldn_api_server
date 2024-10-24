@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { db } from "@lib";
+import { models } from "@lib";
 
-const User = db.User;
+const User = models.User;
 
 export const getByIdCategory = async (req: Request, res: Response) => {
   const user_id = req.user;
@@ -19,7 +19,7 @@ export const getByIdCategory = async (req: Request, res: Response) => {
 
   try {
     const user = await User.findByPk(user_id);
-    if (!user || !user.getCategories) {
+    if (!user || !user.getUserCategories) {
       return res
         .status(400)
         .json({ error: true, message: "El usuario no tiene categorías" });

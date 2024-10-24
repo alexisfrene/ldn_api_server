@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import axios from "axios";
-import { uploadToCloudinary, db } from "@lib";
+import { uploadToCloudinary, models } from "@lib";
 
-const Product = db.Product;
-const Category = db.Category;
-const Size = db.Size;
-const Detail = db.Detail;
+const Product = models.Product;
+const Category = models.Category;
+const Size = models.Size;
+const Detail = models.Detail;
 
 export const createProducts = async (req: Request, res: Response) => {
   const file = req.file as Express.Multer.File;

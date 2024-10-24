@@ -9,6 +9,16 @@ import {
   DataTypes,
 } from "sequelize";
 import { Uuid } from "../types";
+import { Models } from "@models";
+
+export type ProductAttributes = InferAttributes<
+  Product,
+  { omit: "user_id" | "category_id" | "detail_id" }
+>;
+export type ProductCreationAttributes = InferCreationAttributes<
+  Product,
+  { omit: "user_id" | "category_id" | "detail_id" }
+>;
 
 class Product extends Model<ProductAttributes, ProductCreationAttributes> {
   declare product_id: CreationOptional<string>;
@@ -29,8 +39,9 @@ class Product extends Model<ProductAttributes, ProductCreationAttributes> {
   declare user_id?: NonAttribute<Uuid>;
   declare category_id?: NonAttribute<Uuid>;
   declare detail_id?: NonAttribute<Uuid>;
+  declare variation_id?: Uuid;
 
-  static associate(models: any) {
+  static associate(models: Models) {
     Product.belongsTo(models.Category, {
       as: "CategoryProducts",
       foreignKey: "category_id",
@@ -53,14 +64,6 @@ class Product extends Model<ProductAttributes, ProductCreationAttributes> {
     });
   }
 }
-export type ProductAttributes = InferAttributes<
-  Product,
-  { omit: "user_id" | "category_id" | "detail_id" }
->;
-export type ProductCreationAttributes = InferCreationAttributes<
-  Product,
-  { omit: "user_id" | "category_id" | "detail_id" }
->;
 
 export default (sequelize: Sequelize) => {
   Product.init(

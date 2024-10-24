@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { getSecureUrl, db } from "@lib";
+import { getSecureUrl, models } from "@lib";
 
-const User = db.User;
-const Product = db.Product;
+const User = models.User;
+const Product = models.Product;
 
 export const getAllProducts = async (req: Request, res: Response) => {
   const user_id = req.user;
@@ -24,10 +24,10 @@ export const getAllProducts = async (req: Request, res: Response) => {
     const productDetails = await Promise.all(
       products.map(async (product) => {
         const productFromDB = await Product.findByPk(product.product_id);
-        const size = await productFromDB.getSizeProducts();
+        const size = await productFrommodels.getSizeProducts();
         const sizeValue = size
           ? size.values.find(
-              (e: { id: string }) => e.id === productFromDB.size_value
+              (e: { id: string }) => e.id === productFrommodels.size_value
             )
           : null;
         const urlCloudinary = getSecureUrl(product.primary_image, user.user_id);

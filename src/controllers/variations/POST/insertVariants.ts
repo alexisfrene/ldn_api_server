@@ -1,17 +1,19 @@
 import { Request, Response } from "express";
-import { db } from "@lib";
+import { models } from "@lib";
+import { Uuid } from "types";
 
-const Variation = db.Variation;
-const Product = db.Product;
+const Variation = models.Variation;
+const Product = models.Product;
 
 export const insertVariants = async (req: Request, res: Response) => {
-  const productId = req.query.product_id;
-  const variationId = req.params.id;
+  const productId = req.query.product_id as string;
+  const variationId = req.params.id as Uuid;
   const variation = await Variation.findByPk(variationId);
   if (!variation)
     return res
       .status(400)
       .json({ error: true, message: "No se encontró la variación" });
+
   const product = await Product.findByPk(productId);
   if (!product)
     return res.status(400).json({ error: true, message: "User no autorizado" });

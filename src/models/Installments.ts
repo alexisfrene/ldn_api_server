@@ -7,6 +7,7 @@ import {
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
+import { Models } from "@models";
 
 class Installment extends Model<
   InferAttributes<Installment>,
@@ -18,7 +19,7 @@ class Installment extends Model<
   declare status: "paid" | "unpaid";
   declare debt_id: NonAttribute<Uuid>;
 
-  static associate(models: any) {
+  static associate(models: Models) {
     Installment.belongsTo(models.Debt, {
       as: "DebtInstallments",
       foreignKey: "debt_id",

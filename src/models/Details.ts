@@ -8,6 +8,7 @@ import {
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
+import { Models } from "@models";
 
 class Detail extends Model<DetailAttributes, DetailCreationAttributes> {
   declare detail_id: Uuid;
@@ -18,7 +19,7 @@ class Detail extends Model<DetailAttributes, DetailCreationAttributes> {
   declare age: string;
   declare product_id?: NonAttribute<Uuid>;
 
-  static associate(models: any) {
+  static associate(models: Models) {
     Detail.belongsTo(models.Product, {
       as: "DetailProduct",
       foreignKey: "product_id",

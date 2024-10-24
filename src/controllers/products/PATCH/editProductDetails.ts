@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { cleanObject } from "@utils";
-import { db } from "@lib";
+import { models } from "@lib";
 
-const Product = db.Product;
-const Detail = db.Detail;
+const Product = models.Product;
+const Detail = models.Detail;
 
 export const editProductDetails = async (req: Request, res: Response) => {
   const propertiesToEdit = cleanObject(req.body, [

@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { cleanObject, isNumber } from "@utils";
-import { db } from "@lib";
+import { models } from "@lib";
 
-const Product = db.Product;
-const Category = db.Category;
-const Size = db.Size;
+const Product = models.Product;
+const Category = models.Category;
+const Size = models.Size;
 
 export const editProductData = async (req: Request, res: Response) => {
   const propertiesToEdit = cleanObject(req.body, [

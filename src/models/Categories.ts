@@ -30,6 +30,7 @@ export class Category extends Model<
 > {
   declare category_id: Uuid;
   declare title: string;
+  declare type: "product" | "expense";
   declare values: CategoriesItem[];
   declare user_id: Uuid;
 
@@ -50,11 +51,16 @@ export class Category extends Model<
       as: "CategoryVariations",
       foreignKey: "category_id",
     });
+    const CategoryExpense = Category.hasMany(models.Expense, {
+      as: "CategoryExpense",
+      foreignKey: "category_id",
+    });
 
     return {
       CategoryProducts,
       CategoryUser,
       CategoryVariations,
+      CategoryExpense,
     };
   }
 }
@@ -70,6 +76,10 @@ export default (sequelize: Sequelize) => {
       title: {
         type: DataTypes.STRING(50),
         defaultValue: "",
+      },
+      type: {
+        type: DataTypes.STRING(10),
+        defaultValue: "product",
       },
       values: {
         type: DataTypes.ARRAY(DataTypes.JSONB),

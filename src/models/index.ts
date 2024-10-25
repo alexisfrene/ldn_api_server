@@ -1,8 +1,10 @@
+import tagModel from "./Tags";
 import userModel from "./Users";
 import sizeModel from "./Sizes";
 import debtsModel from "./Debts";
 import detailModel from "./Details";
 import productModel from "./Products";
+import expenseModel from "./Expenses";
 import movementsModel from "./Movements";
 import categoryModel from "./Categories";
 import variationModel from "./Variations";
@@ -11,10 +13,11 @@ import paymentMethodsModel from "./PaymentMethods";
 import financialAccountsModel from "./FinancialAccounts";
 import { Sequelize } from "sequelize";
 
-// Definimos los tipos de las asociaciones para cada modelo
 interface ModelAssociations {
+  Tag: ReturnType<typeof tagModel>["associate"];
   Category: ReturnType<typeof categoryModel>["associate"];
   Product: ReturnType<typeof productModel>["associate"];
+  Expense: ReturnType<typeof expenseModel>["associate"];
   Size: ReturnType<typeof sizeModel>["associate"];
   Detail: ReturnType<typeof detailModel>["associate"];
   Variation: ReturnType<typeof variationModel>["associate"];
@@ -27,11 +30,13 @@ interface ModelAssociations {
 }
 
 export interface Models {
+  Tag: ReturnType<typeof tagModel>;
   User: ReturnType<typeof userModel>;
   Size: ReturnType<typeof sizeModel>;
   Debt: ReturnType<typeof debtsModel>;
   Detail: ReturnType<typeof detailModel>;
   Product: ReturnType<typeof productModel>;
+  Expense: ReturnType<typeof expenseModel>;
   Movement: ReturnType<typeof movementsModel>;
   Category: ReturnType<typeof categoryModel>;
   Variation: ReturnType<typeof variationModel>;
@@ -40,7 +45,6 @@ export interface Models {
   FinancialAccount: ReturnType<typeof financialAccountsModel>;
 }
 
-// Creamos el tipo que retornará las asociaciones junto con los modelos
 type InitModelsReturnType = {
   models: Models;
   associations: {
@@ -49,11 +53,13 @@ type InitModelsReturnType = {
 };
 
 export const initModels = (sequelize: Sequelize): InitModelsReturnType => {
+  const Tag = tagModel(sequelize);
   const User = userModel(sequelize);
   const Size = sizeModel(sequelize);
   const Debt = debtsModel(sequelize);
   const Detail = detailModel(sequelize);
   const Product = productModel(sequelize);
+  const Expense = expenseModel(sequelize);
   const Movement = movementsModel(sequelize);
   const Category = categoryModel(sequelize);
   const Variation = variationModel(sequelize);
@@ -62,9 +68,11 @@ export const initModels = (sequelize: Sequelize): InitModelsReturnType => {
   const FinancialAccount = financialAccountsModel(sequelize);
 
   const models: Models = {
+    Tag,
     User,
     Size,
     Debt,
+    Expense,
     Detail,
     Product,
     Movement,
@@ -75,11 +83,12 @@ export const initModels = (sequelize: Sequelize): InitModelsReturnType => {
     FinancialAccount,
   };
 
-  // Ejecutar las asociaciones y tiparlas
   const associations = {
+    Tag: Tag.associate(models),
     Category: Category.associate(models),
     Product: Product.associate(models),
     Size: Size.associate(models),
+    Expense: Expense.associate(models),
     Detail: Detail.associate(models),
     Variation: Variation.associate(models),
     Movement: Movement.associate(models),

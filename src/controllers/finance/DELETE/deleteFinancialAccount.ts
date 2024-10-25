@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
 
-const FinancialAccounts = models.FinancialAccount;
+const { FinancialAccount } = models;
 
 export const deleteFinancialAccount = async (req: Request, res: Response) => {
   const { id } = req.params;
   const user_id = req.user;
 
-  const financialAccount = await FinancialAccounts.findByPk(id);
+  const financialAccount = await FinancialAccount.findByPk(id);
 
   if (!financialAccount) {
     return res.status(404).json({

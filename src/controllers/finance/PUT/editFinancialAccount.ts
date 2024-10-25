@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
 
-const FinancialAccounts = models.FinancialAccount;
+const { FinancialAccount } = models;
 
 export const editFinancialAccount = async (req: Request, res: Response) => {
   const { financial_accounts_id } = req.params;
   const { name, type } = req.body;
   const user_id = req.user;
 
-  const financialAccount = await FinancialAccounts.findByPk(
+  const financialAccount = await FinancialAccount.findByPk(
     financial_accounts_id
   );
 

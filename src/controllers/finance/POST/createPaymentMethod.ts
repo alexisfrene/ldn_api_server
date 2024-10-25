@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { models } from "@lib";
 import { Uuid } from "types";
 
-const PaymentMethod = models.PaymentMethod;
+const { PaymentMethod } = models;
 
 export const createPaymentMethod = async (req: Request, res: Response) => {
   const user_id = req.user;

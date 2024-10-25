@@ -1,11 +1,8 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
 import { Uuid } from "types";
-//import { formatDate } from "../../../utils";
 
-const FinancialAccounts = models.FinancialAccount;
-const Debts = models.Debt;
-const Installments = models.Installment;
+const { FinancialAccount, Debt, Installment } = models;
 
 export const createFinancialAccounts = async (req: Request, res: Response) => {
   const user_id = req.user;
@@ -14,13 +11,13 @@ export const createFinancialAccounts = async (req: Request, res: Response) => {
     type,
   }: { name: string; type: "inflow_of_money" | "money_outflow" | "debts" } =
     req.body;
-  const newFinancialAccount = await FinancialAccounts.create({
+  const newFinancialAccount = await FinancialAccount.create({
     name,
     type,
     user_id: user_id as Uuid,
   });
   if (type === "debts") {
-    const newDebts = await Debts.create({
+    const newDebts = await Debt.create({
       notes: req.body.notes || "Sin nota",
       total_debt: req.body.total_debt || 0,
       current_quota: req.body.current_quota || 1,
@@ -33,7 +30,7 @@ export const createFinancialAccounts = async (req: Request, res: Response) => {
         due_date: Date;
         status: "paid" | "unpaid";
       }) =>
-        Installments.create({
+        Installment.create({
           amount: installment.amount,
           due_date: installment.due_date,
           status: installment.status,

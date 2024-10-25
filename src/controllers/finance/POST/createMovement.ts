@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { models } from "@lib";
 import { Uuid } from "types";
 
-const Movement = models.Movement;
+const { Movement } = models;
 
 export const createMovement = async (req: Request, res: Response) => {
   const user_id = req.user;

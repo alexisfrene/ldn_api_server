@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
 
-const Movements = models.Movement;
+const { Movement } = models;
 
 export const deleteMovement = async (req: Request, res: Response) => {
   const { id } = req.params;
   const user_id = req.user;
 
-  const movement = await Movements.findByPk(id);
+  const movement = await Movement.findByPk(id);
 
   if (!movement) {
     return res.status(404).json({ message: "Movimiento no encontrado" });

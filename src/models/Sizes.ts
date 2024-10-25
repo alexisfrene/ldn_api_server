@@ -24,14 +24,19 @@ export class Size extends Model<SizeAttributes, SizeCreationAttributes> {
   declare user_id?: Uuid;
 
   static associate(models: Models) {
-    Size.hasMany(models.Product, {
+    const SizeProducts = Size.hasMany(models.Product, {
       as: "SizeProducts",
       foreignKey: "size_id",
     });
-    Size.belongsTo(models.User, {
+    const SizeUser = Size.belongsTo(models.User, {
       as: "SizeUser",
       foreignKey: "user_id",
     });
+
+    return {
+      SizeProducts,
+      SizeUser,
+    };
   }
 }
 

@@ -11,6 +11,21 @@ import paymentMethodsModel from "./PaymentMethods";
 import financialAccountsModel from "./FinancialAccounts";
 import { Sequelize } from "sequelize";
 
+// Definimos los tipos de las asociaciones para cada modelo
+interface ModelAssociations {
+  Category: ReturnType<typeof categoryModel>["associate"];
+  Product: ReturnType<typeof productModel>["associate"];
+  Size: ReturnType<typeof sizeModel>["associate"];
+  Detail: ReturnType<typeof detailModel>["associate"];
+  Variation: ReturnType<typeof variationModel>["associate"];
+  Movement: ReturnType<typeof movementsModel>["associate"];
+  Debt: ReturnType<typeof debtsModel>["associate"];
+  Installment: ReturnType<typeof installmentsModel>["associate"];
+  PaymentMethod: ReturnType<typeof paymentMethodsModel>["associate"];
+  FinancialAccount: ReturnType<typeof financialAccountsModel>["associate"];
+  User: ReturnType<typeof userModel>["associate"];
+}
+
 export interface Models {
   User: ReturnType<typeof userModel>;
   Size: ReturnType<typeof sizeModel>;
@@ -25,7 +40,15 @@ export interface Models {
   FinancialAccount: ReturnType<typeof financialAccountsModel>;
 }
 
-export const initModels = (sequelize: Sequelize): Models => {
+// Creamos el tipo que retornará las asociaciones junto con los modelos
+type InitModelsReturnType = {
+  models: Models;
+  associations: {
+    [K in keyof ModelAssociations]: ReturnType<ModelAssociations[K]>;
+  };
+};
+
+export const initModels = (sequelize: Sequelize): InitModelsReturnType => {
   const User = userModel(sequelize);
   const Size = sizeModel(sequelize);
   const Debt = debtsModel(sequelize);
@@ -38,7 +61,7 @@ export const initModels = (sequelize: Sequelize): Models => {
   const PaymentMethod = paymentMethodsModel(sequelize);
   const FinancialAccount = financialAccountsModel(sequelize);
 
-  const models = {
+  const models: Models = {
     User,
     Size,
     Debt,
@@ -52,17 +75,20 @@ export const initModels = (sequelize: Sequelize): Models => {
     FinancialAccount,
   };
 
-  Category.associate(models);
-  Product.associate(models);
-  Size.associate(models);
-  Detail.associate(models);
-  Variation.associate(models);
-  Movement.associate(models);
-  Debt.associate(models);
-  Installment.associate(models);
-  PaymentMethod.associate(models);
-  FinancialAccount.associate(models);
-  User.associate(models);
+  // Ejecutar las asociaciones y tiparlas
+  const associations = {
+    Category: Category.associate(models),
+    Product: Product.associate(models),
+    Size: Size.associate(models),
+    Detail: Detail.associate(models),
+    Variation: Variation.associate(models),
+    Movement: Movement.associate(models),
+    Debt: Debt.associate(models),
+    Installment: Installment.associate(models),
+    PaymentMethod: PaymentMethod.associate(models),
+    FinancialAccount: FinancialAccount.associate(models),
+    User: User.associate(models),
+  } as InitModelsReturnType["associations"];
 
-  return models;
+  return { models, associations };
 };

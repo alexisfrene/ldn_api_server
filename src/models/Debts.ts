@@ -36,14 +36,19 @@ export class Debt extends Model<DebtAttributes, DebtCreationAttributes> {
   declare getFinancialAccountDebts: HasOneGetAssociationMixin<FinancialAccountAttributes>;
 
   static associate(models: Models) {
-    Debt.hasMany(models.Installment, {
+    const DebtInstallments = Debt.hasMany(models.Installment, {
       as: "DebtInstallments",
       foreignKey: "debt_id",
     });
-    Debt.belongsTo(models.FinancialAccount, {
+    const FinancialAccountDebts = Debt.belongsTo(models.FinancialAccount, {
       as: "FinancialAccountDebts",
       foreignKey: "financial_accounts_id",
     });
+
+    return {
+      DebtInstallments,
+      FinancialAccountDebts,
+    };
   }
 }
 

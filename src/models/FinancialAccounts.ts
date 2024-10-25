@@ -26,18 +26,27 @@ export class FinancialAccount extends Model<
   declare getFinancialAccountMovements: HasManyGetAssociationsMixin<MovementAttributes>;
 
   static associate(models: Models) {
-    FinancialAccount.hasMany(models.Debt, {
+    const FinancialAccountDebts = FinancialAccount.hasMany(models.Debt, {
       as: "FinancialAccountDebts",
       foreignKey: "financial_accounts_id",
     });
-    FinancialAccount.belongsTo(models.User, {
+    const FinancialAccountUser = FinancialAccount.belongsTo(models.User, {
       as: "FinancialAccountUser",
       foreignKey: "user_id",
     });
-    FinancialAccount.hasMany(models.Movement, {
-      as: "FinancialAccountMovements",
-      foreignKey: "financial_accounts_id",
-    });
+    const FinancialAccountMovements = FinancialAccount.hasMany(
+      models.Movement,
+      {
+        as: "FinancialAccountMovements",
+        foreignKey: "financial_accounts_id",
+      }
+    );
+
+    return {
+      FinancialAccountDebts,
+      FinancialAccountUser,
+      FinancialAccountMovements,
+    };
   }
 }
 

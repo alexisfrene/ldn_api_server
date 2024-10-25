@@ -55,28 +55,44 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
   declare getUserSizes: HasManyGetAssociationsMixin<SizeAttributes>;
 
   static associate(models: Models) {
-    User.hasMany(models.Size, { as: "UserSizes", foreignKey: "user_id" });
-    User.hasMany(models.Product, { as: "UserProducts", foreignKey: "user_id" });
-    User.hasMany(models.Category, {
+    const UserSizes = User.hasMany(models.Size, {
+      as: "UserSizes",
+      foreignKey: "user_id",
+    });
+    const UserProducts = User.hasMany(models.Product, {
+      as: "UserProducts",
+      foreignKey: "user_id",
+    });
+    const UserCategories = User.hasMany(models.Category, {
       as: "UserCategories",
       foreignKey: "user_id",
     });
-    User.hasMany(models.Variation, {
+    const UserVariations = User.hasMany(models.Variation, {
       as: "UserVariations",
       foreignKey: "user_id",
     });
-    User.hasMany(models.FinancialAccount, {
+    const UserFinancialAccounts = User.hasMany(models.FinancialAccount, {
       as: "UserFinancialAccounts",
       foreignKey: "user_id",
     });
-    User.hasMany(models.PaymentMethod, {
+    const UserPaymentMethods = User.hasMany(models.PaymentMethod, {
       as: "UserPaymentMethods",
       foreignKey: "user_id",
     });
-    User.hasMany(models.Movement, {
+    const UserMovements = User.hasMany(models.Movement, {
       as: "UserMovements",
       foreignKey: "user_id",
     });
+
+    return {
+      UserSizes,
+      UserProducts,
+      UserCategories,
+      UserVariations,
+      UserFinancialAccounts,
+      UserPaymentMethods,
+      UserMovements,
+    };
   }
 }
 

@@ -25,12 +25,15 @@ export class Detail extends Model<DetailAttributes, DetailCreationAttributes> {
   declare product_id: Uuid;
 
   declare getDetailProduct: HasOneGetAssociationMixin<ProductAttributes>;
-
   static associate(models: Models) {
-    Detail.belongsTo(models.Product, {
+    const DetailProduct = Detail.belongsTo(models.Product, {
       as: "DetailProduct",
       foreignKey: "product_id",
     });
+
+    return {
+      DetailProduct,
+    };
   }
 }
 

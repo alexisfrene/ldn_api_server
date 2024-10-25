@@ -30,14 +30,19 @@ export class PaymentMethod extends Model<
   declare getPaymentMethodUser: HasOneGetAssociationMixin<UserAttributes>;
 
   static associate(models: Models) {
-    PaymentMethod.belongsTo(models.User, {
+    const PaymentMethodUser = PaymentMethod.belongsTo(models.User, {
       as: "PaymentMethodUser",
       foreignKey: "user_id",
     });
-    PaymentMethod.hasMany(models.Movement, {
+    const PaymentMethodMovements = PaymentMethod.hasMany(models.Movement, {
       as: "PaymentMethodMovements",
       foreignKey: "payment_method_id",
     });
+
+    return {
+      PaymentMethodUser,
+      PaymentMethodMovements,
+    };
   }
 }
 

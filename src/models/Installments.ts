@@ -30,10 +30,14 @@ export class Installment extends Model<
   declare getDebtInstallments: HasOneGetAssociationMixin<DebtAttributes>;
 
   static associate(models: Models) {
-    Installment.belongsTo(models.Debt, {
+    const DebtInstallments = Installment.belongsTo(models.Debt, {
       as: "DebtInstallments",
       foreignKey: "debt_id",
     });
+
+    return {
+      DebtInstallments,
+    };
   }
 }
 

@@ -38,18 +38,27 @@ export class Movement extends Model<
   declare getMovementUser: HasOneGetAssociationMixin<UserAttributes>;
 
   static associate(models: Models) {
-    Movement.belongsTo(models.FinancialAccount, {
-      as: "FinancialAccountMovements",
-      foreignKey: "financial_accounts_id",
-    });
-    Movement.belongsTo(models.PaymentMethod, {
+    const FinancialAccountMovements = Movement.belongsTo(
+      models.FinancialAccount,
+      {
+        as: "FinancialAccountMovements",
+        foreignKey: "financial_accounts_id",
+      }
+    );
+    const PaymentMethodMovements = Movement.belongsTo(models.PaymentMethod, {
       as: "PaymentMethodMovements",
       foreignKey: "payment_method_id",
     });
-    Movement.belongsTo(models.User, {
+    const MovementUser = Movement.belongsTo(models.User, {
       as: "MovementUser",
       foreignKey: "user_id",
     });
+
+    return {
+      FinancialAccountMovements,
+      PaymentMethodMovements,
+      MovementUser,
+    };
   }
 }
 

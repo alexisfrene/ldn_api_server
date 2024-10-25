@@ -18,7 +18,7 @@ import { DetailAttributes } from "./Details";
 export type ProductAttributes = InferAttributes<Product>;
 export type ProductCreationAttributes = InferCreationAttributes<
   Product,
-  { omit: "product_id" | "code" }
+  { omit: "product_id" }
 >;
 
 export class Product extends Model<
@@ -31,7 +31,6 @@ export class Product extends Model<
   declare primary_image: string;
   declare price: number;
   declare state: boolean;
-  declare code: CreationOptional<number>;
   declare stock: CreationOptional<number>;
   declare category_value: CreationOptional<string>;
   declare size_value: CreationOptional<string>;
@@ -43,7 +42,6 @@ export class Product extends Model<
   // Foreign keys
   declare user_id: Uuid;
   declare category_id: Uuid;
-  declare detail_id: Uuid;
   declare size_id: Uuid;
   declare variation_id?: CreationOptional<Uuid>;
 
@@ -55,26 +53,34 @@ export class Product extends Model<
   declare getUserProducts: HasOneGetAssociationMixin<User>;
 
   static associate(models: Models) {
-    Product.belongsTo(models.Category, {
+    const CategoryProducts = Product.belongsTo(models.Category, {
       as: "CategoryProducts",
       foreignKey: "category_id",
     });
-    Product.belongsTo(models.Size, {
+    const SizeProducts = Product.belongsTo(models.Size, {
       as: "SizeProducts",
       foreignKey: "size_id",
     });
-    Product.hasOne(models.Detail, {
+    const DetailProduct = Product.hasOne(models.Detail, {
       as: "DetailProduct",
       foreignKey: "product_id",
     });
-    Product.belongsTo(models.Variation, {
+    const VariationProducts = Product.belongsTo(models.Variation, {
       as: "VariationProducts",
       foreignKey: "variation_id",
     });
-    Product.belongsTo(models.User, {
+    const UserProducts = Product.belongsTo(models.User, {
       as: "UserProducts",
       foreignKey: "user_id",
     });
+
+    return {
+      CategoryProducts,
+      SizeProducts,
+      DetailProduct,
+      VariationProducts,
+      UserProducts,
+    };
   }
 }
 
@@ -108,10 +114,6 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
       },
-      code: {
-        type: DataTypes.INTEGER,
-        defaultValue: Sequelize.literal("nextval('products_code')"),
-      },
       stock: {
         type: DataTypes.INTEGER,
         defaultValue: 1,
@@ -139,10 +141,6 @@ export default (sequelize: Sequelize) => {
       category_id: {
         type: DataTypes.UUID,
         references: { model: "categories", key: "category_id" },
-      },
-      detail_id: {
-        type: DataTypes.UUID,
-        references: { model: "details", key: "detail_id" },
       },
       size_id: {
         type: DataTypes.UUID,

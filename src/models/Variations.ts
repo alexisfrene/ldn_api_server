@@ -44,18 +44,24 @@ export class Variation extends Model<
   declare getVariationProducts: HasManyGetAssociationsMixin<ProductAttributes>;
 
   static associate(models: Models) {
-    Variation.belongsTo(models.Category, {
+    const CategoryVariations = Variation.belongsTo(models.Category, {
       as: "CategoryVariations",
       foreignKey: "category_id",
     });
-    Variation.belongsTo(models.User, {
+    const VariationUser = Variation.belongsTo(models.User, {
       as: "VariationUser",
       foreignKey: "user_id",
     });
-    Variation.hasMany(models.Product, {
+    const VariationProducts = Variation.hasMany(models.Product, {
       as: "VariationProducts",
       foreignKey: "variation_id",
     });
+
+    return {
+      CategoryVariations,
+      VariationUser,
+      VariationProducts,
+    };
   }
 }
 

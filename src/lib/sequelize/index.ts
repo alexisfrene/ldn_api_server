@@ -23,14 +23,14 @@ const sequelize = new Sequelize(database, username, password, {
   logging: false,
 });
 
-const models = initModels(sequelize);
+const { associations, models } = initModels(sequelize);
 
 sequelize
-  .sync({ alter: true }) // O usar force: true para eliminar las tablas y recrearlas
+  .sync({ alter: true })
   .then(() => {
     console.log("Database synchronized");
   })
   .catch((err) => {
     console.error("Error synchronizing database:", err);
   });
-export { models, sequelize };
+export { models, sequelize, associations };

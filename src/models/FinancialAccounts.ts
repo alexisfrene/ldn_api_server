@@ -19,7 +19,7 @@ export class FinancialAccount extends Model<
 > {
   declare financial_accounts_id: CreationOptional<Uuid>;
   declare name: string;
-  declare type: "inflow_of_money" | "money_outflow" | "debts";
+  declare type: "inflow_of_money" | "money_outflow" | "debt";
   declare user_id: Uuid;
 
   declare getFinancialAccountDebts: HasManyGetAssociationsMixin<DebtAttributes>;

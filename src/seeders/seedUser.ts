@@ -13,6 +13,8 @@ export const seedUsers = async (models: Models) => {
         gender: "male",
         last_name: "Frene",
         username: "frenea",
+        avatar_url:
+          "https://res.cloudinary.com/ldn-img/image/upload/v1711132173/default-avatar/male.webp",
       },
     ]);
 

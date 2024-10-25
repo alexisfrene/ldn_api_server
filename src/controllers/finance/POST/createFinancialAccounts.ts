@@ -9,14 +9,14 @@ export const createFinancialAccounts = async (req: Request, res: Response) => {
   const {
     name,
     type,
-  }: { name: string; type: "inflow_of_money" | "money_outflow" | "debts" } =
+  }: { name: string; type: "inflow_of_money" | "money_outflow" | "debt" } =
     req.body;
   const newFinancialAccount = await FinancialAccount.create({
     name,
     type,
     user_id: user_id as Uuid,
   });
-  if (type === "debts") {
+  if (type === "debt") {
     const newDebts = await Debt.create({
       notes: req.body.notes || "Sin nota",
       total_debt: req.body.total_debt || 0,

@@ -1,4 +1,5 @@
 import {
+  CreationOptional,
   DataTypes,
   HasManyGetAssociationsMixin,
   HasOneGetAssociationMixin,
@@ -13,16 +14,14 @@ import { UserAttributes } from "./Users";
 import { MovementAttributes } from "./Movements";
 
 export type PaymentMethodAttributes = InferAttributes<PaymentMethod>;
-export type PaymentMethodCreationAttributes = InferCreationAttributes<
-  PaymentMethod,
-  { omit: "payment_method_id" }
->;
+export type PaymentMethodCreationAttributes =
+  InferCreationAttributes<PaymentMethod>;
 
 export class PaymentMethod extends Model<
   PaymentMethodAttributes,
   PaymentMethodCreationAttributes
 > {
-  declare payment_method_id: Uuid;
+  declare payment_method_id: CreationOptional<Uuid>;
   declare name: string;
   declare user_id: Uuid;
 

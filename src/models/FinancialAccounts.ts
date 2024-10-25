@@ -1,4 +1,5 @@
 import {
+  CreationOptional,
   DataTypes,
   HasManyGetAssociationsMixin,
   HasOneGetAssociationMixin,
@@ -14,9 +15,9 @@ import { UserAttributes } from "./Users";
 import { MovementAttributes } from "./Movements";
 export class FinancialAccount extends Model<
   InferAttributes<FinancialAccount>,
-  InferCreationAttributes<FinancialAccount, { omit: "financial_accounts_id" }>
+  InferCreationAttributes<FinancialAccount>
 > {
-  declare financial_accounts_id: Uuid;
+  declare financial_accounts_id: CreationOptional<Uuid>;
   declare name: string;
   declare type: "inflow_of_money" | "money_outflow" | "debts";
   declare user_id: Uuid;

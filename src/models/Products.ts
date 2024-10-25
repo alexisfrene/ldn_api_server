@@ -16,10 +16,7 @@ import { User } from "./Users";
 import { DetailAttributes } from "./Details";
 
 export type ProductAttributes = InferAttributes<Product>;
-export type ProductCreationAttributes = InferCreationAttributes<
-  Product,
-  { omit: "product_id" }
->;
+export type ProductCreationAttributes = InferCreationAttributes<Product>;
 
 export class Product extends Model<
   ProductAttributes,

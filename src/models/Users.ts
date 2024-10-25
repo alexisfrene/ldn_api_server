@@ -21,7 +21,7 @@ import { SizeAttributes } from "./Sizes";
 export type UserAttributes = InferAttributes<User>;
 export type UserCreationAttributes = InferCreationAttributes<
   User,
-  { omit: "config" | "session_token" | "user_id" }
+  { omit: "config" | "session_token" }
 >;
 
 export class User extends Model<UserAttributes, UserCreationAttributes> {

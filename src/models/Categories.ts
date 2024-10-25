@@ -1,4 +1,5 @@
 import {
+  CreationOptional,
   DataTypes,
   HasManyGetAssociationsMixin,
   HasOneGetAssociationMixin,
@@ -19,18 +20,15 @@ type CategoriesItem = {
   icon_url: string;
 };
 export type CategoryAttributes = InferAttributes<Category, { omit: "user_id" }>;
-export type CategoryCreationAttributes = InferCreationAttributes<
-  Category,
-  { omit: "category_id" }
->;
+export type CategoryCreationAttributes = InferCreationAttributes<Category>;
 
 export class Category extends Model<
   CategoryAttributes,
   CategoryCreationAttributes
 > {
-  declare category_id: Uuid;
+  declare category_id: CreationOptional<Uuid>;
   declare title: string;
-  declare type: "product" | "expense";
+  declare type: CreationOptional<"product" | "expense">;
   declare values: CategoriesItem[];
   declare user_id: Uuid;
 

@@ -36,6 +36,7 @@
       "@models": ["models/index"],
       "@models/*": ["models/*"],
       "@lib": ["lib/index"],
+      "@lib/*": ["lib/*"],
       "@controllers": ["controllers/index"],
       "@validators": ["validators/index"],
       "@middlewares": ["middlewares/index"]

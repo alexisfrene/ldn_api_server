@@ -1,4 +1,5 @@
 import {
+  CreationOptional,
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
@@ -13,12 +14,9 @@ type SizeItem = {
   value: string;
 };
 export type SizeAttributes = InferAttributes<Size, { omit: "user_id" }>;
-export type SizeCreationAttributes = InferCreationAttributes<
-  Size,
-  { omit: "size_id" }
->;
+export type SizeCreationAttributes = InferCreationAttributes<Size>;
 export class Size extends Model<SizeAttributes, SizeCreationAttributes> {
-  declare size_id: Uuid;
+  declare size_id: CreationOptional<Uuid>;
   declare title: string;
   declare values: SizeItem[];
   declare user_id?: Uuid;

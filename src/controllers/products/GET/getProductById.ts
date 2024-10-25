@@ -55,7 +55,7 @@ export const getProductById = async (req: Request, res: Response) => {
     );
   }
 
-  const { name, product_id, description, price, state, code, stock, discount } =
+  const { name, product_id, description, price, state, stock, discount } =
     product;
 
   return res.status(200).json({
@@ -68,7 +68,6 @@ export const getProductById = async (req: Request, res: Response) => {
     primary_image: urlCloudinary || "",
     price,
     state,
-    code,
     stock,
     discount,
     variation: variationFormat,

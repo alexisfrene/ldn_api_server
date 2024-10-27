@@ -1,15 +1,29 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
 
-const User = models.User;
+const { User, FinancialAccount, PaymentMethod } = models;
 
-export const getPaymentMethods = async (req: Request, res: Response) => {
+export const getPaymentMethodsById = async (req: Request, res: Response) => {
   const user_id = req.user;
+  const id = req.params.id;
   const user = await User.findByPk(user_id);
   if (user) {
-    const PaymentMethods = await user.getUserPaymentMethods();
+    const financialAccountWithPaymentMethods = await FinancialAccount.findOne({
+      where: { financial_accounts_id: id },
+      include: [
+        {
+          model: PaymentMethod,
+          attributes: ["payment_method_id", "name"],
+        },
+      ],
+      attributes: [],
+      raw: false,
+    });
 
-    return res.status(200).json(PaymentMethods);
+    const paymentMethods =
+      financialAccountWithPaymentMethods?.PaymentMethods || [];
+
+    return res.status(200).json(paymentMethods);
   }
 
   return res

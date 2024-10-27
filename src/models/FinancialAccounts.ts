@@ -13,6 +13,7 @@ import { Models } from "@models";
 import { DebtAttributes } from "./Debts";
 import { UserAttributes } from "./Users";
 import { MovementAttributes } from "./Movements";
+import { PaymentMethod } from "./PaymentMethods";
 export class FinancialAccount extends Model<
   InferAttributes<FinancialAccount>,
   InferCreationAttributes<FinancialAccount>
@@ -20,6 +21,7 @@ export class FinancialAccount extends Model<
   declare financial_accounts_id: CreationOptional<Uuid>;
   declare name: string;
   declare user_id: Uuid;
+  declare PaymentMethods?: PaymentMethod[];
 
   declare getFinancialAccountDebts: HasManyGetAssociationsMixin<DebtAttributes>;
   declare getFinancialAccountUser: HasOneGetAssociationMixin<UserAttributes>;

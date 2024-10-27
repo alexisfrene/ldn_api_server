@@ -4,6 +4,7 @@ import { getTotalMonth } from "@controllers";
 import financialAccountRoutes from "./financialAccountRoutes";
 import paymentMethodRoutes from "./paymentMethodRoutes";
 import movementRoutes from "./movementRoutes";
+import expenseRoutes from "./expenseRoutes";
 
 const router = express.Router();
 
@@ -26,6 +27,11 @@ router.get(
   "/total_month",
   authenticateToken,
   asyncHandler(async (req, res) => getTotalMonth(req, res))
+);
+router.get(
+  "/expenses",
+  authenticateToken,
+  asyncHandler(async (req, res, next) => expenseRoutes(req, res, next))
 );
 
 export { router };

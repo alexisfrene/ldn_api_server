@@ -1,9 +1,9 @@
 import express from "express";
-import { getPaymentMethods, createPaymentMethod } from "@controllers";
+import { getPaymentMethodsById, createPaymentMethod } from "@controllers";
 
 const router = express.Router();
 
-router.get("/", getPaymentMethods);
+router.get("/:id", getPaymentMethodsById);
 router.post("/", createPaymentMethod);
 
 export default router;

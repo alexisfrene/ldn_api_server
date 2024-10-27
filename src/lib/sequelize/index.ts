@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import { config as connectionPSQL } from "./config";
 import { initModels } from "@models";
-//import { seedDatabase } from "seeders";
+import { seedDatabase } from "seeders";
 
 type Env = "development" | "production";
 
@@ -27,9 +27,9 @@ const sequelize = new Sequelize(database, username, password, {
 const { associations, models } = initModels(sequelize);
 
 sequelize
-  .sync()
+  .sync({ force: true })
   .then(async () => {
-    // await seedDatabase(models);
+    await seedDatabase(models);
     console.log("Database synchronized");
   })
   .catch((err) => {

@@ -11,6 +11,7 @@ import variationModel from "./Variations";
 import installmentsModel from "./Installments";
 import paymentMethodsModel from "./PaymentMethods";
 import financialAccountsModel from "./FinancialAccounts";
+import financialAccountsPaymentMethodsModel from "./FinancialAccountsPaymentMethods";
 import { Sequelize } from "sequelize";
 
 interface ModelAssociations {
@@ -30,6 +31,9 @@ interface ModelAssociations {
 }
 
 export interface Models {
+  FinancialAccountsPaymentMethods: ReturnType<
+    typeof financialAccountsPaymentMethodsModel
+  >;
   Tag: ReturnType<typeof tagModel>;
   User: ReturnType<typeof userModel>;
   Size: ReturnType<typeof sizeModel>;
@@ -66,6 +70,8 @@ export const initModels = (sequelize: Sequelize): InitModelsReturnType => {
   const Installment = installmentsModel(sequelize);
   const PaymentMethod = paymentMethodsModel(sequelize);
   const FinancialAccount = financialAccountsModel(sequelize);
+  const FinancialAccountsPaymentMethods =
+    financialAccountsPaymentMethodsModel(sequelize);
 
   const models: Models = {
     Tag,
@@ -81,6 +87,7 @@ export const initModels = (sequelize: Sequelize): InitModelsReturnType => {
     Installment,
     PaymentMethod,
     FinancialAccount,
+    FinancialAccountsPaymentMethods,
   };
 
   const associations = {

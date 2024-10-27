@@ -19,7 +19,6 @@ export class FinancialAccount extends Model<
 > {
   declare financial_accounts_id: CreationOptional<Uuid>;
   declare name: string;
-  declare type: "inflow_of_money" | "money_outflow" | "debt";
   declare user_id: Uuid;
 
   declare getFinancialAccountDebts: HasManyGetAssociationsMixin<DebtAttributes>;
@@ -46,11 +45,19 @@ export class FinancialAccount extends Model<
       as: "FinancialAccountExpenses",
       foreignKey: "financial_accounts_id",
     });
+    const FinancialAccountsPaymentMethods = FinancialAccount.belongsToMany(
+      models.PaymentMethod,
+      {
+        through: models.FinancialAccountsPaymentMethods,
+        foreignKey: "financial_accounts_id",
+      }
+    );
     return {
       FinancialAccountDebts,
       FinancialAccountUser,
       FinancialAccountMovements,
       FinancialAccountExpenses,
+      FinancialAccountsPaymentMethods,
     };
   }
 }
@@ -75,11 +82,9 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: "Sin nombre",
+        unique: true,
       },
-      type: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
+
       user_id: {
         type: DataTypes.UUID,
         references: { model: "users", key: "user_id" },

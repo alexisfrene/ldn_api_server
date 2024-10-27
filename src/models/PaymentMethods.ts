@@ -37,10 +37,18 @@ export class PaymentMethod extends Model<
       as: "PaymentMethodMovements",
       foreignKey: "payment_method_id",
     });
+    const FinancialAccountsPaymentMethods = PaymentMethod.belongsToMany(
+      models.FinancialAccount,
+      {
+        through: models.FinancialAccountsPaymentMethods,
+        foreignKey: "payment_method_id",
+      }
+    );
 
     return {
       PaymentMethodUser,
       PaymentMethodMovements,
+      FinancialAccountsPaymentMethods,
     };
   }
 }

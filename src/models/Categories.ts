@@ -49,16 +49,11 @@ export class Category extends Model<
       as: "CategoryVariations",
       foreignKey: "category_id",
     });
-    const CategoryExpense = Category.hasMany(models.Expense, {
-      as: "CategoryExpense",
-      foreignKey: "category_id",
-    });
 
     return {
       CategoryProducts,
       CategoryUser,
       CategoryVariations,
-      CategoryExpense,
     };
   }
 }

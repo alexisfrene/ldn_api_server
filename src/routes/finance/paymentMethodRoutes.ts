@@ -1,8 +1,12 @@
 import express from "express";
-import { getPaymentMethodsById, createPaymentMethod } from "@controllers";
+import {
+  getPaymentMethodsById,
+  createPaymentMethod,
+  getPaymentMethodsByUser,
+} from "@controllers";
 
 const router = express.Router();
-
+router.get("/", getPaymentMethodsByUser);
 router.get("/:id", getPaymentMethodsById);
 router.post("/", createPaymentMethod);
 

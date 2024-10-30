@@ -20,8 +20,6 @@ export class Expense extends Model<
 > {
   declare expense_id: Uuid;
   declare description: string;
-  declare amount: number;
-  declare transaction_date: Date;
   declare financial_accounts_id: Uuid;
 
   static associate(models: Models) {
@@ -36,14 +34,10 @@ export class Expense extends Model<
       as: "ExpenseTags",
       foreignKey: "expense_id",
     });
-    const CategoryExpense = Expense.belongsTo(models.Category, {
-      as: "CategoryExpense",
-      foreignKey: "category_id",
-    });
+
     return {
       FinancialAccountExpenses,
       ExpenseTags,
-      CategoryExpense,
     };
   }
 }
@@ -56,19 +50,8 @@ export default (sequelize: Sequelize) => {
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
       },
-
       description: {
         type: DataTypes.STRING,
-        allowNull: false,
-      },
-
-      amount: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
-      },
-
-      transaction_date: {
-        type: DataTypes.DATE,
         allowNull: false,
       },
       financial_accounts_id: {

@@ -14,10 +14,10 @@ import { InstallmentAttributes } from "./Installments";
 export type DebtAttributes = InferAttributes<Debt>;
 export type DebtCreationAttributes = InferCreationAttributes<
   Debt,
-  { omit: "debt_id" | "updatedAt" | "createdAt" }
+  { omit: "updatedAt" | "createdAt" }
 >;
 export class Debt extends Model<DebtAttributes, DebtCreationAttributes> {
-  declare debt_id: Uuid;
+  declare debt_id: CreationOptional<Uuid>;
   declare name: string;
   declare interest_rate: CreationOptional<number>;
   declare minimum_payment: CreationOptional<number>;

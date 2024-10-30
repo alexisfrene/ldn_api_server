@@ -28,7 +28,7 @@ router.get(
   authenticateToken,
   asyncHandler(async (req, res) => getTotalMonth(req, res))
 );
-router.get(
+router.use(
   "/expenses",
   authenticateToken,
   asyncHandler(async (req, res, next) => expenseRoutes(req, res, next))

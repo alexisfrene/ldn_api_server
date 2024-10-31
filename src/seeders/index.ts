@@ -13,10 +13,10 @@ export const seedDatabase = async (models: Models) => {
   await seedUsers(models);
   await seedCategories(models);
   await seedSizes(models);
-  await seedPaymentMethods(models);
-  await seedFinancialAccounts(models);
-  await seedMovements(models);
   await seedProducts(models);
   await seedDetails(models);
+  await seedPaymentMethods(models);
+  await seedFinancialAccounts(models);
   await seedFinancialAccountsPaymentMethods(models);
+  await seedMovements(models);
 };

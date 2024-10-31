@@ -19,25 +19,27 @@ export class Expense extends Model<
   ExpenseCreationAttributes
 > {
   declare expense_id: Uuid;
+  declare user_id: Uuid;
   declare description: string;
-  declare financial_accounts_id: Uuid;
 
   static associate(models: Models) {
-    const FinancialAccountExpenses = Expense.belongsTo(
-      models.FinancialAccount,
-      {
-        as: "FinancialAccountExpenses",
-        foreignKey: "financial_accounts_id",
-      }
-    );
     const ExpenseTags = Expense.hasMany(models.Tag, {
       as: "ExpenseTags",
       foreignKey: "expense_id",
     });
+    const ExpenseMovements = Expense.hasMany(models.Movement, {
+      as: "MovementExpense",
+      foreignKey: "expense_id",
+    });
+    const UserExpenses = Expense.belongsTo(models.User, {
+      as: "UserExpenses",
+      foreignKey: "user_id",
+    });
 
     return {
-      FinancialAccountExpenses,
       ExpenseTags,
+      UserExpenses,
+      ExpenseMovements,
     };
   }
 }
@@ -54,12 +56,12 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      financial_accounts_id: {
+      user_id: {
         type: DataTypes.UUID,
         allowNull: false,
         references: {
-          model: "financialAccounts",
-          key: "financial_accounts_id",
+          model: "users",
+          key: "user_id",
         },
       },
     },

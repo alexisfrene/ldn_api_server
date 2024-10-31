@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
 
-const User = models.User;
+const { User, PaymentMethod, FinancialAccount } = models;
 
 export const getFinancialAccounts = async (req: Request, res: Response) => {
   const user_id = req.user;
@@ -22,7 +22,20 @@ export const getFinancialAccounts = async (req: Request, res: Response) => {
   const movements = await user.getUserMovements();
 
   const formatter = await Promise.all(
-    financialAccounts.map(async (account: any) => {
+    financialAccounts.map(async (account) => {
+      const financialAccountWithPaymentMethods = await FinancialAccount.findOne(
+        {
+          where: { financial_accounts_id: account.financial_accounts_id },
+          include: [
+            {
+              model: PaymentMethod,
+              attributes: ["payment_method_id", "name"],
+            },
+          ],
+          attributes: [],
+          raw: false,
+        }
+      );
       const filterMovements = movements.filter(
         (movement: any) =>
           movement.financial_accounts_id === account.financial_accounts_id
@@ -41,8 +54,13 @@ export const getFinancialAccounts = async (req: Request, res: Response) => {
       return {
         financial_accounts_id: account.financial_accounts_id,
         total: totalValue,
-        type: account.type,
         name: account.name,
+        paymentMethods: financialAccountWithPaymentMethods?.PaymentMethods?.map(
+          (paymentMethod) => ({
+            name: paymentMethod.name,
+            payment_method_id: paymentMethod.payment_method_id,
+          })
+        ),
       };
     })
   );

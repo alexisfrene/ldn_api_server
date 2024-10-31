@@ -43,10 +43,6 @@ export class FinancialAccount extends Model<
         foreignKey: "financial_accounts_id",
       }
     );
-    const FinancialAccountExpenses = FinancialAccount.hasMany(models.Expense, {
-      as: "FinancialAccountExpenses",
-      foreignKey: "financial_accounts_id",
-    });
     const FinancialAccountsPaymentMethods = FinancialAccount.belongsToMany(
       models.PaymentMethod,
       {
@@ -58,7 +54,6 @@ export class FinancialAccount extends Model<
       FinancialAccountDebts,
       FinancialAccountUser,
       FinancialAccountMovements,
-      FinancialAccountExpenses,
       FinancialAccountsPaymentMethods,
     };
   }

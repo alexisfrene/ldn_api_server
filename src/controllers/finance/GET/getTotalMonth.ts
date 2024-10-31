@@ -16,12 +16,18 @@ export const getTotalMonth = async (req: Request, res: Response) => {
   const startOfMonth = new Date(
     new Date().getFullYear(),
     new Date().getMonth(),
+    1,
+    0,
+    0,
     1
   );
   const endOfMonth = new Date(
     new Date().getFullYear(),
     new Date().getMonth() + 1,
-    0
+    0,
+    23,
+    59,
+    59
   );
 
   const movementsAll: Movement[] = await movements.findAll({

@@ -1,4 +1,5 @@
 import {
+  CreationOptional,
   DataTypes,
   HasOneGetAssociationMixin,
   InferAttributes,
@@ -15,13 +16,13 @@ import { UserAttributes } from "./Users";
 export type MovementAttributes = InferAttributes<Movement>;
 export type MovementCreationAttributes = InferCreationAttributes<
   Movement,
-  { omit: "movements_id" | "updatedAt" | "createdAt" }
+  { omit: "updatedAt" | "createdAt" }
 >;
 export class Movement extends Model<
   MovementAttributes,
   MovementCreationAttributes
 > {
-  declare movements_id: Uuid;
+  declare movements_id: CreationOptional<Uuid>;
   declare entry_date: Date;
   declare label: string;
   declare value: number;
@@ -32,6 +33,7 @@ export class Movement extends Model<
   declare user_id: Uuid;
   declare payment_method_id: Uuid;
   declare financial_accounts_id: Uuid;
+  declare expense_id: CreationOptional<Uuid>;
 
   declare getFinancialAccountMovements: HasOneGetAssociationMixin<FinancialAccountAttributes>;
   declare getPaymentMethodMovements: HasOneGetAssociationMixin<PaymentMethodAttributes>;
@@ -54,10 +56,16 @@ export class Movement extends Model<
       foreignKey: "user_id",
     });
 
+    const MovementExpense = Movement.belongsTo(models.Expense, {
+      as: "MovementExpense",
+      foreignKey: "expense_id",
+    });
+
     return {
       FinancialAccountMovements,
       PaymentMethodMovements,
       MovementUser,
+      MovementExpense,
     };
   }
 }
@@ -107,6 +115,13 @@ export default (sequelize: Sequelize) => {
         references: {
           model: "users",
           key: "user_id",
+        },
+      },
+      expense_id: {
+        type: DataTypes.UUID,
+        references: {
+          model: "expenses",
+          key: "expense_id",
         },
       },
       createdAt: DataTypes.DATE,

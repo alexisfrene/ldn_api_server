@@ -23,6 +23,7 @@ export const createMovement = async (req: Request, res: Response) => {
     financial_accounts_id,
     user_id: user_id as Uuid,
     entry_date,
+    expense_id: req.body?.expense_id || null,
   });
 
   return res.status(200).json({ newMovement });

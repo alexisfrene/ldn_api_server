@@ -3,7 +3,7 @@ import {
   createMovement,
   deleteMovement,
   editMovement,
-  getAllTheMoves,
+  getAllMoves,
 } from "@controllers";
 import { runValidate } from "@middlewares";
 import {
@@ -14,7 +14,7 @@ import {
 
 const router = express.Router();
 
-router.get("/", getAllTheMoves);
+router.get("/", getAllMoves);
 router.post("/", runValidate(createMovementValidations), createMovement);
 router.put("/:id", runValidate(editMovementValidations), editMovement);
 router.delete("/:id", runValidate(deleteMovementValidations), deleteMovement);

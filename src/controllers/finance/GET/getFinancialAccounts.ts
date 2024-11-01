@@ -5,22 +5,9 @@ const { User, PaymentMethod, FinancialAccount } = models;
 
 export const getFinancialAccounts = async (req: Request, res: Response) => {
   const user_id = req.user;
-  if (!user_id) {
-    return res.status(400).json({ error: "User ID not provided" });
-  }
-
   const user = await User.findByPk(user_id);
-  if (!user) {
-    return res.status(404).json({ error: "User not found" });
-  }
-
-  const financialAccounts = await user.getUserFinancialAccounts();
-  if (!financialAccounts || financialAccounts.length === 0) {
-    return res.status(200).json([]);
-  }
-
-  const movements = await user.getUserMovements();
-
+  const financialAccounts = user ? await user.getUserFinancialAccounts() : [];
+  const movements = user ? await user.getUserMovements() : [];
   const formatter = await Promise.all(
     financialAccounts.map(async (account) => {
       const financialAccountWithPaymentMethods = await FinancialAccount.findOne(

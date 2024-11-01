@@ -12,10 +12,8 @@ import { Models } from "@models";
 import { DebtAttributes } from "./Debts";
 
 export type InstallmentAttributes = InferAttributes<Installment>;
-export type InstallmentCreationAttributes = InferCreationAttributes<
-  Installment,
-  { omit: "installment_id" }
->;
+export type InstallmentCreationAttributes =
+  InferCreationAttributes<Installment>;
 
 export class Installment extends Model<
   InstallmentAttributes,

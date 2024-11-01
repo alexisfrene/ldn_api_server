@@ -1,7 +1,6 @@
 import {
   DataTypes,
   HasManyGetAssociationsMixin,
-  HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
@@ -9,8 +8,7 @@ import {
 } from "sequelize";
 import { Uuid } from "../types";
 import { Models } from "@models";
-import { UserAttributes } from "./Users";
-import { MovementAttributes } from "./Movements";
+import { ExpenseAttributes } from "./Expenses";
 
 export type TagAttributes = InferAttributes<Tag>;
 export type TagCreationAttributes = InferCreationAttributes<
@@ -25,8 +23,7 @@ export class Tag extends Model<TagAttributes, TagCreationAttributes> {
   declare user_id: Uuid;
   declare expense_id: Uuid;
 
-  declare getPaymentMethodMovements: HasManyGetAssociationsMixin<MovementAttributes>;
-  declare getPaymentMethodUser: HasOneGetAssociationMixin<UserAttributes>;
+  declare getExpenseTags: HasManyGetAssociationsMixin<ExpenseAttributes>;
 
   static associate(models: Models) {
     const ExpenseTags = Tag.belongsTo(models.Expense, {

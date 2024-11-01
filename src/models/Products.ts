@@ -8,12 +8,12 @@ import {
   HasOneGetAssociationMixin,
 } from "sequelize";
 import { Uuid } from "../types";
-import { Models } from "@models";
 import { SizeAttributes } from "./Sizes";
 import { Variation } from "./Variations";
 import { CategoryAttributes } from "./Categories";
 import { User } from "./Users";
 import { DetailAttributes } from "./Details";
+import { Models } from "@models";
 
 export type ProductAttributes = InferAttributes<Product>;
 export type ProductCreationAttributes = InferCreationAttributes<Product>;
@@ -36,13 +36,11 @@ export class Product extends Model<
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 
-  // Foreign keys
   declare user_id: Uuid;
   declare category_id: Uuid;
   declare size_id: Uuid;
   declare variation_id?: CreationOptional<Uuid>;
 
-  // Association Mixins
   declare getCategoryProducts: HasOneGetAssociationMixin<CategoryAttributes>;
   declare getSizeProducts: HasOneGetAssociationMixin<SizeAttributes>;
   declare getDetailProduct: HasOneGetAssociationMixin<DetailAttributes>;

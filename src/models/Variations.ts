@@ -10,9 +10,9 @@ import {
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
-import { Models } from "@models";
 import { UserAttributes } from "./Users";
 import { ProductAttributes } from "./Products";
+import { Models } from "@models";
 
 type VariationItem = {
   id: Uuid;
@@ -23,14 +23,14 @@ type VariationItem = {
 export type VariationAttributes = InferAttributes<Variation>;
 export type VariationCreationAttributes = InferCreationAttributes<
   Variation,
-  { omit: "variation_id" | "createdAt" | "updatedAt" }
+  { omit: "createdAt" | "updatedAt" }
 >;
 
 export class Variation extends Model<
   VariationAttributes,
   VariationCreationAttributes
 > {
-  declare variation_id: Uuid;
+  declare variation_id: CreationOptional<Uuid>;
   declare title: string;
   declare values: VariationItem[];
   declare createdAt: CreationOptional<Date>;

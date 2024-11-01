@@ -1,6 +1,7 @@
 import {
   CreationOptional,
   DataTypes,
+  HasManyGetAssociationsMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
@@ -8,6 +9,8 @@ import {
 } from "sequelize";
 import { Uuid } from "../types";
 import { Models } from "@models";
+import { ProductAttributes } from "./Products";
+import { UserAttributes } from "./Users";
 
 type SizeItem = {
   id: Uuid;
@@ -20,6 +23,9 @@ export class Size extends Model<SizeAttributes, SizeCreationAttributes> {
   declare title: string;
   declare values: SizeItem[];
   declare user_id?: Uuid;
+
+  declare getSizeProducts: HasManyGetAssociationsMixin<ProductAttributes>;
+  declare getSizeUser: HasManyGetAssociationsMixin<UserAttributes>;
 
   static associate(models: Models) {
     const SizeProducts = Size.hasMany(models.Product, {

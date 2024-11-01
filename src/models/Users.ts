@@ -4,12 +4,10 @@ import {
   InferAttributes,
   InferCreationAttributes,
   CreationOptional,
-  NonAttribute,
   DataTypes,
   HasManyGetAssociationsMixin,
 } from "sequelize";
 import { Uuid } from "../types";
-import { Models } from "@models";
 import { CategoryAttributes } from "./Categories";
 import { VariationAttributes } from "./Variations";
 import { ProductAttributes } from "./Products";
@@ -18,6 +16,7 @@ import { PaymentMethodAttributes } from "./PaymentMethods";
 import { MovementAttributes } from "./Movements";
 import { SizeAttributes } from "./Sizes";
 import { ExpenseAttributes } from "./Expenses";
+import { Models } from "@models";
 
 export type UserAttributes = InferAttributes<User>;
 export type UserCreationAttributes = InferCreationAttributes<
@@ -44,9 +43,6 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
   declare session_token: CreationOptional<string | null>;
   declare config: CreationOptional<Record<string, any>>;
 
-  get fullName(): NonAttribute<string> {
-    return `${this.first_name} ${this.last_name}`;
-  }
   declare getUserCategories: HasManyGetAssociationsMixin<CategoryAttributes>;
   declare getUserVariations: HasManyGetAssociationsMixin<VariationAttributes>;
   declare getUserProducts: HasManyGetAssociationsMixin<ProductAttributes>;

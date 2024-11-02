@@ -85,7 +85,12 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
       as: "UserExpenses",
       foreignKey: "user_id",
     });
+    const UserDebts = User.hasMany(models.Debt, {
+      as: "UserDebts",
+      foreignKey: "user_id",
+    });
     return {
+      UserDebts,
       UserExpenses,
       UserSizes,
       UserProducts,

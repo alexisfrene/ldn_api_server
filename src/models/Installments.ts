@@ -1,5 +1,5 @@
 import {
-  CreateOptions,
+  CreationOptional,
   DataTypes,
   HasOneGetAssociationMixin,
   InferAttributes,
@@ -19,7 +19,7 @@ export class Installment extends Model<
   InstallmentAttributes,
   InstallmentCreationAttributes
 > {
-  declare installment_id: CreateOptions<Uuid>;
+  declare installment_id: CreationOptional<number>;
   declare amount: number;
   declare due_date: Date;
   declare status: "paid" | "unpaid";
@@ -43,12 +43,12 @@ export default (sequelize: Sequelize) => {
   Installment.init(
     {
       installment_id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
+        autoIncrement: true,
       },
       amount: {
-        type: DataTypes.FLOAT,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       due_date: {

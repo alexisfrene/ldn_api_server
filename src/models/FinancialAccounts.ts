@@ -10,7 +10,6 @@ import {
 } from "sequelize";
 import { Uuid } from "../types";
 import { Models } from "@models";
-import { DebtAttributes } from "./Debts";
 import { UserAttributes } from "./Users";
 import { MovementAttributes } from "./Movements";
 import { PaymentMethod } from "./PaymentMethods";
@@ -23,15 +22,10 @@ export class FinancialAccount extends Model<
   declare user_id: Uuid;
   declare PaymentMethods?: PaymentMethod[];
 
-  declare getFinancialAccountDebts: HasManyGetAssociationsMixin<DebtAttributes>;
   declare getFinancialAccountUser: HasOneGetAssociationMixin<UserAttributes>;
   declare getFinancialAccountMovements: HasManyGetAssociationsMixin<MovementAttributes>;
 
   static associate(models: Models) {
-    const FinancialAccountDebts = FinancialAccount.hasMany(models.Debt, {
-      as: "FinancialAccountDebts",
-      foreignKey: "financial_accounts_id",
-    });
     const FinancialAccountUser = FinancialAccount.belongsTo(models.User, {
       as: "FinancialAccountUser",
       foreignKey: "user_id",
@@ -51,7 +45,6 @@ export class FinancialAccount extends Model<
       }
     );
     return {
-      FinancialAccountDebts,
       FinancialAccountUser,
       FinancialAccountMovements,
       FinancialAccountsPaymentMethods,
@@ -81,7 +74,6 @@ export default (sequelize: Sequelize) => {
         defaultValue: "Sin nombre",
         unique: true,
       },
-
       user_id: {
         type: DataTypes.UUID,
         references: { model: "users", key: "user_id" },

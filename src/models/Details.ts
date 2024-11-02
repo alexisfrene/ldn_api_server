@@ -1,4 +1,5 @@
 import {
+  CreationOptional,
   DataTypes,
   HasOneGetAssociationMixin,
   InferAttributes,
@@ -10,13 +11,10 @@ import { Uuid } from "../types";
 import { Models } from "@models";
 import { ProductAttributes } from "./Products";
 export type DetailAttributes = InferAttributes<Detail, { omit: "product_id" }>;
-export type DetailCreationAttributes = InferCreationAttributes<
-  Detail,
-  { omit: "detail_id" }
->;
+export type DetailCreationAttributes = InferCreationAttributes<Detail>;
 
 export class Detail extends Model<DetailAttributes, DetailCreationAttributes> {
-  declare detail_id: Uuid;
+  declare detail_id: CreationOptional<number>;
   declare gender: string;
   declare color: string;
   declare brand: string;
@@ -41,9 +39,9 @@ export default (sequelize: Sequelize) => {
   Detail.init(
     {
       detail_id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
+        autoIncrement: true,
       },
       gender: {
         type: DataTypes.STRING,

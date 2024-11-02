@@ -7,7 +7,15 @@ export const seedFinancialAccountsPaymentMethods = async (models: Models) => {
       [
         {
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
-          payment_method_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          payment_method_id: 101,
+        },
+        {
+          financial_accounts_id: "123e4567-e89b-12d3-a456-426614174001" as Uuid,
+          payment_method_id: 101,
+        },
+        {
+          financial_accounts_id: "123e4567-e89b-12d3-a456-426614174002" as Uuid,
+          payment_method_id: 102,
         },
       ],
       { ignoreDuplicates: true }

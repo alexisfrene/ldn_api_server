@@ -26,7 +26,7 @@ export class Category extends Model<
   CategoryAttributes,
   CategoryCreationAttributes
 > {
-  declare category_id: CreationOptional<Uuid>;
+  declare category_id: CreationOptional<number>;
   declare title: string;
   declare type: CreationOptional<"product" | "expense">;
   declare values: CategoriesItem[];
@@ -62,9 +62,9 @@ export default (sequelize: Sequelize) => {
   Category.init(
     {
       category_id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
+        autoIncrement: true,
       },
       title: {
         type: DataTypes.STRING(50),

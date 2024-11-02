@@ -32,8 +32,8 @@ export const getProductForCategory = async (req: Request, res: Response) => {
       message: "No se encontró el valor de la categoría",
     });
   const productsForCAtegory = products.filter(
-    (product: { category_id: string; category_value: string }) =>
-      product.category_id === category_id &&
+    (product) =>
+      product.category_id === Number(category_id) &&
       product.category_value === category_value
   );
   return res.status(200).json({ res: productsForCAtegory });

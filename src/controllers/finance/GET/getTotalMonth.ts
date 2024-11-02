@@ -32,7 +32,7 @@ export const getTotalMonth = async (req: Request, res: Response) => {
 
   const movementsAll: Movement[] = await movements.findAll({
     where: {
-      createdAt: {
+      entry_date: {
         [Op.between]: [startOfMonth, endOfMonth],
       },
       user_id,

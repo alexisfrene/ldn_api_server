@@ -21,7 +21,7 @@ export class PaymentMethod extends Model<
   PaymentMethodAttributes,
   PaymentMethodCreationAttributes
 > {
-  declare payment_method_id: CreationOptional<Uuid>;
+  declare payment_method_id: CreationOptional<number>;
   declare name: string;
   declare user_id: Uuid;
 
@@ -57,9 +57,9 @@ export default (sequelize: Sequelize) => {
   PaymentMethod.init(
     {
       payment_method_id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
+        autoIncrement: true,
       },
       name: {
         type: DataTypes.STRING,

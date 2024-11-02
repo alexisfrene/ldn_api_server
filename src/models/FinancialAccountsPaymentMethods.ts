@@ -19,7 +19,7 @@ export class FinancialAccountsPaymentMethods extends Model<
   FinancialAccountsPaymentMethodsAttributes,
   FinancialAccountsPaymentMethodsCreationAttributes
 > {
-  declare payment_method_id: Uuid;
+  declare payment_method_id: number;
   declare financial_accounts_id: Uuid;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
@@ -29,7 +29,7 @@ export default (sequelize: Sequelize) => {
   FinancialAccountsPaymentMethods.init(
     {
       payment_method_id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         references: {
           model: PaymentMethod,
           key: "payment_method_id",

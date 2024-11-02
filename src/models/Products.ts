@@ -37,8 +37,8 @@ export class Product extends Model<
   declare updatedAt: CreationOptional<Date>;
 
   declare user_id: Uuid;
-  declare category_id: Uuid;
-  declare size_id: Uuid;
+  declare category_id: number;
+  declare size_id: number;
   declare variation_id?: CreationOptional<Uuid>;
 
   declare getCategoryProducts: HasOneGetAssociationMixin<CategoryAttributes>;
@@ -134,11 +134,11 @@ export default (sequelize: Sequelize) => {
         references: { model: "users", key: "user_id" },
       },
       category_id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         references: { model: "categories", key: "category_id" },
       },
       size_id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         references: { model: "sizes", key: "size_id" },
       },
       variation_id: {

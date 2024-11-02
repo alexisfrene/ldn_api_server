@@ -19,7 +19,7 @@ type SizeItem = {
 export type SizeAttributes = InferAttributes<Size, { omit: "user_id" }>;
 export type SizeCreationAttributes = InferCreationAttributes<Size>;
 export class Size extends Model<SizeAttributes, SizeCreationAttributes> {
-  declare size_id: CreationOptional<Uuid>;
+  declare size_id: CreationOptional<number>;
   declare title: string;
   declare values: SizeItem[];
   declare user_id?: Uuid;
@@ -48,9 +48,9 @@ export default (sequelize: Sequelize) => {
   Size.init(
     {
       size_id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
+        autoIncrement: true,
       },
       title: {
         type: DataTypes.STRING(50),

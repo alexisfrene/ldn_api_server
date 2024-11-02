@@ -23,7 +23,7 @@ export const addSizeValue = async (req: Request, res: Response) => {
   if (user) {
     const userSizes = await user.getUserSizes();
     const validateExistSize = userSizes.find(
-      (size: { size_id: string }) => size.size_id === size_id
+      (size) => size.size_id === Number(size_id)
     );
     if (!validateExistSize)
       return res

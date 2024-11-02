@@ -25,10 +25,7 @@ export const deleteSizeCollection = async (req: Request, res: Response) => {
       }
     })
     .then((products) =>
-      products.filter(
-        (product: { size_id: string; size_value: string }) =>
-          product.size_id === size_id
-      )
+      products.filter((product) => product.size_id === Number(size_id))
     );
   if (userProducts) {
     userProducts.forEach(async (product: any) => {
@@ -40,10 +37,8 @@ export const deleteSizeCollection = async (req: Request, res: Response) => {
 
     return res.status(200).json({ message: destroySize });
   }
-  return res
-    .status(400)
-    .json({
-      message: "Error al eliminar una colección de tallas",
-      error: true,
-    });
+  return res.status(400).json({
+    message: "Error al eliminar una colección de tallas",
+    error: true,
+  });
 };

@@ -24,8 +24,7 @@ export const addCategoryValue = async (req: Request, res: Response) => {
   if (user) {
     const userCategories = await user.getUserCategories();
     const validateExistCategory = userCategories.find(
-      (category: { category_id: string }) =>
-        category.category_id === category_id
+      (category) => category.category_id === Number(category_id)
     );
     if (!validateExistCategory)
       return res

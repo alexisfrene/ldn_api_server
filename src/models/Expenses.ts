@@ -1,4 +1,5 @@
 import {
+  CreationOptional,
   DataTypes,
   InferAttributes,
   InferCreationAttributes,
@@ -9,16 +10,13 @@ import { Uuid } from "../types";
 import { Models } from "@models";
 
 export type ExpenseAttributes = InferAttributes<Expense>;
-export type ExpenseCreationAttributes = InferCreationAttributes<
-  Expense,
-  { omit: "expense_id" }
->;
+export type ExpenseCreationAttributes = InferCreationAttributes<Expense>;
 
 export class Expense extends Model<
   ExpenseAttributes,
   ExpenseCreationAttributes
 > {
-  declare expense_id: Uuid;
+  declare expense_id: CreationOptional<Uuid>;
   declare user_id: Uuid;
   declare description: string;
 

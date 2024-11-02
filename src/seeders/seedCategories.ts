@@ -8,7 +8,7 @@ export const seedCategories = async (models: Models) => {
         {
           user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           title: "Default",
-          category_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          category_id: 101,
           values: [{ icon_url: "", id: "default", value: "Sin categoría" }],
         },
       ],

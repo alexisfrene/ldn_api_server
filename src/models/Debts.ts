@@ -27,6 +27,7 @@ export class Debt extends Model<DebtAttributes, DebtCreationAttributes> {
     "monthly" | "bi-weekly" | "weekly"
   >;
   declare current_quota: CreationOptional<number>;
+  declare user_id: Uuid;
   declare updatedAt: Date;
   declare createdAt: Date;
 
@@ -37,9 +38,14 @@ export class Debt extends Model<DebtAttributes, DebtCreationAttributes> {
       as: "DebtInstallments",
       foreignKey: "debt_id",
     });
+    const UserDebts = Debt.belongsTo(models.User, {
+      as: "UserDebts",
+      foreignKey: "user_id",
+    });
 
     return {
       DebtInstallments,
+      UserDebts,
     };
   }
 }
@@ -86,7 +92,10 @@ export default (sequelize: Sequelize) => {
         allowNull: false,
         defaultValue: 1,
       },
-
+      user_id: {
+        type: DataTypes.UUID,
+        references: { model: "users", key: "user_id" },
+      },
       createdAt: {
         type: DataTypes.DATE,
         allowNull: false,

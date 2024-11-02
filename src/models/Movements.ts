@@ -31,7 +31,7 @@ export class Movement extends Model<
   declare createdAt: Date;
 
   declare user_id: Uuid;
-  declare payment_method_id: Uuid;
+  declare payment_method_id: number;
   declare financial_accounts_id: Uuid;
   declare expense_id: CreationOptional<Uuid>;
 
@@ -98,7 +98,7 @@ export default (sequelize: Sequelize) => {
         defaultValue: 0,
       },
       payment_method_id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: true,
         references: { model: "paymentMethods", key: "payment_method_id" },
       },

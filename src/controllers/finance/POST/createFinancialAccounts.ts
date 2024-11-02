@@ -6,7 +6,7 @@ const { FinancialAccount, FinancialAccountsPaymentMethods } = models;
 
 export const createFinancialAccounts = async (req: Request, res: Response) => {
   const user_id = req.user;
-  const { name, paymentMethods }: { name: string; paymentMethods: Uuid[] } =
+  const { name, paymentMethods }: { name: string; paymentMethods: number[] } =
     req.body;
 
   const newFinancialAccount = await FinancialAccount.create({

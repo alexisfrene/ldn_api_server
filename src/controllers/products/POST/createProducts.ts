@@ -26,7 +26,6 @@ export const createProducts = async (req: Request, res: Response) => {
 
   const dataNewProduct = {
     category_value: "",
-    code: 1,
     description: data.description || "",
     discount: 0,
     dollar_today: 0,
@@ -36,9 +35,9 @@ export const createProducts = async (req: Request, res: Response) => {
     size_value: "",
     state: true,
     stock: data.stock || 1,
-    category_id: "" as Uuid,
+    category_id: 1,
     user_id: user_id as Uuid,
-    size_id: "" as Uuid,
+    size_id: 1,
     DetailProduct: detail,
   };
 

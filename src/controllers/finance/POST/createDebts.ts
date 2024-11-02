@@ -1,14 +1,18 @@
 import { models } from "@lib";
 import { Request, Response } from "express";
+import { Uuid } from "types";
 const { Debt, Installment } = models;
 
 export const createDebts = async (req: Request, res: Response) => {
   const newDebts = await Debt.create({
-    notes: "Sin nota",
-    name: "-",
-    total_debt: 0,
-    current_quota: 1,
-    minimum_payment: 1,
+    notes: req.body.notes || "Sin nota",
+    name: req.body.name || "Sin nombre",
+    total_debt: req.body.total_debt || 0,
+    current_quota: req.body.current_quota || 1,
+    minimum_payment: req.body.minimum_payment || 1,
+    payment_frequency: "monthly",
+    interest_rate: 20,
+    user_id: req.user as Uuid,
   });
   const promiseInstallment = req.body.installments.map(
     async (installment: {
@@ -18,7 +22,7 @@ export const createDebts = async (req: Request, res: Response) => {
     }) =>
       Installment.create({
         amount: installment.amount,
-        due_date: installment.due_date,
+        due_date: new Date(installment.due_date),
         status: installment.status,
         debt_id: newDebts.debt_id,
       })

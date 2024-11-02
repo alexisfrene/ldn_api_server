@@ -1,4 +1,5 @@
 import {
+  CreationOptional,
   DataTypes,
   HasManyGetAssociationsMixin,
   InferAttributes,
@@ -11,13 +12,10 @@ import { Models } from "@models";
 import { ExpenseAttributes } from "./Expenses";
 
 export type TagAttributes = InferAttributes<Tag>;
-export type TagCreationAttributes = InferCreationAttributes<
-  Tag,
-  { omit: "tag_id" }
->;
+export type TagCreationAttributes = InferCreationAttributes<Tag>;
 
 export class Tag extends Model<TagAttributes, TagCreationAttributes> {
-  declare tag_id: Uuid;
+  declare tag_id: CreationOptional<number>;
   declare name: string;
   declare type: "product" | "expense";
   declare user_id: Uuid;
@@ -41,9 +39,9 @@ export default (sequelize: Sequelize) => {
   Tag.init(
     {
       tag_id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
+        autoIncrement: true,
       },
       name: {
         type: DataTypes.STRING,

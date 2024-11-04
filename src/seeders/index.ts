@@ -10,6 +10,8 @@ import { seedDetails } from "./seedDetail";
 import { seedExpenses } from "./seedExpenses";
 import { seedTags } from "./seedTags";
 import { seedFinancialAccountsPaymentMethods } from "./seedFinancialAccountsPaymentMethods";
+import { seedDebt } from "./seedDebt";
+import { seedInstallment } from "./seedInstallment";
 
 export const seedDatabase = async (models: Models) => {
   await seedUsers(models);
@@ -22,5 +24,7 @@ export const seedDatabase = async (models: Models) => {
   await seedFinancialAccountsPaymentMethods(models);
   await seedExpenses(models);
   await seedTags(models);
+  await seedDebt(models);
+  await seedInstallment(models);
   await seedMovements(models);
 };

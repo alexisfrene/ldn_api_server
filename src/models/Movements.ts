@@ -12,6 +12,7 @@ import { Models } from "@models";
 import { FinancialAccountAttributes } from "./FinancialAccounts";
 import { PaymentMethodAttributes } from "./PaymentMethods";
 import { UserAttributes } from "./Users";
+import { DebtAttributes } from "./Debts";
 
 export type MovementAttributes = InferAttributes<Movement>;
 export type MovementCreationAttributes = InferCreationAttributes<
@@ -34,10 +35,12 @@ export class Movement extends Model<
   declare payment_method_id: number;
   declare financial_accounts_id: Uuid;
   declare expense_id: CreationOptional<Uuid>;
+  declare debt_id: CreationOptional<Uuid>;
 
   declare getFinancialAccountMovements: HasOneGetAssociationMixin<FinancialAccountAttributes>;
   declare getPaymentMethodMovements: HasOneGetAssociationMixin<PaymentMethodAttributes>;
   declare getMovementUser: HasOneGetAssociationMixin<UserAttributes>;
+  declare getMovementDebts: HasOneGetAssociationMixin<DebtAttributes>;
 
   static associate(models: Models) {
     const FinancialAccountMovements = Movement.belongsTo(
@@ -60,8 +63,12 @@ export class Movement extends Model<
       as: "MovementExpense",
       foreignKey: "expense_id",
     });
-
+    const MovementDebts = Movement.belongsTo(models.Debt, {
+      as: "MovementDebts",
+      foreignKey: "debt_id",
+    });
     return {
+      MovementDebts,
       FinancialAccountMovements,
       PaymentMethodMovements,
       MovementUser,
@@ -122,6 +129,13 @@ export default (sequelize: Sequelize) => {
         references: {
           model: "expenses",
           key: "expense_id",
+        },
+      },
+      debt_id: {
+        type: DataTypes.UUID,
+        references: {
+          model: "debts",
+          key: "debt_id",
         },
       },
       createdAt: DataTypes.DATE,

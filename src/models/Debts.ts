@@ -10,6 +10,7 @@ import {
 import { Uuid } from "../types";
 import { Models } from "@models";
 import { InstallmentAttributes } from "./Installments";
+import { MovementAttributes } from "./Movements";
 
 export type DebtAttributes = InferAttributes<Debt>;
 export type DebtCreationAttributes = InferCreationAttributes<
@@ -32,6 +33,7 @@ export class Debt extends Model<DebtAttributes, DebtCreationAttributes> {
   declare createdAt: Date;
 
   declare getDebtInstallments: HasManyGetAssociationsMixin<InstallmentAttributes>;
+  declare getMovementDebts: HasManyGetAssociationsMixin<MovementAttributes>;
 
   static associate(models: Models) {
     const DebtInstallments = Debt.hasMany(models.Installment, {
@@ -42,10 +44,14 @@ export class Debt extends Model<DebtAttributes, DebtCreationAttributes> {
       as: "UserDebts",
       foreignKey: "user_id",
     });
-
+    const MovementDebts = Debt.hasMany(models.Movement, {
+      as: "MovementDebts",
+      foreignKey: "debt_id",
+    });
     return {
       DebtInstallments,
       UserDebts,
+      MovementDebts,
     };
   }
 }

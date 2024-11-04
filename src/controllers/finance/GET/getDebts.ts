@@ -15,6 +15,7 @@ export const getAllDebts = async (req: Request, res: Response) => {
       });
       return {
         name: debt.name,
+        debt_id: debt.debt_id,
         notes: debt.notes,
         installments: installments || [],
       };

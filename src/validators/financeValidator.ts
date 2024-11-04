@@ -73,9 +73,10 @@ export const createMovementValidations = [
   body("type")
     .exists()
     .withMessage("El tipo es obligatorio.")
-    .isIn(["inflow_of_money", "money_outflow"])
-    .withMessage("El tipo debe ser uno de: inflow_of_money, money_outflow."),
-
+    .isIn(["inflow_of_money", "money_outflow", "debt"])
+    .withMessage(
+      "El tipo debe ser uno de: inflow_of_money, money_outflow , debt."
+    ),
   body("financial_accounts_id")
     .optional()
     .isUUID()

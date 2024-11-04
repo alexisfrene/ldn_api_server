@@ -10,8 +10,8 @@ export const createDebts = async (req: Request, res: Response) => {
     total_debt: req.body.total_debt || 0,
     current_quota: req.body.current_quota || 1,
     minimum_payment: req.body.minimum_payment || 1,
-    payment_frequency: "monthly",
-    interest_rate: 20,
+    payment_frequency: req.body.payment_frequency || "monthly",
+    interest_rate: req.body.interest_rate || 0,
     user_id: req.user as Uuid,
   });
   const promiseInstallment = req.body.installments.map(

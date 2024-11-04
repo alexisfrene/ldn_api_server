@@ -17,6 +17,7 @@ import { MovementAttributes } from "./Movements";
 import { SizeAttributes } from "./Sizes";
 import { ExpenseAttributes } from "./Expenses";
 import { Models } from "@models";
+import { DebtAttributes } from "./Debts";
 
 export type UserAttributes = InferAttributes<User>;
 export type UserCreationAttributes = InferCreationAttributes<
@@ -51,6 +52,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
   declare getUserMovements: HasManyGetAssociationsMixin<MovementAttributes>;
   declare getUserSizes: HasManyGetAssociationsMixin<SizeAttributes>;
   declare getUserExpenses: HasManyGetAssociationsMixin<ExpenseAttributes>;
+  declare getUserDebts: HasManyGetAssociationsMixin<DebtAttributes>;
 
   static associate(models: Models) {
     const UserSizes = User.hasMany(models.Size, {

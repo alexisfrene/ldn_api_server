@@ -3,10 +3,9 @@ import { QueryInterface, DataTypes } from "sequelize";
 export async function up(queryInterface: QueryInterface) {
   await queryInterface.createTable("categories", {
     category_id: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
+      autoIncrement: true,
     },
     title: {
       type: DataTypes.STRING(50),
@@ -19,11 +18,6 @@ export async function up(queryInterface: QueryInterface) {
     values: {
       type: DataTypes.ARRAY(DataTypes.JSONB),
       defaultValue: [],
-      allowNull: false,
-    },
-    user_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
     },
   });
 }

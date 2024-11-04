@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getSecureUrl } from "../../../lib";
+import { getSecureUrl } from "@lib";
 
 export const getImageProduct = async (req: Request, res: Response) => {
   const user_id = req.user;

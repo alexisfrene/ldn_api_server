@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { uploadToCloudinary, db } from "../../../lib";
+import { uploadToCloudinary, models } from "@lib";
+import { Uuid } from "types";
 
-const Variation = db.Variation;
+const Variation = models.Variation;
 
 export const insertNewCollection = async (req: Request, res: Response) => {
   const user_id = req.user;
-  const { label } = req.body;
+  const { label }: { label: string } = req.body;
   const files = req.files as Express.Multer.File[];
   const { id: variationId } = req.params;
   const variation = await Variation.findByPk(variationId);
@@ -17,11 +18,11 @@ export const insertNewCollection = async (req: Request, res: Response) => {
   const uploadPromises = files.map(async (file) => {
     const image_url = await uploadToCloudinary(file, `${user_id}/variations`);
 
-    return image_url;
+    return image_url || "";
   });
   const images = await Promise.all(uploadPromises);
   const newCollection = {
-    id: uuidv4(),
+    id: uuidv4() as Uuid,
     label,
     images,
   };

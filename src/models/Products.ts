@@ -4,57 +4,82 @@ import {
   InferAttributes,
   InferCreationAttributes,
   CreationOptional,
-  NonAttribute,
   DataTypes,
+  HasOneGetAssociationMixin,
 } from "sequelize";
 import { Uuid } from "../types";
+import { SizeAttributes } from "./Sizes";
+import { Variation } from "./Variations";
+import { CategoryAttributes } from "./Categories";
+import { User } from "./Users";
+import { DetailAttributes } from "./Details";
+import { Models } from "@models";
+
+export type ProductAttributes = InferAttributes<Product>;
+export type ProductCreationAttributes = InferCreationAttributes<Product>;
+
+export class Product extends Model<
+  ProductAttributes,
+  ProductCreationAttributes
+> {
+  declare product_id: CreationOptional<string>;
+  declare name: string;
+  declare description: string;
+  declare primary_image: string;
+  declare price: number;
+  declare state: boolean;
+  declare stock: CreationOptional<number>;
+  declare category_value: CreationOptional<string>;
+  declare size_value: CreationOptional<string>;
+  declare discount: CreationOptional<number>;
+  declare dollar_today: CreationOptional<number | null>;
+  declare createdAt: CreationOptional<Date>;
+  declare updatedAt: CreationOptional<Date>;
+
+  declare user_id: Uuid;
+  declare category_id: number;
+  declare size_id: number;
+  declare variation_id?: CreationOptional<Uuid>;
+
+  declare getCategoryProducts: HasOneGetAssociationMixin<CategoryAttributes>;
+  declare getSizeProducts: HasOneGetAssociationMixin<SizeAttributes>;
+  declare getDetailProduct: HasOneGetAssociationMixin<DetailAttributes>;
+  declare getVariationProducts: HasOneGetAssociationMixin<Variation>;
+  declare getUserProducts: HasOneGetAssociationMixin<User>;
+
+  static associate(models: Models) {
+    const CategoryProducts = Product.belongsTo(models.Category, {
+      as: "CategoryProducts",
+      foreignKey: "category_id",
+    });
+    const SizeProducts = Product.belongsTo(models.Size, {
+      as: "SizeProducts",
+      foreignKey: "size_id",
+    });
+    const DetailProduct = Product.hasOne(models.Detail, {
+      as: "DetailProduct",
+      foreignKey: "product_id",
+    });
+    const VariationProducts = Product.belongsTo(models.Variation, {
+      as: "VariationProducts",
+      foreignKey: "variation_id",
+    });
+    const UserProducts = Product.belongsTo(models.User, {
+      as: "UserProducts",
+      foreignKey: "user_id",
+    });
+
+    return {
+      CategoryProducts,
+      SizeProducts,
+      DetailProduct,
+      VariationProducts,
+      UserProducts,
+    };
+  }
+}
 
 export default (sequelize: Sequelize) => {
-  class Product extends Model<
-    InferAttributes<Product, { omit: "user_id" | "category_id" | "detail_id" }>,
-    InferCreationAttributes<
-      Product,
-      { omit: "user_id" | "category_id" | "detail_id" }
-    >
-  > {
-    declare product_id: CreationOptional<string>;
-    declare name: string;
-    declare description: string;
-    declare primary_image: string;
-    declare price: number;
-    declare state: boolean;
-    declare code: CreationOptional<number>;
-    declare stock: CreationOptional<number>;
-    declare category_value: CreationOptional<string>;
-    declare size_value: CreationOptional<string>;
-    declare discount: CreationOptional<number>;
-    declare dollar_today: CreationOptional<number | null>;
-    declare createdAt: CreationOptional<Date>;
-    declare updatedAt: CreationOptional<Date>;
-
-    declare user_id?: NonAttribute<Uuid>;
-    declare category_id?: NonAttribute<Uuid>;
-    declare detail_id?: NonAttribute<Uuid>;
-    static associate(models: any) {
-      Product.belongsTo(models.Category, {
-        as: "category",
-        foreignKey: "category_id",
-      });
-      Product.belongsTo(models.Size, {
-        as: "size",
-        foreignKey: "size_id",
-      });
-      Product.belongsTo(models.Detail, {
-        as: "detail",
-        foreignKey: "detail_id",
-      });
-      Product.belongsTo(models.Variation, {
-        as: "variation",
-        foreignKey: "variation_id",
-      });
-    }
-  }
-
   Product.init(
     {
       product_id: {
@@ -63,12 +88,12 @@ export default (sequelize: Sequelize) => {
         defaultValue: DataTypes.UUIDV4,
       },
       name: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(50),
         allowNull: false,
         defaultValue: "Sin nombre",
       },
       description: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(100),
         defaultValue: "Sin descripción",
       },
       primary_image: {
@@ -83,10 +108,6 @@ export default (sequelize: Sequelize) => {
       state: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
-      },
-      code: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
       },
       stock: {
         type: DataTypes.INTEGER,
@@ -108,8 +129,31 @@ export default (sequelize: Sequelize) => {
       },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
+      user_id: {
+        type: DataTypes.UUID,
+        references: { model: "users", key: "user_id" },
+      },
+      category_id: {
+        type: DataTypes.INTEGER,
+        references: { model: "categories", key: "category_id" },
+      },
+      size_id: {
+        type: DataTypes.INTEGER,
+        references: { model: "sizes", key: "size_id" },
+      },
+      variation_id: {
+        type: DataTypes.UUID,
+        allowNull: true,
+        references: { model: "variations", key: "variation_id" },
+      },
     },
-    { sequelize, modelName: "Product", tableName: "products", timestamps: true }
+    {
+      sequelize,
+      modelName: "Product",
+      tableName: "products",
+      timestamps: true,
+    }
   );
+
   return Product;
 };

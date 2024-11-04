@@ -1,39 +1,79 @@
 import {
+  CreationOptional,
   DataTypes,
+  HasManyGetAssociationsMixin,
+  HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
-  NonAttribute,
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
+import { Models } from "@models";
+import { ProductAttributes } from "./Products";
+import { UserAttributes } from "./Users";
+import { VariationAttributes } from "./Variations";
 
 type CategoriesItem = {
   id: string;
   value: string;
   icon_url: string;
 };
+export type CategoryAttributes = InferAttributes<Category, { omit: "user_id" }>;
+export type CategoryCreationAttributes = InferCreationAttributes<Category>;
+
+export class Category extends Model<
+  CategoryAttributes,
+  CategoryCreationAttributes
+> {
+  declare category_id: CreationOptional<number>;
+  declare title: string;
+  declare type: CreationOptional<"product" | "expense">;
+  declare values: CategoriesItem[];
+  declare user_id: Uuid;
+
+  declare getCategoryProducts: HasManyGetAssociationsMixin<ProductAttributes>;
+  declare getCategoryUser: HasOneGetAssociationMixin<UserAttributes>;
+  declare getCategoryVariations: HasManyGetAssociationsMixin<VariationAttributes>;
+
+  static associate(models: Models) {
+    const CategoryProducts = Category.hasMany(models.Product, {
+      as: "CategoryProducts",
+      foreignKey: "category_id",
+    });
+    const CategoryUser = Category.belongsTo(models.User, {
+      as: "CategoryUser",
+      foreignKey: "user_id",
+    });
+    const CategoryVariations = Category.hasMany(models.Variation, {
+      as: "CategoryVariations",
+      foreignKey: "category_id",
+    });
+
+    return {
+      CategoryProducts,
+      CategoryUser,
+      CategoryVariations,
+    };
+  }
+}
 
 export default (sequelize: Sequelize) => {
-  class Category extends Model<
-    InferAttributes<Category, { omit: "user_id" }>,
-    InferCreationAttributes<Category, { omit: "user_id" }>
-  > {
-    declare category_id: Uuid;
-    declare title: string;
-    declare values: CategoriesItem[];
-
-    declare user_id?: NonAttribute<Uuid>;
-  }
-
   Category.init(
     {
       category_id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
+        autoIncrement: true,
       },
-      title: { type: DataTypes.STRING(50), defaultValue: "" },
+      title: {
+        type: DataTypes.STRING(50),
+        defaultValue: "",
+      },
+      type: {
+        type: DataTypes.STRING(10),
+        defaultValue: "product",
+      },
       values: {
         type: DataTypes.ARRAY(DataTypes.JSONB),
         defaultValue: [],

@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { db } from "../../../lib";
+import { models } from "@lib";
 import { Op } from "sequelize";
 
-const movements = db.Movements;
+const movements = models.Movement;
 interface Movement {
   type: string;
   value: number;
@@ -16,17 +16,23 @@ export const getTotalMonth = async (req: Request, res: Response) => {
   const startOfMonth = new Date(
     new Date().getFullYear(),
     new Date().getMonth(),
+    1,
+    0,
+    0,
     1
   );
   const endOfMonth = new Date(
     new Date().getFullYear(),
     new Date().getMonth() + 1,
-    0
+    0,
+    23,
+    59,
+    59
   );
 
   const movementsAll: Movement[] = await movements.findAll({
     where: {
-      createdAt: {
+      entry_date: {
         [Op.between]: [startOfMonth, endOfMonth],
       },
       user_id,

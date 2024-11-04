@@ -8,7 +8,7 @@ export const createFinancialAccountValidations = [
 ];
 
 export const editFinancialAccountValidations = [
-  param("id").isUUID().withMessage("El ID debe ser un UUID válido."),
+  param("id").isNumeric().withMessage("El ID debe ser un numero válido."),
   body("name")
     .optional()
     .isString()
@@ -73,9 +73,10 @@ export const createMovementValidations = [
   body("type")
     .exists()
     .withMessage("El tipo es obligatorio.")
-    .isIn(["inflow_of_money", "money_outflow"])
-    .withMessage("El tipo debe ser uno de: inflow_of_money, money_outflow."),
-
+    .isIn(["inflow_of_money", "money_outflow", "debt"])
+    .withMessage(
+      "El tipo debe ser uno de: inflow_of_money, money_outflow , debt."
+    ),
   body("financial_accounts_id")
     .optional()
     .isUUID()
@@ -83,6 +84,6 @@ export const createMovementValidations = [
 
   body("payment_method_id")
     .optional()
-    .isUUID()
-    .withMessage("El ID del método de pago debe ser un UUID válido."),
+    .isNumeric()
+    .withMessage("El ID del método de pago debe ser un numero válido."),
 ];

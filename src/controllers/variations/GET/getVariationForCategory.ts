@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import { db } from "../../../lib";
+import { models } from "@lib";
 
-const User = db.User;
+const User = models.User;
 
 export const getVariationForCategory = async (req: Request, res: Response) => {
   const user_id = req.user;
   const { category, value } = req.query as {
-    category: string | undefined;
+    category: number | undefined;
     value: string | undefined;
   };
   if (!user_id) return res.status(401).json({ error: "No authority" });
@@ -18,9 +18,9 @@ export const getVariationForCategory = async (req: Request, res: Response) => {
       error: true,
       message: "No se paso los parámetros esperados",
     });
-  const categories = await user?.getCategories();
+  const categories = await user?.getUserCategories();
   const categoryForCategory = categories.filter(
-    (item: { category_id: string; values: any[] }) =>
+    (item) =>
       item.category_id === category &&
       item.values.find((item: { id: string }) => item.id === value)
   );
@@ -28,9 +28,9 @@ export const getVariationForCategory = async (req: Request, res: Response) => {
     return res
       .status(400)
       .json({ error: true, message: "No se encontró la categoría" });
-  const variations = await user?.getVariations().then((res: any[]) => {
+  const variations = await user?.getUserVariations().then((res: any[]) => {
     return res.filter(
-      (variation: { category_id: string; category_value: string }) =>
+      (variation) =>
         variation.category_id === category && variation.category_value === value
     );
   });

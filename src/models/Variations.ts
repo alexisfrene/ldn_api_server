@@ -1,6 +1,8 @@
 import {
   CreationOptional,
   DataTypes,
+  HasManyGetAssociationsMixin,
+  HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
@@ -8,6 +10,9 @@ import {
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
+import { UserAttributes } from "./Users";
+import { ProductAttributes } from "./Products";
+import { Models } from "@models";
 
 type VariationItem = {
   id: Uuid;
@@ -15,27 +20,52 @@ type VariationItem = {
   images: string[];
 };
 
-export default (sequelize: Sequelize) => {
-  class Variation extends Model<
-    InferAttributes<Variation, { omit: "user_id" | "category_id" }>,
-    InferCreationAttributes<Variation, { omit: "user_id" | "category_id" }>
-  > {
-    declare variation_id: Uuid;
-    declare title: string;
-    declare values: VariationItem[];
-    declare createdAt: CreationOptional<Date>;
-    declare updatedAt: CreationOptional<Date>;
-    declare user_id?: NonAttribute<Uuid>;
-    declare category_id?: NonAttribute<Uuid>;
-    declare category_value: Uuid;
-    static associate(models: any) {
-      Variation.belongsTo(models.Category, {
-        as: "categories",
-        foreignKey: "category_id",
-      });
-    }
-  }
+export type VariationAttributes = InferAttributes<Variation>;
+export type VariationCreationAttributes = InferCreationAttributes<
+  Variation,
+  { omit: "createdAt" | "updatedAt" }
+>;
 
+export class Variation extends Model<
+  VariationAttributes,
+  VariationCreationAttributes
+> {
+  declare variation_id: CreationOptional<Uuid>;
+  declare title: string;
+  declare values: VariationItem[];
+  declare createdAt: CreationOptional<Date>;
+  declare updatedAt: CreationOptional<Date>;
+  declare user_id?: NonAttribute<Uuid>;
+  declare category_id?: NonAttribute<Uuid>;
+  declare category_value: Uuid;
+
+  declare getCategoryVariations: HasOneGetAssociationMixin<VariationAttributes>;
+  declare getVariationUser: HasOneGetAssociationMixin<UserAttributes>;
+  declare getVariationProducts: HasManyGetAssociationsMixin<ProductAttributes>;
+
+  static associate(models: Models) {
+    const CategoryVariations = Variation.belongsTo(models.Category, {
+      as: "CategoryVariations",
+      foreignKey: "category_id",
+    });
+    const VariationUser = Variation.belongsTo(models.User, {
+      as: "VariationUser",
+      foreignKey: "user_id",
+    });
+    const VariationProducts = Variation.hasMany(models.Product, {
+      as: "VariationProducts",
+      foreignKey: "variation_id",
+    });
+
+    return {
+      CategoryVariations,
+      VariationUser,
+      VariationProducts,
+    };
+  }
+}
+
+export default (sequelize: Sequelize) => {
   Variation.init(
     {
       variation_id: {

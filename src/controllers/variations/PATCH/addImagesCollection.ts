@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { uploadToCloudinary, db } from "../../../lib";
+import { uploadToCloudinary, models } from "@lib";
 
-const Variation = db.Variation;
+const Variation = models.Variation;
 
 export const addImagesCollection = async (req: Request, res: Response) => {
   const { id: variationId } = req.params;

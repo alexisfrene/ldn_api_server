@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { db } from "../../../lib";
+import { models } from "@lib";
 
-const User = db.User;
+const User = models.User;
 
 export const getAllSizes = async (req: Request, res: Response) => {
   const user_id = req.user;
@@ -15,7 +15,7 @@ export const getAllSizes = async (req: Request, res: Response) => {
     return res.status(404).json({ message: "User not found", error: true });
   }
 
-  const sizes = await user.getSizes({ order: [["size_id", "ASC"]] });
+  const sizes = await user.getUserSizes({ order: [["size_id", "ASC"]] });
 
   return res.status(200).json(sizes);
 };

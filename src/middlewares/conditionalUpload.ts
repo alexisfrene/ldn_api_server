@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { upload } from "../lib";
+import { upload } from "@lib";
 
 export const conditionalUpload = (
   req: Request,

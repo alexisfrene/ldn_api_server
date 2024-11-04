@@ -4,8 +4,8 @@ import {
   getPreferenceInProductView,
   preferenceInProductView,
   changeAvatar,
-} from "../../controllers";
-import { upload } from "../../lib";
+} from "@controllers";
+import { upload } from "@lib";
 
 const router = express.Router();
 

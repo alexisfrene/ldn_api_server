@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { db, deleteImageToCloudinary } from "../../../lib";
+import { models, deleteImageToCloudinary } from "@lib";
 
-const Category = db.Category;
-const User = db.User;
+const Category = models.Category;
+const User = models.User;
 
 export const deleteCategoryValue = async (req: Request, res: Response) => {
   const user_id = req.user;
@@ -28,8 +28,15 @@ export const deleteCategoryValue = async (req: Request, res: Response) => {
   const newValues = categorySelected?.values.filter(
     (value: { id: string }) => value.id !== category_value
   );
+
   const userProducts = await User.findByPk(user_id)
-    .then((user: { getProducts: () => any }) => user.getProducts())
+    .then((user) => {
+      if (user) {
+        return user.getUserProducts();
+      } else {
+        return [];
+      }
+    })
     .then((products: any[]) =>
       products.filter(
         (product: { category_id: string; category_value: string }) =>
@@ -42,9 +49,15 @@ export const deleteCategoryValue = async (req: Request, res: Response) => {
       await product.update({ category_value: null });
     });
   }
-  await deleteImageToCloudinary(`${user_id}/${deleteValue.icon_url}`);
-  const newValuesInCategory = await categorySelected.update({
-    values: newValues,
-  });
-  return res.status(200).json({ message: newValuesInCategory });
+
+  await deleteImageToCloudinary(`${user_id}/${deleteValue?.icon_url || ""}`);
+  if (categorySelected) {
+    const newValuesInCategory = await categorySelected.update({
+      values: newValues,
+    });
+    return res.status(200).json({ message: newValuesInCategory });
+  }
+  return res
+    .status(400)
+    .json({ error: true, message: "no se proporciono un category id" });
 };

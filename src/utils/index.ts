@@ -1,9 +1,9 @@
-import bcrypt from "bcrypt";
-import dotenv from "dotenv";
 import fs from "node:fs";
 import path from "node:path";
+import bcrypt from "bcrypt";
 
-dotenv.config();
+process.loadEnvFile();
+
 const tempDir = path.join(process.cwd(), "temp");
 
 const saltRoundsString = process.env.SALT_ROUNDS;
@@ -54,8 +54,8 @@ export const isNumber = (str: string) => {
   return regex.test(str);
 };
 
-export const formatDate = () => {
-  const now: Date = new Date();
+export const formatDate: (date?: string) => string = (date = "") => {
+  const now: Date = new Date(date);
   const pad = (num: number): string => num.toString().padStart(2, "0");
 
   const year: number = now.getFullYear();

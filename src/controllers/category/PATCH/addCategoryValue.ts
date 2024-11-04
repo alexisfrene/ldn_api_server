@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { uploadToCloudinary, db } from "../../../lib";
+import { uploadToCloudinary, models } from "@lib";
 
-const Category = db.Category;
-const User = db.User;
+const Category = models.Category;
+const User = models.User;
 
 export const addCategoryValue = async (req: Request, res: Response) => {
   const category_id = req.params.id;
@@ -21,43 +21,52 @@ export const addCategoryValue = async (req: Request, res: Response) => {
   const files = req.files as Express.Multer.File[];
   if (!files) return res.status(400).json({ error: "Fatal image" });
   const user = await User.findByPk(user_id);
-  const userCategories = await user.getCategories();
-  const validateExistCategory = userCategories.find(
-    (category: { category_id: string }) => category.category_id === category_id
-  );
-  if (!validateExistCategory)
-    return res
-      .status(400)
-      .json({ error: true, message: "La categoría no existe en el usuario" });
-  const selectedCategory = await Category.findByPk(category_id);
-  const validateRepeatValue = selectedCategory.values.find(
-    (e: { value: string }) => e.value === value
-  );
-  if (validateRepeatValue)
-    return res.status(400).json({
-      error: true,
-      message: `Èl valor ( ${value} , ya esta cargado )`,
+  if (user) {
+    const userCategories = await user.getUserCategories();
+    const validateExistCategory = userCategories.find(
+      (category) => category.category_id === Number(category_id)
+    );
+    if (!validateExistCategory)
+      return res
+        .status(400)
+        .json({ error: true, message: "La categoría no existe en el usuario" });
+    const selectedCategory = await Category.findByPk(category_id);
+
+    const validateRepeatValue = selectedCategory!.values.find(
+      (e: { value: string }) => e.value === value
+    );
+    if (validateRepeatValue)
+      return res.status(400).json({
+        error: true,
+        message: `Èl valor ( ${value} , ya esta cargado )`,
+      });
+
+    const icon_url = await uploadToCloudinary(
+      files[0],
+      `${user_id}/categories`,
+      64,
+      64
+    );
+    if (!icon_url)
+      return res
+        .status(400)
+        .json({ error: true, message: "No se puedo subir el icono" });
+    const newValue = {
+      id: uuidv4(),
+      value,
+      icon_url: `categories/${icon_url}`,
+    };
+
+    const updateCategory = selectedCategory!.update({
+      values: [...selectedCategory!.values, newValue],
     });
 
-  const icon_url = await uploadToCloudinary(
-    files[0],
-    `${user_id}/categories`,
-    64,
-    64
-  );
-  if (!icon_url)
+    return res
+      .status(200)
+      .json({ msj: "Hola", updateCategory, files: files[0] });
+  } else {
     return res
       .status(400)
-      .json({ error: true, message: "No se puedo subir el icono" });
-  const newValue = {
-    id: uuidv4(),
-    value,
-    icon_url: `categories/${icon_url}`,
-  };
-
-  const updateCategory = selectedCategory.update({
-    values: [...selectedCategory.values, newValue],
-  });
-
-  return res.status(200).json({ msj: "Hola", updateCategory, files: files[0] });
+      .json({ error: true, message: "Usuario no encontrado" });
+  }
 };

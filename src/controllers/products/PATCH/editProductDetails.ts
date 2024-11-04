@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { cleanObject } from "../../../utils";
-import { db } from "../../../lib";
+import { cleanObject } from "@utils";
+import { models } from "@lib";
 
-const Product = db.Product;
-const Detail = db.Detail;
+const Product = models.Product;
+const Detail = models.Detail;
 
 export const editProductDetails = async (req: Request, res: Response) => {
   const propertiesToEdit = cleanObject(req.body, [
@@ -21,12 +21,7 @@ export const editProductDetails = async (req: Request, res: Response) => {
   if (!product) {
     return res.status(404).json({ error: "Product not found" });
   }
-  let selectorDetails = await product?.getDetail();
-  if (!selectorDetails) {
-    const newDetail = await Detail.create();
-    await product.update({ detail_id: newDetail.detail_id });
-    selectorDetails = await product?.getDetail();
-  }
+  let selectorDetails = await product?.getDetailProduct();
   const details = await Detail.findByPk(selectorDetails.detail_id);
   if (!details) {
     return res.status(404).json({ error: "Details not found" });

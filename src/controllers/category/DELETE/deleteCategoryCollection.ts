@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { db, deleteImageToCloudinary } from "../../../lib";
+import { models, deleteImageToCloudinary } from "@lib";
 
-const Category = db.Category;
-const User = db.User;
+const Category = models.Category;
+const User = models.User;
 
 export const deleteCategoryCollection = async (req: Request, res: Response) => {
   const user_id = req.user;
@@ -19,7 +19,13 @@ export const deleteCategoryCollection = async (req: Request, res: Response) => {
   const categorySelected = await Category.findByPk(category_id);
 
   const userProducts = await User.findByPk(user_id)
-    .then((user: { getProducts: () => any }) => user.getProducts())
+    .then((user) => {
+      if (user) {
+        return user.getUserProducts();
+      } else {
+        return [];
+      }
+    })
     .then((products: any[]) =>
       products.filter(
         (product: { category_id: string; category_value: string }) =>
@@ -31,11 +37,16 @@ export const deleteCategoryCollection = async (req: Request, res: Response) => {
       await product.update({ category_value: null, category_id: null });
     });
   }
-  categorySelected.values.forEach(async (value: { icon_url: any }) => {
-    await deleteImageToCloudinary(`${user_id}/${value.icon_url}`);
-  });
+  if (categorySelected) {
+    categorySelected.values.forEach(async (value: { icon_url: any }) => {
+      await deleteImageToCloudinary(`${user_id}/${value.icon_url}`);
+    });
 
-  const destroyCategory = await categorySelected.destroy();
+    const destroyCategory = await categorySelected.destroy();
+    return res.status(200).json({ message: destroyCategory });
+  }
 
-  return res.status(200).json({ message: destroyCategory });
+  return res
+    .status(400)
+    .json({ error: true, message: "no se pudo eliminar la categoría" });
 };

@@ -1,3 +1,4 @@
+import "tsconfig-paths/register";
 import express from "express";
 import cors from "cors";
 import morgan from "morgan";
@@ -12,8 +13,11 @@ import {
   categoriesRoutes,
   sizeRoutes,
   financeRoutes,
-} from "./routes";
-import { errorHandler } from "./middleware";
+} from "@routes";
+import { errorHandler } from "@middlewares";
+import { sequelize } from "@lib";
+import { initializeDB } from "./initializeDB";
+import { startServer } from "./startServer";
 
 const app = express();
 
@@ -59,5 +63,21 @@ app.use(
   financeRoutes
 );
 app.use(errorHandler);
+
+process.loadEnvFile();
+
+const PORT: string | number = process.env.PORT || 3210;
+
+const main = async (): Promise<void> => {
+  try {
+    await initializeDB(sequelize);
+    await startServer(app, PORT);
+  } catch (error) {
+    console.error("Error en la el comienzo de la aplicación:", error);
+    process.exit(1);
+  }
+};
+
+main();
 
 export { app };

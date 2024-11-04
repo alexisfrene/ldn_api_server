@@ -1,14 +1,25 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { uploadToCloudinary, db } from "../../../lib";
+import { uploadToCloudinary, models } from "@lib";
+import { Uuid } from "types";
 
-const User = db.User;
-const Variation = db.Variation;
-const Category = db.Category;
+const User = models.User;
+const Variation = models.Variation;
+const Category = models.Category;
 
 export const createVariation = async (req: Request, res: Response) => {
   const user_id = req.user;
-  const { title, label, category_id, category_value } = req.body;
+  const {
+    title,
+    label,
+    category_id,
+    category_value,
+  }: {
+    title: string;
+    label: string;
+    category_id: Uuid;
+    category_value: Uuid;
+  } = req.body;
   const files = req.files as Express.Multer.File[];
   if (!files)
     return res
@@ -19,13 +30,21 @@ export const createVariation = async (req: Request, res: Response) => {
     return res
       .status(400)
       .json({ error: true, message: "Usuario no autorizado" });
-  let newVariation: Record<string, any> = {};
+  let newVariation = {
+    category_id: uuidv4() as Uuid,
+    category_value: uuidv4() as Uuid,
+    title: "",
+    values: [{ id: uuidv4() as Uuid, label, images: [""] }],
+    user_id: uuidv4(),
+  };
   if (category_id) {
     const category = await Category.findByPk(category_id);
-    if (category.values.length) {
+
+    if (category) {
       const verifyCategory = category.values.find(
         (value: { id: string }) => value.id === category_value
       );
+
       if (verifyCategory) {
         newVariation["category_id"] = category_id;
         newVariation["category_value"] = category_value;
@@ -35,12 +54,15 @@ export const createVariation = async (req: Request, res: Response) => {
   const uploadPromises = files.map(async (file) => {
     const image_url = await uploadToCloudinary(file, `${user_id}/variations`);
 
-    return image_url;
+    return image_url || "";
   });
   const images = await Promise.all(uploadPromises);
   newVariation["title"] = title;
-  newVariation["values"] = [{ id: uuidv4(), label, images }];
-  newVariation["user_id"] = user_id;
+  newVariation["values"] = [{ id: uuidv4() as Uuid, label, images }];
+  if (user_id) {
+    newVariation["user_id"] = user_id;
+  }
+
   const variation = await Variation.create(newVariation);
 
   return res.status(200).json({ variation });

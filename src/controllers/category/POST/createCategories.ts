@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { uploadToCloudinary, db } from "../../../lib";
+import { uploadToCloudinary, models } from "@lib";
+import { Uuid } from "types";
 
-const Category = db.Category;
+const Category = models.Category;
 
 export const createCategories = async (req: Request, res: Response) => {
   const user_id = req.user;
-  const { title, values } = req.body;
+  const { title, values }: { title: string; values: string[] } = req.body;
   const files = req.files as Express.Multer.File[];
   if (!files) return res.status(400).json({ error: "Fatal image" });
   const uploadPromises = files.map(async (file, index) => {
@@ -23,12 +24,16 @@ export const createCategories = async (req: Request, res: Response) => {
     };
   });
 
-  const valuesFormatter = await Promise.all(uploadPromises);
+  const valuesFormatter: {
+    id: string;
+    value: string;
+    icon_url: string;
+  }[] = await Promise.all(uploadPromises);
 
   const newCategory = {
     title,
     values: valuesFormatter,
-    user_id,
+    user_id: user_id as Uuid,
   };
   const category = await Category.create(newCategory);
 

@@ -1,42 +1,82 @@
 import {
+  CreationOptional,
   DataTypes,
+  HasManyGetAssociationsMixin,
+  HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
-  NonAttribute,
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
+import { Models } from "@models";
+import { UserAttributes } from "./Users";
+import { MovementAttributes } from "./Movements";
+
+export type PaymentMethodAttributes = InferAttributes<PaymentMethod>;
+export type PaymentMethodCreationAttributes =
+  InferCreationAttributes<PaymentMethod>;
+
+export class PaymentMethod extends Model<
+  PaymentMethodAttributes,
+  PaymentMethodCreationAttributes
+> {
+  declare payment_method_id: CreationOptional<number>;
+  declare name: string;
+  declare user_id: Uuid;
+
+  declare getPaymentMethodMovements: HasManyGetAssociationsMixin<MovementAttributes>;
+  declare getPaymentMethodUser: HasOneGetAssociationMixin<UserAttributes>;
+
+  static associate(models: Models) {
+    const PaymentMethodUser = PaymentMethod.belongsTo(models.User, {
+      as: "PaymentMethodUser",
+      foreignKey: "user_id",
+    });
+    const PaymentMethodMovements = PaymentMethod.hasMany(models.Movement, {
+      as: "PaymentMethodMovements",
+      foreignKey: "payment_method_id",
+    });
+    const FinancialAccountsPaymentMethods = PaymentMethod.belongsToMany(
+      models.FinancialAccount,
+      {
+        through: models.FinancialAccountsPaymentMethods,
+        foreignKey: "payment_method_id",
+      }
+    );
+
+    return {
+      PaymentMethodUser,
+      PaymentMethodMovements,
+      FinancialAccountsPaymentMethods,
+    };
+  }
+}
 
 export default (sequelize: Sequelize) => {
-  class PaymentMethods extends Model<
-    InferAttributes<PaymentMethods, { omit: "user_id" }>,
-    InferCreationAttributes<PaymentMethods, { omit: "user_id" }>
-  > {
-    declare payment_method_id: Uuid;
-    declare name: string;
-    declare user_id?: NonAttribute<Uuid>;
-  }
-  PaymentMethods.init(
+  PaymentMethod.init(
     {
       payment_method_id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4,
+        autoIncrement: true,
       },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: "Sin nombre",
-        unique: true,
+      },
+      user_id: {
+        type: DataTypes.UUID,
+        references: { model: "users", key: "user_id" },
       },
     },
     {
       sequelize,
-      modelName: "PaymentMethods",
+      modelName: "PaymentMethod",
       tableName: "paymentMethods",
       timestamps: false,
     }
   );
-  return PaymentMethods;
+  return PaymentMethod;
 };

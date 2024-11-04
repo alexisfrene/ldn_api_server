@@ -4,22 +4,18 @@ import {
   getFinancialAccounts,
   deleteFinancialAccount,
   editFinancialAccount,
-} from "../../controllers";
-import { runValidate } from "../../middleware";
+} from "@controllers";
+import { runValidate } from "@middlewares";
 import {
-  createFinancialAccountValidations,
+  //createFinancialAccountValidations,
   deleteFinancialAccountValidations,
   editFinancialAccountValidations,
-} from "../../validators";
+} from "@validators";
 
 const router = express.Router();
 
 router.get("/", getFinancialAccounts);
-router.post(
-  "/",
-  runValidate(createFinancialAccountValidations),
-  createFinancialAccounts
-);
+router.post("/", createFinancialAccounts);
 router.put(
   "/:id",
   runValidate(editFinancialAccountValidations),

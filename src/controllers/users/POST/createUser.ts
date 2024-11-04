@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
-import { hashPassword } from "../../../utils";
-import { db } from "../../../lib";
+import { hashPassword } from "@utils";
+import { models } from "@lib";
+import { Uuid } from "types";
 
-const User = db.User;
-const Category = db.Category;
-const Size = db.Size;
+const User = models.User;
+const Category = models.Category;
+const Size = models.Size;
 
 export const createUser = async (req: Request, res: Response) => {
   const {
@@ -15,6 +16,14 @@ export const createUser = async (req: Request, res: Response) => {
     gender,
     username,
     birthday_date,
+  }: {
+    first_name: string;
+    last_name: string;
+    email: string;
+    password: string;
+    gender: "male" | "female" | "unspecified";
+    username: string;
+    birthday_date: Date;
   } = req.body;
   if (
     !first_name ||
@@ -77,7 +86,7 @@ export const createUser = async (req: Request, res: Response) => {
     title: "Default",
     values: [
       {
-        id: "default",
+        id: "default" as Uuid,
         value: "Sin talla/numero",
       },
     ],

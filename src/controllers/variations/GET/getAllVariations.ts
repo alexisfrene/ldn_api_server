@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
-import { getSecureUrl, db } from "../../../lib";
+import { getSecureUrl, models } from "@lib";
 
-const User = db.User;
+const User = models.User;
 
 export const getAllVariations = async (req: Request, res: Response) => {
   const user_id = req.user;
   const user = await User.findByPk(user_id);
   if (!user)
     return res.status(400).json({ error: true, message: "No autorizado" });
-  const variations = await user?.getVariations();
+  const variations = await user?.getUserVariations();
   if (!variations)
     return res
       .status(400)

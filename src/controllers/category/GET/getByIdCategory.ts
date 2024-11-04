@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { db } from "../../../lib";
+import { models } from "@lib";
 
-const User = db.User;
+const User = models.User;
 
 export const getByIdCategory = async (req: Request, res: Response) => {
   const user_id = req.user;
@@ -19,17 +19,17 @@ export const getByIdCategory = async (req: Request, res: Response) => {
 
   try {
     const user = await User.findByPk(user_id);
-    if (!user || !user.getCategories) {
+    if (!user || !user.getUserCategories) {
       return res
         .status(400)
         .json({ error: true, message: "El usuario no tiene categorías" });
     }
 
-    const categories = await user.getCategories({
+    const categories = await user.getUserCategories({
       order: [["category_id", "ASC"]],
     });
     const selectedCategory = categories.find(
-      (category: { category_id: string }) => category.category_id === id
+      (category) => category.category_id === Number(id)
     );
 
     return res.status(200).json(selectedCategory);

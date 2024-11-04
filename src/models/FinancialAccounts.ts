@@ -1,35 +1,67 @@
 import {
+  CreationOptional,
   DataTypes,
+  HasManyGetAssociationsMixin,
+  HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
-  NonAttribute,
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
+import { Models } from "@models";
+import { UserAttributes } from "./Users";
+import { MovementAttributes } from "./Movements";
+import { PaymentMethod } from "./PaymentMethods";
+export class FinancialAccount extends Model<
+  InferAttributes<FinancialAccount>,
+  InferCreationAttributes<FinancialAccount>
+> {
+  declare financial_accounts_id: CreationOptional<Uuid>;
+  declare name: string;
+  declare user_id: Uuid;
+  declare PaymentMethods?: PaymentMethod[];
 
-type FinancialItem = {
-  name: string;
-  updatedAt?: Date;
-  createdAt?: Date;
-  expiration?: Date;
-  id: string;
-  value: number;
-};
+  declare getFinancialAccountUser: HasOneGetAssociationMixin<UserAttributes>;
+  declare getFinancialAccountMovements: HasManyGetAssociationsMixin<MovementAttributes>;
 
-export default (sequelize: Sequelize) => {
-  class FinancialAccounts extends Model<
-    InferAttributes<FinancialAccounts, { omit: "user_id" }>,
-    InferCreationAttributes<FinancialAccounts, { omit: "user_id" }>
-  > {
-    declare financial_accounts_id: Uuid;
-    declare name: string;
-    declare type: "inflow_of_money" | "money_outflow" | "debt";
-    declare values: FinancialItem[];
-    declare user_id?: NonAttribute<Uuid>;
+  static associate(models: Models) {
+    const FinancialAccountUser = FinancialAccount.belongsTo(models.User, {
+      as: "FinancialAccountUser",
+      foreignKey: "user_id",
+    });
+    const FinancialAccountMovements = FinancialAccount.hasMany(
+      models.Movement,
+      {
+        as: "FinancialAccountMovements",
+        foreignKey: "financial_accounts_id",
+      }
+    );
+    const FinancialAccountsPaymentMethods = FinancialAccount.belongsToMany(
+      models.PaymentMethod,
+      {
+        through: models.FinancialAccountsPaymentMethods,
+        foreignKey: "financial_accounts_id",
+      }
+    );
+    return {
+      FinancialAccountUser,
+      FinancialAccountMovements,
+      FinancialAccountsPaymentMethods,
+    };
   }
+}
 
-  FinancialAccounts.init(
+export type FinancialAccountAttributes = InferAttributes<
+  FinancialAccount,
+  { omit: "user_id" }
+>;
+export type FinancialAccountCreationAttributes = InferCreationAttributes<
+  FinancialAccount,
+  { omit: "user_id" }
+>;
+export default (sequelize: Sequelize) => {
+  FinancialAccount.init(
     {
       financial_accounts_id: {
         type: DataTypes.UUID,
@@ -40,23 +72,19 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
         defaultValue: "Sin nombre",
+        unique: true,
       },
-      type: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: 0,
-      },
-      values: {
-        type: DataTypes.ARRAY(DataTypes.JSONB),
-        defaultValue: [],
+      user_id: {
+        type: DataTypes.UUID,
+        references: { model: "users", key: "user_id" },
       },
     },
     {
       sequelize,
-      modelName: "FinancialAccounts",
+      modelName: "FinancialAccount",
       tableName: "financialAccounts",
-      timestamps: false,
+      timestamps: true,
     }
   );
-  return FinancialAccounts;
+  return FinancialAccount;
 };

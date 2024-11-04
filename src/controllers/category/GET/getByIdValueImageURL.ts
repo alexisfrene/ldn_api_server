@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { getSecureUrl, db } from "../../../lib";
+import { getSecureUrl, models } from "@lib";
 
-const User = db.User;
+const User = models.User;
 
 export const getByIdValueImageURL = async (req: Request, res: Response) => {
   const user_id = req.user;
@@ -17,13 +17,13 @@ export const getByIdValueImageURL = async (req: Request, res: Response) => {
       .json({ error: "No se proporcionó un id para buscar una categoría" });
   }
   const user = await User.findByPk(user_id);
-  if (!user || !user.getCategories) {
+  if (!user || !user.getUserCategories) {
     return res
       .status(400)
       .json({ error: true, message: "El usuario no tiene categorías" });
   }
 
-  const categories = await user.getCategories({
+  const categories = await user.getUserCategories({
     order: [["category_id", "ASC"]],
   });
   const selectedValue = categories.reduce(

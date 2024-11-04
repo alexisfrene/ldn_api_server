@@ -3,19 +3,20 @@ import {
   createMovement,
   deleteMovement,
   editMovement,
-  getAllTheMoves,
-} from "../../controllers";
-import { runValidate } from "../../middleware";
+  getAllMoves,
+} from "@controllers";
+import { runValidate } from "@middlewares";
 import {
   createMovementValidations,
   deleteMovementValidations,
   editMovementValidations,
-} from "../../validators";
+} from "@validators";
 
 const router = express.Router();
 
-router.get("/", getAllTheMoves);
+router.get("/", getAllMoves);
 router.post("/", runValidate(createMovementValidations), createMovement);
 router.put("/:id", runValidate(editMovementValidations), editMovement);
 router.delete("/:id", runValidate(deleteMovementValidations), deleteMovement);
+
 export default router;

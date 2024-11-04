@@ -1,12 +1,12 @@
 import express from "express";
 import { matchedData, validationResult } from "express-validator";
-import { upload } from "../../lib";
-import { runValidate } from "../../middleware";
+import { upload } from "@lib";
+import { runValidate } from "@middlewares";
 import {
   getByIdCategoryValidator,
   deleteByIdCategoryValidator,
   createCategoryValidator,
-} from "../../validators";
+} from "@validators";
 import {
   addCategoryValue,
   createCategories,
@@ -17,7 +17,7 @@ import {
   getByIdCategoryValue,
   getByIdValueImageURL,
   modifyTitleCollectionCategory,
-} from "../../controllers";
+} from "@controllers";
 
 const router = express.Router();
 

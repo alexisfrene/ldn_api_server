@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { db } from "../../../lib";
+import { models } from "@lib";
+import { Uuid } from "types";
 
-const PaymentMethod = db.PaymentMethods;
+const { PaymentMethod } = models;
 
 export const createPaymentMethod = async (req: Request, res: Response) => {
   const user_id = req.user;
@@ -9,7 +10,7 @@ export const createPaymentMethod = async (req: Request, res: Response) => {
 
   const newPaymentMethod = await PaymentMethod.create({
     name,
-    user_id,
+    user_id: user_id as Uuid,
   });
   return res.status(200).json(newPaymentMethod);
 };

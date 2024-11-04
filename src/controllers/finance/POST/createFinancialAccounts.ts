@@ -1,37 +1,27 @@
 import { Request, Response } from "express";
-import { v4 as uuidv4 } from "uuid";
-import { db } from "../../../lib";
-import { formatDate } from "../../../utils";
+import { models } from "@lib";
+import { Uuid } from "types";
 
-const FinancialAccounts = db.FinancialAccounts;
+const { FinancialAccount, FinancialAccountsPaymentMethods } = models;
 
 export const createFinancialAccounts = async (req: Request, res: Response) => {
   const user_id = req.user;
-  const { name, type } = req.body;
+  const { name, paymentMethods }: { name: string; paymentMethods: number[] } =
+    req.body;
 
-  if (
-    type === "inflow_of_money" ||
-    type === "money_outflow" ||
-    type === "debt"
-  ) {
-    const newFinancialAccounts = await FinancialAccounts.create({
-      name,
-      type,
-      values: [
-        {
-          name: "-",
-          updatedAt: formatDate(),
-          createdAt: formatDate(),
-          id: uuidv4(),
-          value: 0,
-        },
-      ],
-      user_id,
-    });
-    return res.status(200).json(newFinancialAccounts);
-  } else {
-    return res
-      .status(400)
-      .json({ message: "Error al crear una cuenta financiera", error: true });
+  const newFinancialAccount = await FinancialAccount.create({
+    name,
+    user_id: user_id as Uuid,
+  });
+  if (paymentMethods?.length) {
+    const paymentMethodsPromise = paymentMethods.map(async (paymentMethod) =>
+      FinancialAccountsPaymentMethods.create({
+        financial_accounts_id: newFinancialAccount.financial_accounts_id,
+        payment_method_id: paymentMethod,
+      })
+    );
+    await Promise.all(paymentMethodsPromise);
   }
+
+  return res.status(200).json({ newFinancialAccount });
 };

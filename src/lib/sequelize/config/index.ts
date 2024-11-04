@@ -1,5 +1,5 @@
-import dotenv from "dotenv";
-dotenv.config();
+process.loadEnvFile();
+
 const {
   DATABASE_NAME,
   DATABASE_USER,

@@ -1,23 +1,24 @@
 import { Request, Response } from "express";
-import { db } from "../../../lib";
+import { models } from "@lib";
+import { Uuid } from "types";
 
-const User = db.User;
+const User = models.User;
 
-const Category = db.Category;
+const Category = models.Category;
 
 export const getProductForCategory = async (req: Request, res: Response) => {
   const { category_id, category_value } = req.query;
   const user_id = req.user;
 
   const user = await User.findByPk(user_id || "");
-  const products = user?.getProducts() ? await user.getProducts() : [];
+  const products = user?.getUserProducts() ? await user.getUserProducts() : [];
   if (!products)
     return res.status(400).json({
       error: true,
       message: "El usuario no tiene productos cargados",
     });
-  const category = await Category.findByPk(category_id || "");
-  console.log(category);
+  const category = await Category.findByPk((category_id as Uuid) || "");
+
   if (!category)
     return res
       .status(400)
@@ -31,8 +32,8 @@ export const getProductForCategory = async (req: Request, res: Response) => {
       message: "No se encontró el valor de la categoría",
     });
   const productsForCAtegory = products.filter(
-    (product: { category_id: string; category_value: string }) =>
-      product.category_id === category_id &&
+    (product) =>
+      product.category_id === Number(category_id) &&
       product.category_value === category_value
   );
   return res.status(200).json({ res: productsForCAtegory });

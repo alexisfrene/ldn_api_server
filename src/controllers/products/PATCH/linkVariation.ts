@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
-import { db } from "../../../lib";
+import { models } from "@lib";
+import { Uuid } from "types";
 
-const Product = db.Product;
+const Product = models.Product;
 
-const Variation = db.Variation;
+const Variation = models.Variation;
 
 export const linkVariation = async (req: Request, res: Response) => {
   const productId = req.params.id;
@@ -12,7 +13,7 @@ export const linkVariation = async (req: Request, res: Response) => {
     return res
       .status(400)
       .json({ error: true, message: "NO se paso id de la variación" });
-  const variation = await Variation.findByPk(variationId);
+  const variation = await Variation.findByPk(variationId as Uuid);
   if (!variation)
     return res
       .status(400)

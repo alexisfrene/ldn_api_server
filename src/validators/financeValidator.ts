@@ -98,10 +98,9 @@ export const createDebtValidations = [
     .withMessage("El nombre debe ser un texto.")
     .isLength({ max: 50 })
     .withMessage("El nombre debe tener como máximo 50 caracteres."),
-  body("interest_rate")
-    .optional()
+  body("money_to_receive")
     .isFloat({ min: 0 })
-    .withMessage("La tasa de interés debe ser un número mayor o igual a 0."),
+    .withMessage("El monto recibido es obligatorio"),
   body("payment_frequency")
     .isIn(["monthly", "bi-weekly", "weekly"])
     .withMessage(

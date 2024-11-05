@@ -48,7 +48,7 @@ export default (sequelize: Sequelize) => {
         autoIncrement: true,
       },
       amount: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
       due_date: {

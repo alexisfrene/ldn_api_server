@@ -20,7 +20,9 @@ export type DebtCreationAttributes = InferCreationAttributes<
 export class Debt extends Model<DebtAttributes, DebtCreationAttributes> {
   declare debt_id: CreationOptional<Uuid>;
   declare name: string;
-  declare interest_rate: CreationOptional<number>;
+  declare money_to_receive: number;
+  declare total_interest: CreationOptional<number>;
+  declare interest_per_installment: CreationOptional<number>;
   declare minimum_payment: CreationOptional<number>;
   declare total_debt: CreationOptional<number>;
   declare notes: CreationOptional<string>;
@@ -64,12 +66,21 @@ export default (sequelize: Sequelize) => {
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
       },
+      money_to_receive: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+      },
       name: {
         type: DataTypes.STRING(50),
         allowNull: false,
         defaultValue: "---",
       },
-      interest_rate: {
+      total_interest: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      interest_per_installment: {
         type: DataTypes.FLOAT,
         allowNull: false,
         defaultValue: 0,

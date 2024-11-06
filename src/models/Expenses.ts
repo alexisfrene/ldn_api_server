@@ -1,6 +1,7 @@
 import {
   CreationOptional,
   DataTypes,
+  HasManyGetAssociationsMixin,
   InferAttributes,
   InferCreationAttributes,
   Model,
@@ -8,6 +9,7 @@ import {
 } from "sequelize";
 import { Uuid } from "../types";
 import { Models } from "@models";
+import { MovementAttributes } from "./Movements";
 
 export type ExpenseAttributes = InferAttributes<Expense>;
 export type ExpenseCreationAttributes = InferCreationAttributes<Expense>;
@@ -19,14 +21,13 @@ export class Expense extends Model<
   declare expense_id: CreationOptional<Uuid>;
   declare user_id: Uuid;
   declare description: string;
+  declare name: string;
+
+  declare getExpenseMovements: HasManyGetAssociationsMixin<MovementAttributes>;
 
   static associate(models: Models) {
-    const ExpenseTags = Expense.hasMany(models.Tag, {
-      as: "ExpenseTags",
-      foreignKey: "expense_id",
-    });
     const ExpenseMovements = Expense.hasMany(models.Movement, {
-      as: "MovementExpense",
+      as: "ExpenseMovements",
       foreignKey: "expense_id",
     });
     const UserExpenses = Expense.belongsTo(models.User, {
@@ -35,7 +36,6 @@ export class Expense extends Model<
     });
 
     return {
-      ExpenseTags,
       UserExpenses,
       ExpenseMovements,
     };
@@ -51,6 +51,10 @@ export default (sequelize: Sequelize) => {
         defaultValue: DataTypes.UUIDV4,
       },
       description: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
       },

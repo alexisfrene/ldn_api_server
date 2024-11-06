@@ -1,7 +1,7 @@
 import { Uuid } from "types";
 import { Models } from "@models";
 
-export const seedProducts = async (models: Models) => {
+const seedProducts = async (models: Models) => {
   try {
     await models.Product.bulkCreate(
       [
@@ -105,3 +105,4 @@ export const seedProducts = async (models: Models) => {
     console.error("Error seeding database:", error);
   }
 };
+export default seedProducts;

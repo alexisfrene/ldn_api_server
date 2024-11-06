@@ -1,6 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
 import bcrypt from "bcrypt";
+import { MovementAttributes } from "@models/Movements";
+
+interface TotalsByType {
+  [key: string]: number;
+}
 
 process.loadEnvFile();
 
@@ -104,3 +109,25 @@ export const deleteFilesInTemp = () => {
     });
   });
 };
+
+export const calculateTotals = (movements: MovementAttributes[]) =>
+  movements.reduce<TotalsByType>(
+    (totals, movement) => {
+      totals[movement.type] = (totals[movement.type] || 0) + movement.value;
+      return totals;
+    },
+    { count_movements: movements.length }
+  );
+
+const currentYear = new Date().getFullYear();
+const currentMonth = new Date().getMonth();
+
+export const startOfMonth = new Date(currentYear, currentMonth, 1, 0, 0, 1);
+export const endOfMonth = new Date(
+  currentYear,
+  currentMonth + 1,
+  0,
+  23,
+  59,
+  59
+);

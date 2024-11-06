@@ -2,7 +2,7 @@ import { Uuid } from "types";
 import { hashPassword } from "@utils";
 import { Models } from "@models";
 
-export const seedUsers = async (models: Models) => {
+const seedUsers = async (models: Models) => {
   try {
     await models.User.bulkCreate(
       [
@@ -26,3 +26,5 @@ export const seedUsers = async (models: Models) => {
     console.error("Error seeding database:", error);
   }
 };
+
+export default seedUsers;

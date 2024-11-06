@@ -59,8 +59,8 @@ export class Movement extends Model<
       foreignKey: "user_id",
     });
 
-    const MovementExpense = Movement.belongsTo(models.Expense, {
-      as: "MovementExpense",
+    const ExpenseMovements = Movement.belongsTo(models.Expense, {
+      as: "ExpenseMovements",
       foreignKey: "expense_id",
     });
     const MovementDebts = Movement.belongsTo(models.Debt, {
@@ -72,7 +72,7 @@ export class Movement extends Model<
       FinancialAccountMovements,
       PaymentMethodMovements,
       MovementUser,
-      MovementExpense,
+      ExpenseMovements,
     };
   }
 }

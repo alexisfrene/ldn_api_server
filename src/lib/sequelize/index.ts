@@ -26,11 +26,17 @@ const sequelize = new Sequelize(database, username, password, {
 
 const { associations, models } = initModels(sequelize);
 
+const forceSync = process.env.FORCE_SYNC === "true";
+
 sequelize
-  .sync({ force: true })
+  .sync({ force: forceSync })
   .then(async () => {
-    await seedDatabase(models);
-    console.log("Database synchronized");
+    if (forceSync) {
+      await seedDatabase(models);
+      console.log("Database synchronized and seeded");
+    } else {
+      console.log("Database synchronized without seeding");
+    }
   })
   .catch((err) => {
     console.error("Error synchronizing database:", err);

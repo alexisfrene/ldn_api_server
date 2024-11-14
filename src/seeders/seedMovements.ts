@@ -1,12 +1,13 @@
 import { Uuid } from "types";
 import { Models } from "@models";
+import { user_id } from "./contextSeeders";
 
 const seedMovements = async (models: Models) => {
   try {
     await models.Movement.bulkCreate(
       [
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "Venta de remeras",
@@ -15,7 +16,7 @@ const seedMovements = async (models: Models) => {
           value: 10000,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "Venta de remeras",
@@ -24,7 +25,7 @@ const seedMovements = async (models: Models) => {
           value: 10000,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "Venta de remeras",
@@ -33,7 +34,7 @@ const seedMovements = async (models: Models) => {
           value: 10000,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "Venta de remeras",
@@ -42,7 +43,7 @@ const seedMovements = async (models: Models) => {
           value: 40000,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "Venta de remeras",
@@ -51,7 +52,7 @@ const seedMovements = async (models: Models) => {
           value: 10000,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "Venta de remeras",
@@ -60,7 +61,7 @@ const seedMovements = async (models: Models) => {
           value: 10000,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "Venta de remeras",
@@ -69,7 +70,7 @@ const seedMovements = async (models: Models) => {
           value: 10000,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "Venta de remeras",
@@ -78,7 +79,7 @@ const seedMovements = async (models: Models) => {
           value: 10000,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "-- Gasto --",
@@ -88,7 +89,7 @@ const seedMovements = async (models: Models) => {
           value: 5000,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "-- Gasto --",
@@ -98,7 +99,7 @@ const seedMovements = async (models: Models) => {
           value: 9800,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "-- Gasto --",
@@ -108,7 +109,7 @@ const seedMovements = async (models: Models) => {
           value: 5000,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "-- Gasto --",
@@ -118,7 +119,7 @@ const seedMovements = async (models: Models) => {
           value: 9800,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "-- Gasto --",
@@ -128,7 +129,7 @@ const seedMovements = async (models: Models) => {
           value: 5000,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "-- Gasto --",
@@ -138,7 +139,7 @@ const seedMovements = async (models: Models) => {
           value: 9800,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "-- Gasto --",
@@ -148,7 +149,7 @@ const seedMovements = async (models: Models) => {
           value: 5000,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "-- Gasto --",
@@ -158,7 +159,7 @@ const seedMovements = async (models: Models) => {
           value: 9800,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "-- Gasto --",
@@ -168,7 +169,7 @@ const seedMovements = async (models: Models) => {
           value: 5000,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "-- Gasto --",
@@ -178,7 +179,7 @@ const seedMovements = async (models: Models) => {
           value: 9800,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "-- Gasto --",
@@ -188,7 +189,7 @@ const seedMovements = async (models: Models) => {
           value: 5000,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "-- Gasto --",
@@ -198,7 +199,7 @@ const seedMovements = async (models: Models) => {
           value: 9800,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "-- Gasto --",
@@ -208,7 +209,7 @@ const seedMovements = async (models: Models) => {
           value: 5000,
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           entry_date: new Date("02/03/2024"),
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           label: "-- Gasto --",

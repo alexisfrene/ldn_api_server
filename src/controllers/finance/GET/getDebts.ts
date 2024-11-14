@@ -28,9 +28,20 @@ export const getAllDebts = async (req: Request, res: Response) => {
 
 export const getDebtsById = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const expense = await Debt.findByPk(id);
+  const debt = await Debt.findByPk(id, {
+    raw: true,
+    attributes: { exclude: ["user_id", "createdAt", "updatedAt"] },
+  });
 
-  if (!expense) return res.status(404).json({ error: "Gasto no encontrado" });
+  if (!debt) return res.status(404).json({ error: "Gasto no encontrado" });
+  const installments = await Installment.findAll({
+    where: { debt_id: debt.debt_id },
+    attributes: ["installment_id", "amount", "due_date", "status"],
+    order: [["due_date", "ASC"]],
+  });
 
-  return res.status(200).json(expense);
+  return res.status(200).json({
+    ...debt,
+    installments: installments || [],
+  });
 };

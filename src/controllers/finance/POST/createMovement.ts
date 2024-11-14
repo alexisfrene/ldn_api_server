@@ -37,6 +37,7 @@ export const createMovement = async (req: Request, res: Response) => {
       entry_date: new Date(date[0], date[1] - 1, date[2], 12),
       expense_id: req.body?.expense_id || null,
       debt_id: req.body?.debt_id || null,
+      installment_id: req.body?.installment_id || null,
     });
 
     return res.status(200).json({ newMovement, filterInstallment });

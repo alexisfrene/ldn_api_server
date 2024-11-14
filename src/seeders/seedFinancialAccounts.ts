@@ -1,22 +1,23 @@
 import { Uuid } from "types";
 import { Models } from "@models";
+import { user_id } from "./contextSeeders";
 
 const seedFinancialAccounts = async (models: Models) => {
   try {
     await models.FinancialAccount.bulkCreate(
       [
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           name: "Caja",
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174001" as Uuid,
           name: "Mercado Pago",
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           financial_accounts_id: "123e4567-e89b-12d3-a456-426614174002" as Uuid,
           name: "Banco Santander",
         },

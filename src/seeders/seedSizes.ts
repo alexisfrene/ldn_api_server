@@ -1,12 +1,13 @@
 import { Uuid } from "types";
 import { Models } from "@models";
+import { user_id } from "./contextSeeders";
 
 const seedSizes = async (models: Models) => {
   try {
     await models.Size.bulkCreate(
       [
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           title: "Default",
           size_id: 101,
           values: [{ id: "default" as Uuid, value: "sin talla" }],

@@ -56,7 +56,7 @@ export const editProductData = async (req: Request, res: Response) => {
       const newSize = await Size.findByPk(propertiesToEdit.size_id);
       if (newSize) {
         const valuesNewSize = newSize.values.find(
-          (value: { id: string }) => value.id === propertiesToEdit.size_value
+          (value) => value.id === propertiesToEdit.size_value
         );
         if (!valuesNewSize) {
           return res.status(400).json({ error: "Talla/numero invalida" });
@@ -68,7 +68,7 @@ export const editProductData = async (req: Request, res: Response) => {
         const size = await Size.findByPk(product.size_id);
         if (size) {
           const value = size.values.find(
-            (value: { id: string }) => value.id === product.size_value
+            (value) => value.id === product.size_value
           );
 
           nameProps.size = value?.value || "";

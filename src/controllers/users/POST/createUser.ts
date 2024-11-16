@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { hashPassword } from "@utils";
 import { models } from "@lib";
-import { Uuid } from "types";
 
 const User = models.User;
 const Category = models.Category;
@@ -86,7 +85,7 @@ export const createUser = async (req: Request, res: Response) => {
     title: "Default",
     values: [
       {
-        id: "default" as Uuid,
+        id: 100,
         value: "Sin talla/numero",
       },
     ],

@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
-import { v4 as uuidv4 } from "uuid";
 import { models } from "@lib";
-import { Uuid } from "types";
 
 const Size = models.Size;
 const User = models.User;
@@ -32,7 +30,7 @@ export const addSizeValue = async (req: Request, res: Response) => {
     const selectedSize = await Size.findByPk(size_id);
     if (selectedSize) {
       const validateRepeatValue = selectedSize.values.find(
-        (e: { value: string }) => e.value === value
+        (e) => e.value === value
       );
       if (validateRepeatValue)
         return res.status(400).json({
@@ -40,7 +38,7 @@ export const addSizeValue = async (req: Request, res: Response) => {
           message: `Èl valor ( ${value} , ya esta cargado )`,
         });
       const newValue = {
-        id: uuidv4() as Uuid,
+        id: selectedSize.values.length++,
         value,
       };
       const updateSize = await selectedSize.update({

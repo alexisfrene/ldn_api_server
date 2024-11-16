@@ -23,9 +23,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
           if (productFromDB) {
             const size = await productFromDB.getSizeProducts();
             const sizeValue = size
-              ? size.values.find(
-                  (e: { id: string }) => e.id === productFromDB.size_value
-                )
+              ? size.values.find((e) => e.id === productFromDB.size_value)
               : null;
             const urlCloudinary = getSecureUrl(
               product.primary_image,

@@ -32,7 +32,7 @@ export const createProducts = async (req: Request, res: Response) => {
     name: data.name || "",
     price: data.price || 1,
     primary_image: "",
-    size_value: "",
+    size_value: 100,
     state: true,
     stock: data.stock || 1,
     category_id: 1,
@@ -58,7 +58,7 @@ export const createProducts = async (req: Request, res: Response) => {
     const size = await Size.findByPk(data.size_id);
     if (size) {
       const verifySize = size.values.find(
-        (value: { id: string }) => value.id === data.size_value
+        (value) => value.id === data.size_value
       );
       if (verifySize) {
         dataNewProduct.size_id = data.size_id;

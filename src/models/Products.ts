@@ -30,7 +30,7 @@ export class Product extends Model<
   declare state: boolean;
   declare stock: CreationOptional<number>;
   declare category_value: CreationOptional<string>;
-  declare size_value: CreationOptional<string>;
+  declare size_value: CreationOptional<number>;
   declare discount: CreationOptional<number>;
   declare dollar_today: CreationOptional<number | null>;
   declare createdAt: CreationOptional<Date>;

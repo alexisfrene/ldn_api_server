@@ -12,7 +12,10 @@ export const getAllDebts = async (req: Request, res: Response) => {
       const installments = await Installment.findAll({
         where: { debt_id: debt.debt_id },
         attributes: ["installment_id", "amount", "due_date", "status"],
-        order: [["due_date", "ASC"]],
+        order: [
+          ["due_date", "ASC"],
+          ["installment_id", "DESC"],
+        ],
       });
       return {
         name: debt.name,

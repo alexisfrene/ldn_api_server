@@ -17,7 +17,7 @@ const seedProducts = async (models: Models) => {
           size_id: 101,
           state: true,
           category_value: "default",
-          size_value: "default",
+          size_value: 1,
         },
         {
           user_id,
@@ -30,7 +30,7 @@ const seedProducts = async (models: Models) => {
           size_id: 101,
           state: true,
           category_value: "default",
-          size_value: "default",
+          size_value: 1,
         },
         {
           user_id,
@@ -43,7 +43,7 @@ const seedProducts = async (models: Models) => {
           size_id: 101,
           state: true,
           category_value: "default",
-          size_value: "default",
+          size_value: 1,
         },
         {
           user_id,
@@ -56,7 +56,7 @@ const seedProducts = async (models: Models) => {
           size_id: 101,
           state: true,
           category_value: "default",
-          size_value: "default",
+          size_value: 1,
         },
         {
           user_id,
@@ -69,7 +69,7 @@ const seedProducts = async (models: Models) => {
           size_id: 101,
           state: true,
           category_value: "default",
-          size_value: "default",
+          size_value: 1,
         },
         {
           user_id,
@@ -82,7 +82,7 @@ const seedProducts = async (models: Models) => {
           size_id: 101,
           state: true,
           category_value: "default",
-          size_value: "default",
+          size_value: 1,
         },
         {
           user_id,
@@ -95,7 +95,7 @@ const seedProducts = async (models: Models) => {
           size_id: 101,
           state: true,
           category_value: "default",
-          size_value: "default",
+          size_value: 1,
         },
       ],
       { ignoreDuplicates: true }

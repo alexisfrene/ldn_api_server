@@ -8,7 +8,7 @@ export const createFinancialAccountValidations = [
 ];
 
 export const editFinancialAccountValidations = [
-  param("id").isNumeric().withMessage("El ID debe ser un numero válido."),
+  param("id").isUUID().withMessage("El ID debe ser un UUID válido."),
   body("name")
     .optional()
     .isString()

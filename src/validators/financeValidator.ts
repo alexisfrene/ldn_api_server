@@ -114,9 +114,6 @@ export const createDebtValidations = [
     .optional()
     .isString()
     .withMessage("Las notas deben ser un texto."),
-  body("total_debt")
-    .isFloat({ min: 0 })
-    .withMessage("La deuda total debe ser un número mayor o igual a 0."),
   body("current_quota")
     .isInt({ min: 1 })
     .withMessage(

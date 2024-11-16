@@ -8,7 +8,8 @@
     "dev": "ts-node-dev -r tsconfig-paths/register src/app.ts",
     "start": "node  build/app.js",
     "test": "jest --watchAll",
-    "migrate": "npx ts-node-dev -r tsconfig-paths/register src/runMigrations.ts"
+    "migrate": "npx build/runMigrations.js",
+    "migrate-dev": "npx ts-node-dev -r tsconfig-paths/register src/runMigrations.ts"
   },
   "keywords": [],
   "author": "Alexis Frene",

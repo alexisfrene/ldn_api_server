@@ -1,11 +1,19 @@
 import express from "express";
-import { createDebts, getAllDebts, getDebtsById } from "@controllers";
+import {
+  createDebts,
+  getAllDebts,
+  getDebtsById,
+  editDebt,
+  deleteDebt,
+} from "@controllers";
 import { runValidate } from "@middlewares";
 import { createDebtValidations } from "@validators";
 
 const router = express.Router();
 router.get("/", getAllDebts);
 router.get("/:id", getDebtsById);
+router.patch("/:id", editDebt);
+router.delete("/:id", deleteDebt);
 router.post("/", runValidate(createDebtValidations), createDebts);
 
 export default router;

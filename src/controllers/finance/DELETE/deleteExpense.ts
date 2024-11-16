@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { models } from "@lib";
 const { Expense } = models;
 
-// Eliminar un gasto
 export const deleteExpense = async (req: Request, res: Response) => {
   const { id } = req.params;
   const expense = await Expense.findByPk(id);

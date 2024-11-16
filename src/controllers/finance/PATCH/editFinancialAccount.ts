@@ -23,6 +23,9 @@ export const editFinancialAccount = async (req: Request, res: Response) => {
   }
 
   financialAccount.name = name || financialAccount.name;
+  if (req.body.payments_methods) {
+    req.body.payments_methods;
+  }
 
   await financialAccount.save();
 

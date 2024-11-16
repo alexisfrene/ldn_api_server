@@ -16,7 +16,7 @@ const router = express.Router();
 
 router.get("/", getFinancialAccounts);
 router.post("/", createFinancialAccounts);
-router.put(
+router.patch(
   "/:id",
   runValidate(editFinancialAccountValidations),
   editFinancialAccount

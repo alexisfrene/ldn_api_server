@@ -20,5 +20,5 @@ export const editDebt = async (req: Request, res: Response) => {
     payment_frequency: req.body.payment_frequency,
     total_debt: req.body.total_debt,
   });
-  return res.status(200);
+  return res.status(200).json({ ok: true });
 };

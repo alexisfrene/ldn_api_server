@@ -85,7 +85,7 @@ export const createUser = async (req: Request, res: Response) => {
     title: "Default",
     values: [
       {
-        id: 100,
+        id: "100",
         value: "Sin talla/numero",
       },
     ],

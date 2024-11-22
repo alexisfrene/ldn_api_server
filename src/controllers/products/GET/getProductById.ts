@@ -20,9 +20,7 @@ export const getProductById = async (req: Request, res: Response) => {
 
   const category = await product.getCategoryProducts();
   const categoryValue = category
-    ? category.values.find(
-        (e: { id: string }) => e.id === product.category_value
-      )
+    ? category.values.find((e) => e.id === product.category_value)
     : null;
   const size = await product.getSizeProducts();
   const sizeValue = size

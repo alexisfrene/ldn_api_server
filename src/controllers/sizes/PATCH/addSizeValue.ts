@@ -38,7 +38,7 @@ export const addSizeValue = async (req: Request, res: Response) => {
           message: `Èl valor ( ${value} , ya esta cargado )`,
         });
       const newValue = {
-        id: selectedSize.values.length++,
+        id: "add-" + selectedSize.values.length++,
         value,
       };
       const updateSize = await selectedSize.update({

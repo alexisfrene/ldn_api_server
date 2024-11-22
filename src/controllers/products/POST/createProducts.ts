@@ -32,7 +32,7 @@ export const createProducts = async (req: Request, res: Response) => {
     name: data.name || "",
     price: data.price || 1,
     primary_image: "",
-    size_value: 100,
+    size_value: "100",
     state: true,
     stock: data.stock || 1,
     category_id: 1,

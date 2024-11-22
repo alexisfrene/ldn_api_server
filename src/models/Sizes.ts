@@ -13,7 +13,7 @@ import { ProductAttributes } from "./Products";
 import { UserAttributes } from "./Users";
 
 type SizeItem = {
-  id: number;
+  id: string;
   value: string;
 };
 export type SizeAttributes = InferAttributes<Size, { omit: "user_id" }>;

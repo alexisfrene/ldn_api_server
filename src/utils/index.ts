@@ -131,3 +131,33 @@ export const endOfMonth = new Date(
   59,
   59
 );
+
+export const validateUserInput = (data: any) => {
+  const {
+    first_name,
+    last_name,
+    email,
+    password,
+    gender,
+    username,
+    birthday_date,
+  } = data;
+
+  if (
+    !first_name ||
+    !last_name ||
+    !email ||
+    !password ||
+    !gender ||
+    !username ||
+    !birthday_date
+  ) {
+    return "Missing fields required to create the user";
+  }
+
+  if (password.length < 8) {
+    return "The password must be a minimum of 8 characters in length";
+  }
+
+  return null;
+};

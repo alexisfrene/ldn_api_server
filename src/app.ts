@@ -53,6 +53,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.use("/api/test", (_req, res) => res.status(200).json({ server: "on" }));
+
 app.use(
   "/api",
   variationsRoutes,

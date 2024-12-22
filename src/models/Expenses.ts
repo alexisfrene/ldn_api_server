@@ -1,15 +1,13 @@
-import {
+import { DataTypes, Model, Sequelize } from "sequelize";
+import { Models } from "@models";
+import type {
   CreationOptional,
-  DataTypes,
   HasManyGetAssociationsMixin,
   InferAttributes,
   InferCreationAttributes,
-  Model,
-  Sequelize,
 } from "sequelize";
-import { Uuid } from "../types";
-import { Models } from "@models";
-import { MovementAttributes } from "./Movements";
+import type { Uuid } from "../types";
+import type { MovementAttributes } from "./Movements";
 
 export type ExpenseAttributes = InferAttributes<Expense>;
 export type ExpenseCreationAttributes = InferCreationAttributes<Expense>;

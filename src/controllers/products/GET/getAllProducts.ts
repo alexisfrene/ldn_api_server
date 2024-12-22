@@ -10,9 +10,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
   if (user) {
     const allProducts = await user.getUserProducts();
     if (!allProducts)
-      return res
-        .status(400)
-        .json({ error: "El usuario no tiene productos cargados" });
+      res.status(400).json({ error: "El usuario no tiene productos cargados" });
     const products = allProducts.filter(
       (producto: { state: boolean }) => producto.state === true
     );
@@ -51,7 +49,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
         })
       );
 
-      return res.status(200).json(
+      res.status(200).json(
         productDetails.sort((a, b) => {
           if (a.product_id < b.product_id) return -1;
           if (a.product_id > b.product_id) return 1;
@@ -60,7 +58,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
       );
     }
 
-    return res.status(400).json({ error: "No hay productos cargados" });
+    res.status(400).json({ error: "No hay productos cargados" });
   }
-  return res.status(400).json({ error: "Usuario no registrado" });
+  res.status(400).json({ error: "Usuario no registrado" });
 };

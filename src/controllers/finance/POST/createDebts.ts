@@ -47,5 +47,5 @@ export const createDebts = async (req: Request, res: Response) => {
       })
   );
   await Promise.all(promiseInstallment);
-  return res.status(200).json({});
+  res.status(200).json({});
 };

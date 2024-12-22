@@ -8,9 +8,8 @@ const { Product, Category, Size, Detail } = models;
 export const createProducts = async (req: Request, res: Response) => {
   const file = req.file as Express.Multer.File;
   const user_id = req.user;
-  if (!user_id) return res.status(400).json({ error: "Falta id de usuario" });
-  if (!file)
-    return res.status(400).json({ error: "Falta imagen del producto" });
+  if (!user_id) res.status(400).json({ error: "Falta id de usuario" });
+  if (!file) res.status(400).json({ error: "Falta imagen del producto" });
 
   req.body.price = Number(req.body.price);
 
@@ -67,12 +66,10 @@ export const createProducts = async (req: Request, res: Response) => {
     }
   }
 
-  const image_url = await uploadToCloudinary(file, user_id);
+  const image_url = await uploadToCloudinary(file, user_id!);
   if (!image_url)
-    return res
-      .status(400)
-      .json({ error: "Error subiendo imagen a Cloudinary" });
-  dataNewProduct.primary_image = image_url;
+    res.status(400).json({ error: "Error subiendo imagen a Cloudinary" });
+  dataNewProduct.primary_image = image_url as string;
 
   const dollarBlue: { data: { venta: string } } = await axios.get(
     "https://dolarapi.com/v1/dolares/contadoconliqui"
@@ -88,10 +85,10 @@ export const createProducts = async (req: Request, res: Response) => {
 
   if (newProduct) {
     await transaction.commit();
-    return res.status(200).json(newProduct);
+    res.status(200).json(newProduct);
   } else {
     await transaction.rollback();
-    return res
+    res
       .status(400)
       .json({ error: true, message: "Error al crear el producto" });
   }

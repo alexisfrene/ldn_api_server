@@ -8,10 +8,10 @@ export const editDebt = async (req: Request, res: Response) => {
 
   const debtSelected = await Debt.findByPk(debt_id);
   if (!debtSelected)
-    return res
+    res
       .status(400)
       .json({ error: true, message: "No se encontró la deuda seleccionada !" });
-  await debtSelected.update({
+  await debtSelected!.update({
     name: req.body.name,
     notes: req.body.notes,
     current_quota: req.body.current_quota,
@@ -20,5 +20,5 @@ export const editDebt = async (req: Request, res: Response) => {
     payment_frequency: req.body.payment_frequency,
     total_debt: req.body.total_debt,
   });
-  return res.status(200).json({ ok: true });
+  res.status(200).json({ ok: true });
 };

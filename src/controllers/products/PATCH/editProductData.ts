@@ -30,9 +30,9 @@ export const editProductData = async (req: Request, res: Response) => {
         );
 
         if (!valuesNewCategory) {
-          return res.status(400).json({ error: "Categoría invalida" });
+          res.status(400).json({ error: "Categoría invalida" });
         }
-        nameProps.category = valuesNewCategory.value;
+        nameProps.category = valuesNewCategory!.value;
       }
     }
     if (propertiesToEdit?.size_id && propertiesToEdit?.size_value) {
@@ -42,13 +42,13 @@ export const editProductData = async (req: Request, res: Response) => {
           (value) => value.id === propertiesToEdit.size_value
         );
         if (!valuesNewSize) {
-          return res.status(400).json({ error: "Talla/numero invalida" });
+          res.status(400).json({ error: "Talla/numero invalida" });
         }
-        nameProps.size = valuesNewSize.value;
+        nameProps.size = valuesNewSize!.value;
       }
     }
     const updateDataProduct = await product.update(propertiesToEdit);
-    return res.status(200).json({
+    res.status(200).json({
       name: updateDataProduct.name,
       category: nameProps.category,
       description: updateDataProduct.description,
@@ -57,7 +57,7 @@ export const editProductData = async (req: Request, res: Response) => {
       size: nameProps.size,
     });
   } else {
-    return res.status(400).json({
+    res.status(400).json({
       error: true,
       message: "Producto no encontrado",
     });

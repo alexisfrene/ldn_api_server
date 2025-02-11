@@ -1,15 +1,13 @@
-import {
+import { DataTypes, Model, Sequelize } from "sequelize";
+import { Models } from "@models";
+import type {
   CreationOptional,
-  DataTypes,
   HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
-  Model,
-  Sequelize,
 } from "sequelize";
-import { Uuid } from "../types";
-import { Models } from "@models";
-import { ProductAttributes } from "./Products";
+import type { Uuid } from "../types";
+import type { ProductAttributes } from "./Products";
 export type DetailAttributes = InferAttributes<Detail, { omit: "product_id" }>;
 export type DetailCreationAttributes = InferCreationAttributes<Detail>;
 

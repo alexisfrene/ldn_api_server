@@ -1,18 +1,17 @@
-import {
+import { DataTypes, Model, Sequelize } from "sequelize";
+import { Models } from "@models";
+import type {
   CreationOptional,
-  DataTypes,
   HasManyGetAssociationsMixin,
   HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
-  Model,
-  Sequelize,
 } from "sequelize";
-import { Uuid } from "../types";
-import { Models } from "@models";
-import { UserAttributes } from "./Users";
-import { MovementAttributes } from "./Movements";
-import { PaymentMethod } from "./PaymentMethods";
+import type { Uuid } from "../types";
+import type { UserAttributes } from "./Users";
+import type { MovementAttributes } from "./Movements";
+import type { PaymentMethod } from "./PaymentMethods";
+
 export class FinancialAccount extends Model<
   InferAttributes<FinancialAccount>,
   InferCreationAttributes<FinancialAccount>

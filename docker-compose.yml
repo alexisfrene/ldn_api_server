@@ -27,7 +27,7 @@ services:
     volumes:
       - ldn_database:/var/lib/postgresql/data
   ldn_pgadmin:
-    image: dpage/pgadmin4:8.4
+    image: dpage/pgadmin4:9
     container_name: ldn_pgadmin
     restart: always
     env_file:

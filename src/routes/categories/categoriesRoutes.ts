@@ -6,6 +6,7 @@ import {
   getByIdCategoryValidator,
   deleteByIdCategoryValidator,
   createCategoryValidator,
+  updateCategoryValidator,
 } from "@validators";
 import {
   addCategoryValue,
@@ -18,8 +19,30 @@ import {
   getByIdValueImageURL,
   modifyTitleCollectionCategory,
 } from "@controllers";
+import { getTemporaryUrl } from "@lib/minio";
 
 const router = express.Router();
+
+import axios from "axios";
+
+router.get("/images/:fileName", async (req, res) => {
+  try {
+    console.log("Obteniendo imagen");
+    const { fileName } = req.params;
+    const userId = req.user;
+
+    const imageUrl = await getTemporaryUrl(`${userId}/categories/${fileName}`);
+    console.log(imageUrl);
+    const response = await axios.get(imageUrl, { responseType: "stream" });
+
+    res.setHeader("Content-Type", response.headers["content-type"]);
+
+    response.data.pipe(res);
+  } catch (error) {
+    console.error("Error al obtener la imagen:", error);
+    res.status(500).json({ error: "No se pudo obtener la imagen" });
+  }
+});
 
 router.get("/:id", runValidate(getByIdCategoryValidator), async (req, res) => {
   const result = validationResult(req);
@@ -56,15 +79,20 @@ router.post(
   createCategories
 );
 
-router.patch("/:id", upload.array("files"), async (req, res) => {
-  const result = validationResult(req);
-  if (result.isEmpty()) {
-    const data = matchedData(req);
-    if (data.type === "add") return addCategoryValue(req, res);
-    if (data.type === "title") return modifyTitleCollectionCategory(req, res);
-  }
+router.patch(
+  "/:id",
+  upload.array("files"),
+  runValidate(updateCategoryValidator),
+  async (req, res) => {
+    const result = validationResult(req);
+    if (result.isEmpty()) {
+      const data = matchedData(req);
+      if (data.type === "add") return addCategoryValue(req, res);
+      if (data.type === "title") return modifyTitleCollectionCategory(req, res);
+    }
 
-  return res.status(400).json({ errors: result.array() });
-});
+    return res.status(400).json({ errors: result.array() });
+  }
+);
 
 export default router;

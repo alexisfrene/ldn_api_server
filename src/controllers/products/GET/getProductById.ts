@@ -28,7 +28,9 @@ export const getProductById = async (req: Request, res: Response) => {
     : null;
 
   const detail = await product.getDetailProduct();
-  const urlCloudinary = getSecureUrl(product.primary_image, user_id);
+  const urlCloudinary = `${req.protocol}://${req.get(
+    "host"
+  )}/api/products/images/${product.primary_image}`;
   let variationFormat = {
     variation_id: "",
     title: "",

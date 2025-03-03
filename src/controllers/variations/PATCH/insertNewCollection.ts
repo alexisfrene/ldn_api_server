@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { uploadToCloudinary, models } from "@lib";
+import { models } from "@lib";
 import { Uuid } from "types";
+import { uploadToMinio } from "@lib/minio";
 
 const Variation = models.Variation;
 
@@ -16,9 +17,9 @@ export const insertNewCollection = async (req: Request, res: Response) => {
       .status(500)
       .json({ error: true, message: "Error insertNewCollection" });
   const uploadPromises = files.map(async (file) => {
-    const image_url = await uploadToCloudinary(file, `${user_id}/variations`);
+    await uploadToMinio(file, `${user_id}/variations`, user_id as string);
 
-    return image_url || "";
+    return file.filename || "";
   });
   const images = await Promise.all(uploadPromises);
   const newCollection = {

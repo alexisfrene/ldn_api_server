@@ -13,7 +13,28 @@ import {
   getImageProduct,
 } from "@controllers";
 import { upload } from "@lib";
+import { getTemporaryUrl } from "@lib/minio";
+import axios from "axios";
 const router = express.Router();
+
+router.get("/images/:fileName", async (req, res) => {
+  try {
+    console.log("Obteniendo imagen");
+    const { fileName } = req.params;
+    const userId = req.user;
+
+    const imageUrl = await getTemporaryUrl(`${userId}/products/${fileName}`);
+    console.log(imageUrl);
+    const response = await axios.get(imageUrl, { responseType: "stream" });
+
+    res.setHeader("Content-Type", response.headers["content-type"]);
+
+    response.data.pipe(res);
+  } catch (error) {
+    console.error("Error al obtener la imagen:", error);
+    res.status(500).json({ error: "No se pudo obtener la imagen" });
+  }
+});
 
 router.get("/", async (req, res) => {
   const { category_value, category_id } = req.query;

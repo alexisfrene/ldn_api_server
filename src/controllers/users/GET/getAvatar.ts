@@ -8,9 +8,12 @@ export const getAvatar = async (req: Request, res: Response) => {
 
   if (user_id) {
     const userSelected = await User.findByPk(user_id);
+
     if (userSelected) {
       return res.status(200).json({
-        avatar_url: userSelected.avatar_url,
+        avatar_url:
+          userSelected.avatar_url &&
+          userSelected.avatar_url.replace(/\.[^/.]+$/, ""),
         username: userSelected.username,
         email: userSelected.email,
       });

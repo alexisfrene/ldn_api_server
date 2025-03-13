@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getSecureUrl, models } from "@lib";
+import { models } from "@lib";
 
 const Product = models.Product;
 
@@ -48,7 +48,9 @@ export const getProductById = async (req: Request, res: Response) => {
           label: value.label,
           images: value.images.map(
             (image: string) =>
-              getSecureUrl(`variations/${image}`, user_id) || ""
+              `${req.protocol}://${req.get(
+                "host"
+              )}/api/variations/images/${image.replace(/\.[^/.]+$/, "")}`
           ),
         });
       }

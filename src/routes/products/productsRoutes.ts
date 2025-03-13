@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import { conditionalUpload, handleProductType } from "@middlewares";
 import {
   deleteProduct,
@@ -17,24 +17,58 @@ import { getTemporaryUrl } from "@lib/minio";
 import axios from "axios";
 const router = express.Router();
 
-router.get("/images/:fileName", async (req, res) => {
-  try {
-    console.log("Obteniendo imagen");
-    const { fileName } = req.params;
-    const userId = req.user;
+import sharp from "sharp";
+interface ImageQuery {
+  width?: string;
+  height?: string;
+  quality?: string;
+  format?: string;
+}
 
-    const imageUrl = await getTemporaryUrl(`${userId}/products/${fileName}`);
-    console.log(imageUrl);
-    const response = await axios.get(imageUrl, { responseType: "stream" });
+interface ImageParams {
+  fileName: string;
+}
 
-    res.setHeader("Content-Type", response.headers["content-type"]);
+router.get(
+  "/images/:fileName",
+  async (req: Request<ImageParams, any, any, ImageQuery>, res: Response) => {
+    try {
+      console.log("Obteniendo imagen");
+      const { fileName } = req.params;
+      const userId = req.user as string;
+      let width = req.query.width ? parseInt(req.query.width) : undefined;
+      let height = req.query.height ? parseInt(req.query.height) : undefined;
+      let quality = req.query.quality ? parseInt(req.query.quality) : 80;
+      let format = req.query.format || "webp";
 
-    response.data.pipe(res);
-  } catch (error) {
-    console.error("Error al obtener la imagen:", error);
-    res.status(500).json({ error: "No se pudo obtener la imagen" });
+      const validFormats: string[] = ["jpeg", "png", "webp"];
+      if (!validFormats.includes(format as string)) {
+        format = "webp";
+      }
+      const imageUrl = await getTemporaryUrl(`${userId}/products/${fileName}`);
+      const response = await axios.get<ArrayBuffer>(imageUrl, {
+        responseType: "arraybuffer",
+      });
+      let image = sharp(Buffer.from(response.data)).resize(width, height);
+
+      if (format === "jpeg") {
+        image = image.jpeg({ quality, mozjpeg: true });
+      } else if (format === "png") {
+        image = image.png({ quality });
+      } else {
+        image = image.webp({ quality });
+      }
+
+      const optimizedImage = await image.toBuffer();
+
+      res.setHeader("Content-Type", `image/${format}`);
+      res.send(optimizedImage);
+    } catch (error) {
+      console.error("Error al obtener la imagen:", error);
+      res.status(500).json({ error: "No se pudo obtener la imagen" });
+    }
   }
-});
+);
 
 router.get("/", async (req, res) => {
   const { category_value, category_id } = req.query;

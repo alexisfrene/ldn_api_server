@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { getSecureUrl, uploadToCloudinary, models } from "@lib";
+import { models } from "@lib";
+import { uploadToMinio } from "@lib/minio";
 
 const User = models.User;
 
@@ -12,12 +13,15 @@ export const changeAvatar = async (req: Request, res: Response) => {
     return res
       .status(400)
       .json({ error: true, message: "No se mando una imagen" });
-  const public_id = await uploadToCloudinary(file, `${user_id}/avatar`, 64, 64);
+  const public_id = `${req.protocol}://${req.get("host")}/api/user/images/${
+    file.filename
+  }`;
+  await uploadToMinio(file, `${user_id}/user`, user_id);
   if (!public_id)
     return res
       .status(400)
       .json({ error: true, message: "Error al subir la imagen" });
-  const url = getSecureUrl(`avatar/${public_id}`, user_id);
-  if (user) await user.update({ avatar_url: url || "" });
-  return res.status(200).json({ error: false, message: "Todo oK", url });
+
+  if (user) await user.update({ avatar_url: public_id || "" });
+  return res.status(200).json({ error: false, message: "Todo oK", public_id });
 };

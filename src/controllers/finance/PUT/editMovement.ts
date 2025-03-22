@@ -11,21 +11,21 @@ export const editMovement = async (req: Request, res: Response) => {
   const movement = await Movement.findByPk(id);
 
   if (!movement) {
-    return res.status(404).json({ message: "Movimiento no encontrado" });
+    res.status(404).json({ message: "Movimiento no encontrado" });
   }
 
-  if (movement.user_id !== user_id) {
-    return res
+  if (movement!.user_id !== user_id) {
+    res
       .status(403)
       .json({ message: "No tienes permiso para editar este movimiento." });
   }
 
-  movement.entry_date = entry_date || movement.entry_date;
-  movement.label = label || movement.label;
-  movement.value = value || movement.value;
-  movement.type = type || movement.type;
+  movement!.entry_date = entry_date || movement!.entry_date;
+  movement!.label = label || movement!.label;
+  movement!.value = value || movement!.value;
+  movement!.type = type || movement!.type;
 
-  await movement.save();
+  await movement!.save();
 
-  return res.json({ message: "Movimiento actualizado", movement });
+  res.json({ message: "Movimiento actualizado", movement });
 };

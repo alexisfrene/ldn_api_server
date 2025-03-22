@@ -87,22 +87,22 @@ router.get("/:id", runValidate(getByIdCategoryValidator), async (req, res) => {
     if (data.type === "value") return getByIdCategoryValue(req, res);
     if (data.type === "icon") return getByIdValueImageURL(req, res);
   }
-
-  return res.status(400).json({ errors: result.array() });
-});
+    res.status(400).json({ errors: result.array() });
+  }
+);
 
 router.delete(
   "/:id",
   runValidate(deleteByIdCategoryValidator),
-  async (req, res) => {
+  async (req, res, next) => {
     const result = validationResult(req);
     if (result.isEmpty()) {
       const data = matchedData(req);
-      if (data.type === "collection") return deleteCategoryCollection(req, res);
-      if (data.type === "value") return deleteCategoryValue(req, res);
+      if (data.type === "collection") next(deleteCategoryCollection(req, res));
+      if (data.type === "value") next(deleteCategoryValue(req, res));
     }
 
-    return res.status(400).json({ errors: result.array() });
+    res.status(400).json({ errors: result.array() });
   }
 );
 router.get("/", getAllCategories);

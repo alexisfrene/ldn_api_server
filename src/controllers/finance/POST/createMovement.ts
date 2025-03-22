@@ -40,7 +40,7 @@ export const createMovement = async (req: Request, res: Response) => {
       installment_id: req.body?.installment_id || null,
     });
 
-    return res.status(200).json({ newMovement, filterInstallment });
+    res.status(200).json({ newMovement, filterInstallment });
   }
   const newMovement = await Movement.create({
     label,
@@ -53,5 +53,5 @@ export const createMovement = async (req: Request, res: Response) => {
     expense_id: req.body?.expense_id || null,
   });
 
-  return res.status(200).json({ newMovement });
+  res.status(200).json({ newMovement });
 };

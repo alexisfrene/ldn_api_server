@@ -13,5 +13,5 @@ export const createExpense = async (req: Request, res: Response) => {
     user_id: user_id as Uuid,
   });
 
-  return res.status(201).json(expense);
+  res.status(201).json(expense);
 };

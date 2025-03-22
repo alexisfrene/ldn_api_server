@@ -5,11 +5,11 @@ export const updateExpense = async (req: Request, res: Response) => {
   const { expense_id } = req.params;
   const { description, name } = req.body;
   const expense = await Expense.findByPk(expense_id);
-  if (!expense) return res.status(404).json({ error: "Gasto no encontrado" });
+  if (!expense) res.status(404).json({ error: "Gasto no encontrado" });
 
-  await expense.update({
+  await expense!.update({
     description,
     name,
   });
-  return res.status(200).json(expense);
+  res.status(200).json(expense);
 };

@@ -65,6 +65,8 @@ services:
       - ldn_network
     depends_on:
       - ldn_api
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
 
 volumes:
   ldn_database:

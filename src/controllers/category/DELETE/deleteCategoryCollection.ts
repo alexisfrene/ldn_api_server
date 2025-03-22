@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { models, deleteImageToCloudinary } from "@lib";
+import { models } from "@lib";
+import { deleteFromMinio } from "@lib/minio";
 
 const Category = models.Category;
 const User = models.User;
@@ -39,7 +40,7 @@ export const deleteCategoryCollection = async (req: Request, res: Response) => {
   }
   if (categorySelected) {
     categorySelected.values.forEach(async (value: { icon_url: any }) => {
-      await deleteImageToCloudinary(`${user_id}/${value.icon_url}`);
+      await deleteFromMinio(value.icon_url, `${user_id}/categories`);
     });
 
     const destroyCategory = await categorySelected.destroy();

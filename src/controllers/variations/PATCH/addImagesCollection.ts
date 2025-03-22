@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { uploadToCloudinary, models } from "@lib";
+import { models } from "@lib";
+import { uploadToMinio } from "@lib/minio";
 
 const Variation = models.Variation;
 
@@ -32,8 +33,8 @@ export const addImagesCollection = async (req: Request, res: Response) => {
   const values = variation.values.filter(
     (value: { id: string }) => value.id !== collectionSelected.id
   );
-  const publicId = await uploadToCloudinary(file, `${user_id}/variations`);
-  if (!publicId)
+  await uploadToMinio(file, `${user_id}/variations`, user_id);
+  if (!file.filename)
     return res
       .status(500)
       .json({ error: true, message: "No se pudo cargar la imagen" });
@@ -43,7 +44,7 @@ export const addImagesCollection = async (req: Request, res: Response) => {
       {
         id: collectionSelected.id,
         label: collectionSelected.label,
-        images: [...collectionSelected.images, publicId],
+        images: [...collectionSelected.images, file.filename],
       },
     ],
   });

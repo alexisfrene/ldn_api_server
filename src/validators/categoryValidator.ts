@@ -25,5 +25,9 @@ export const createCategoryValidator = [
 ];
 
 export const updateCategoryValidator = [
-  query("type").notEmpty().isString().isIn(["add", "title"]),
+  query("type")
+    .notEmpty()
+    .isString()
+    .isIn(["add", "title"])
+    .withMessage("Falta un tipo"),
 ];

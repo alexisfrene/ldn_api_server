@@ -1,5 +1,6 @@
-import { NextFunction, Request, Response } from "express";
-import { getSecureUrl, models } from "@lib";
+import { Request, Response } from "express";
+import { models } from "@lib";
+//import { getTemporaryUrl } from "@lib/minio";
 
 const User = models.User;
 
@@ -22,25 +23,31 @@ export const getAllCategories = async (
         order: [["category_id", "ASC"]],
       });
 
-      const formatterCategories = categories.map((category) => {
-        const values = category.values.map(
-          (value: { icon_url: string; value: string; id: string }) => {
-            return {
-              icon_url:
-                value.id === "default"
-                  ? "https://res.cloudinary.com/daxkizsj3/image/upload/v1714359418/default_image.webp"
-                  : getSecureUrl(value.icon_url, user_id!),
-              value: value.value,
-              id: value.id,
-            };
-          }
-        );
-        return {
-          title: category.title,
-          values,
-          category_id: category.category_id,
-        };
-      });
+    const formatterCategories = categories.map((category) => {
+      const values = category.values.map(
+        (value: { icon_url: string; value: string; id: string }) => {
+          return {
+            icon_url:
+              value.id === "default"
+                ? "https://res.cloudinary.com/daxkizsj3/image/upload/v1714359418/default_image.webp"
+                : `${req.protocol}://${req.get(
+                    "host"
+                  )}/api/categories/images/${value.icon_url.replace(
+                    /\.[^/.]+$/,
+                    ""
+                  )}`,
+            value: value.value,
+            id: value.id,
+          };
+        }
+      );
+      return {
+        title: category.title,
+        values,
+        category_id: category.category_id,
+      };
+    });
+
 
       // Aquí no necesitas 'return', solo envías la respuesta y continúas el flujo
       res.status(200).json(formatterCategories);

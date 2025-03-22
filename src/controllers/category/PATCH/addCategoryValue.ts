@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-import { uploadToCloudinary, models } from "@lib";
+import { models } from "@lib";
+import { uploadToMinio } from "@lib/minio";
 
 const Category = models.Category;
 const User = models.User;
@@ -9,6 +10,9 @@ export const addCategoryValue = async (req: Request, res: Response) => {
   const category_id = req.params.id;
   const user_id = req.user;
   const { value } = req.body;
+
+  if (!value)
+    return res.status(400).json({ error: true, message: "Fatal value" });
 
   if (!user_id)
     return res
@@ -40,13 +44,9 @@ export const addCategoryValue = async (req: Request, res: Response) => {
         error: true,
         message: `Èl valor ( ${value} , ya esta cargado )`,
       });
+    const icon_url = files[0].filename;
+    await uploadToMinio(files[0], `${user_id}/categories`, user_id);
 
-    const icon_url = await uploadToCloudinary(
-      files[0],
-      `${user_id}/categories`,
-      64,
-      64
-    );
     if (!icon_url)
       return res
         .status(400)
@@ -54,7 +54,7 @@ export const addCategoryValue = async (req: Request, res: Response) => {
     const newValue = {
       id: uuidv4(),
       value,
-      icon_url: `categories/${icon_url}`,
+      icon_url,
     };
 
     const updateCategory = selectedCategory!.update({

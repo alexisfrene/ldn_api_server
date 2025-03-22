@@ -6,3 +6,4 @@ package-lock.json
 .env
 .env.example
 access.log
+pnpm-lock.yaml

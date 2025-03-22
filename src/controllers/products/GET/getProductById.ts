@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getSecureUrl, models } from "@lib";
+import { models } from "@lib";
 
 const Product = models.Product;
 
@@ -25,8 +25,10 @@ export const getProductById = async (req: Request, res: Response) => {
     ? size.values.find((e) => e.id === product!.size_value)
     : null;
 
-  const detail = await product!.getDetailProduct();
-  const urlCloudinary = getSecureUrl(product!.primary_image, user_id!);
+  const detail = await product.getDetailProduct();
+  const urlCloudinary = `${req.protocol}://${req.get(
+    "host"
+  )}/api/products/images/${product.primary_image}`;
   let variationFormat = {
     variation_id: "",
     title: "",
@@ -44,7 +46,9 @@ export const getProductById = async (req: Request, res: Response) => {
           label: value.label,
           images: value.images.map(
             (image: string) =>
-              getSecureUrl(`variations/${image}`, user_id!) || ""
+              `${req.protocol}://${req.get(
+                "host"
+              )}/api/variations/images/${image.replace(/\.[^/.]+$/, "")}`
           ),
         });
       }

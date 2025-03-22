@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getSecureUrl, models } from "@lib";
+import { models } from "@lib";
 
 const User = models.User;
 const Product = models.Product;
@@ -23,10 +23,9 @@ export const getAllProducts = async (req: Request, res: Response) => {
             const sizeValue = size
               ? size.values.find((e) => e.id === productFromDB.size_value)
               : null;
-            const urlCloudinary = getSecureUrl(
-              product.primary_image,
-              user.user_id
-            );
+            const urlCloudinary = `${req.protocol}://${req.get(
+              "host"
+            )}/api/products/images/${productFromDB.primary_image}`;
             const { name, product_id, price, state } = productFromDB;
             return {
               size: sizeValue?.value || "-",

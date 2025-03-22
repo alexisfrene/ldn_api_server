@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { deleteImageToCloudinary, models } from "@lib";
+import { models } from "@lib";
+import { deleteFromMinio } from "@lib/minio";
 
 const Variation = models.Variation;
 
@@ -17,7 +18,7 @@ export const deleteVariationById = async (req: Request, res: Response) => {
 
   await variation.values.forEach(async (value: { images: string[] }) => {
     value.images.map(async (image: string) => {
-      await deleteImageToCloudinary(`${user_id}/variations/${image}`);
+      await deleteFromMinio(image, `${user_id}/variations`);
     });
   });
 

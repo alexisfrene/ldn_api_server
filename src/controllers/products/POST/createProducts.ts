@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import axios from "axios";
-import { uploadToCloudinary, models, sequelize } from "@lib";
+import { models, sequelize } from "@lib";
 import { Uuid } from "types";
+import { uploadToMinio } from "@lib/minio";
 
 const { Product, Category, Size, Detail } = models;
 
@@ -66,7 +67,8 @@ export const createProducts = async (req: Request, res: Response) => {
     }
   }
 
-  const image_url = await uploadToCloudinary(file, user_id!);
+  const image_url = await uploadToMinio(file, `${user_id}/products`, user_id);
+
   if (!image_url)
     res.status(400).json({ error: "Error subiendo imagen a Cloudinary" });
   dataNewProduct.primary_image = image_url as string;

@@ -7,6 +7,10 @@ export const getAllDebts = async (req: Request, res: Response) => {
   const user_id = req.user;
   const user = await User.findByPk(user_id);
   const debts = user ? await user.getUserDebts() : [];
+  let debtsTotal = 0;
+  let debtsTotalPaid = 0;
+  let debtsTotalUnpaid = 0;
+
   const formatterDebts = await Promise.all(
     debts.map(async (debt) => {
       const installments = await Installment.findAll({
@@ -29,6 +33,9 @@ export const getAllDebts = async (req: Request, res: Response) => {
         });
       }
 
+      debtsTotal += totalPaid + totalUnpaid;
+      debtsTotalPaid += totalPaid;
+      debtsTotalUnpaid += totalUnpaid;
       return {
         name: debt.name,
         total: totalPaid + totalUnpaid,
@@ -43,7 +50,14 @@ export const getAllDebts = async (req: Request, res: Response) => {
     })
   );
 
-  return res.status(200).json(formatterDebts);
+  return res
+    .status(200)
+    .json({
+      debts: formatterDebts,
+      debtsTotal,
+      debtsTotalPaid,
+      debtsTotalUnpaid,
+    });
 };
 
 export const getDebtsById = async (req: Request, res: Response) => {

@@ -17,8 +17,25 @@ export const getAllDebts = async (req: Request, res: Response) => {
           ["installment_id", "DESC"],
         ],
       });
+      let totalPaid = 0;
+      let totalUnpaid = 0;
+      if (installments.length) {
+        installments.forEach((installment) => {
+          if (installment.status === "paid") {
+            totalPaid += installment.amount;
+          } else if (installment.status === "unpaid") {
+            totalUnpaid += installment.amount;
+          }
+        });
+      }
+
       return {
         name: debt.name,
+        total: totalPaid + totalUnpaid,
+        total_paid: totalPaid,
+        total_interest: debt.total_interest,
+        interest_per_installment: debt.interest_per_installment,
+        total_unpaid: totalUnpaid,
         debt_id: debt.debt_id,
         notes: debt.notes,
         installments: installments || [],

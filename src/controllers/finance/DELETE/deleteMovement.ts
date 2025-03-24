@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
 
-const { Movement } = models;
+const { Movement, Installment } = models;
 
 export const deleteMovement = async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -11,6 +11,16 @@ export const deleteMovement = async (req: Request, res: Response) => {
 
   if (!movement) {
     return res.status(404).json({ message: "Movimiento no encontrado" });
+  }
+
+  if (
+    movement.type === "money_outflow" &&
+    movement.debt_id &&
+    movement.installment_id
+  ) {
+    await Installment.findByPk(movement.installment_id).then((res) =>
+      res?.update({ status: "unpaid" })
+    );
   }
 
   if (movement.user_id !== user_id) {

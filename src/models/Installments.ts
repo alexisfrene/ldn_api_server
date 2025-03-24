@@ -32,9 +32,14 @@ export class Installment extends Model<
       as: "DebtInstallments",
       foreignKey: "debt_id",
     });
+    const MovementInstallments = Installment.hasMany(models.Movement, {
+      as: "MovementInstallments",
+      foreignKey: "installment_id",
+    });
 
     return {
       DebtInstallments,
+      MovementInstallments,
     };
   }
 }
@@ -48,7 +53,7 @@ export default (sequelize: Sequelize) => {
         autoIncrement: true,
       },
       amount: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
       due_date: {

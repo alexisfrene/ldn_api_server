@@ -1,22 +1,22 @@
-import { Uuid } from "types";
 import { Models } from "@models";
+import { user_id } from "./contextSeeders";
 
-export const seedPaymentMethods = async (models: Models) => {
+const seedPaymentMethods = async (models: Models) => {
   try {
     await models.PaymentMethod.bulkCreate(
       [
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           payment_method_id: 101,
           name: "Efectivo",
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           payment_method_id: 102,
           name: "Trasferencia",
         },
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           payment_method_id: 103,
           name: "Point",
         },
@@ -29,3 +29,4 @@ export const seedPaymentMethods = async (models: Models) => {
     console.error("Error seeding database:", error);
   }
 };
+export default seedPaymentMethods;

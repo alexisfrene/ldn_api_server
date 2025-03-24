@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getSecureUrl, models } from "@lib";
+import { models } from "@lib";
 
 const Product = models.Product;
 
@@ -20,17 +20,17 @@ export const getProductById = async (req: Request, res: Response) => {
 
   const category = await product.getCategoryProducts();
   const categoryValue = category
-    ? category.values.find(
-        (e: { id: string }) => e.id === product.category_value
-      )
+    ? category.values.find((e) => e.id === product.category_value)
     : null;
   const size = await product.getSizeProducts();
   const sizeValue = size
-    ? size.values.find((e: { id: string }) => e.id === product.size_value)
+    ? size.values.find((e) => e.id === product.size_value)
     : null;
 
   const detail = await product.getDetailProduct();
-  const urlCloudinary = getSecureUrl(product.primary_image, user_id);
+  const urlCloudinary = `${req.protocol}://${req.get(
+    "host"
+  )}/api/products/images/${product.primary_image}`;
   let variationFormat = {
     variation_id: "",
     title: "",
@@ -48,7 +48,9 @@ export const getProductById = async (req: Request, res: Response) => {
           label: value.label,
           images: value.images.map(
             (image: string) =>
-              getSecureUrl(`variations/${image}`, user_id) || ""
+              `${req.protocol}://${req.get(
+                "host"
+              )}/api/variations/images/${image.replace(/\.[^/.]+$/, "")}`
           ),
         });
       }

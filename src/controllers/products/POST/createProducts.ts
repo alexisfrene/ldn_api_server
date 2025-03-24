@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import axios from "axios";
-import { uploadToCloudinary, models, sequelize } from "@lib";
+import { models, sequelize } from "@lib";
 import { Uuid } from "types";
+import { uploadToMinio } from "@lib/minio";
 
 const { Product, Category, Size, Detail } = models;
 
@@ -32,7 +33,7 @@ export const createProducts = async (req: Request, res: Response) => {
     name: data.name || "",
     price: data.price || 1,
     primary_image: "",
-    size_value: "",
+    size_value: "100",
     state: true,
     stock: data.stock || 1,
     category_id: 1,
@@ -58,7 +59,7 @@ export const createProducts = async (req: Request, res: Response) => {
     const size = await Size.findByPk(data.size_id);
     if (size) {
       const verifySize = size.values.find(
-        (value: { id: string }) => value.id === data.size_value
+        (value) => value.id === data.size_value
       );
       if (verifySize) {
         dataNewProduct.size_id = data.size_id;
@@ -67,7 +68,7 @@ export const createProducts = async (req: Request, res: Response) => {
     }
   }
 
-  const image_url = await uploadToCloudinary(file, user_id);
+  const image_url = await uploadToMinio(file, `${user_id}/products`, user_id);
   if (!image_url)
     return res
       .status(400)

@@ -1,12 +1,12 @@
-import { Uuid } from "types";
 import { Models } from "@models";
+import { user_id } from "./contextSeeders";
 
-export const seedCategories = async (models: Models) => {
+const seedCategories = async (models: Models) => {
   try {
     await models.Category.bulkCreate(
       [
         {
-          user_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
+          user_id,
           title: "Default",
           category_id: 101,
           values: [{ icon_url: "", id: "default", value: "Sin categoría" }],
@@ -20,3 +20,5 @@ export const seedCategories = async (models: Models) => {
     console.error("Error seeding database:", error);
   }
 };
+
+export default seedCategories;

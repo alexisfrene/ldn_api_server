@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getSecureUrl, models } from "@lib";
+import { models } from "@lib";
 
 const User = models.User;
 
@@ -22,8 +22,11 @@ export const getAllVariations = async (req: Request, res: Response) => {
     }) => {
       const values = variation.values.map(
         (collection: { images: string[]; label: string; id: string }) => {
-          const images = collection.images.map((image: string) =>
-            getSecureUrl(`variations/${image}`, user.user_id)
+          const images = collection.images.map(
+            (image: string) =>
+              `${req.protocol}://${req.get(
+                "host"
+              )}/api/variations/images/${image.replace(/\.[^/.]+$/, "")}`
           );
           return {
             id: collection.id,

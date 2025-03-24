@@ -1,17 +1,16 @@
 import { Models } from "@models";
-import { seedUsers } from "./seedUser";
-import { seedCategories } from "./seedCategories";
-import { seedSizes } from "./seedSizes";
-import { seedPaymentMethods } from "./seedPaymentMethod";
-import { seedFinancialAccounts } from "./seedFinancialAccounts";
-import { seedMovements } from "./seedMovements";
-import { seedProducts } from "./seedProducts";
-import { seedDetails } from "./seedDetail";
-import { seedExpenses } from "./seedExpenses";
-import { seedTags } from "./seedTags";
-import { seedFinancialAccountsPaymentMethods } from "./seedFinancialAccountsPaymentMethods";
-import { seedDebt } from "./seedDebt";
-import { seedInstallment } from "./seedInstallment";
+import seedCategories from "./seedCategories";
+import seedDebt from "./seedDebt";
+import seedDetails from "./seedDetail";
+import seedExpenses from "./seedExpenses";
+import seedFinancialAccounts from "./seedFinancialAccounts";
+import seedFinancialAccountsPaymentMethods from "./seedFinancialAccountsPaymentMethods";
+import seedInstallment from "./seedInstallment";
+import seedMovements from "./seedMovements";
+import seedPaymentMethods from "./seedPaymentMethod";
+import seedProducts from "./seedProducts";
+import seedSizes from "./seedSizes";
+import seedUsers from "./seedUser";
 
 export const seedDatabase = async (models: Models) => {
   await seedUsers(models);
@@ -23,7 +22,6 @@ export const seedDatabase = async (models: Models) => {
   await seedFinancialAccounts(models);
   await seedFinancialAccountsPaymentMethods(models);
   await seedExpenses(models);
-  await seedTags(models);
   await seedDebt(models);
   await seedInstallment(models);
   await seedMovements(models);

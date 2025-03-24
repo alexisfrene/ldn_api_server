@@ -13,7 +13,7 @@ import { ProductAttributes } from "./Products";
 import { UserAttributes } from "./Users";
 
 type SizeItem = {
-  id: Uuid;
+  id: string;
   value: string;
 };
 export type SizeAttributes = InferAttributes<Size, { omit: "user_id" }>;
@@ -72,11 +72,6 @@ export default (sequelize: Sequelize) => {
                 Array.isArray(item)
               ) {
                 throw new Error("Each item in values must be an object");
-              }
-              if (!item.id || typeof item.id !== "string") {
-                throw new Error(
-                  "Each item in values must have an 'id' property of type string"
-                );
               }
               if (!item.value || typeof item.value !== "string") {
                 throw new Error(

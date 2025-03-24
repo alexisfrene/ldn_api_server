@@ -15,9 +15,9 @@ router.post("/", runValidate(createExpenseValidations), createExpense);
 
 router.get("/", getExpenses);
 
-router.get("/:id", getExpenseById);
+router.get("/:expense_id", getExpenseById);
 
-router.put("/:id", updateExpense);
+router.patch("/:expense_id", updateExpense);
 
 router.delete("/:id", deleteExpense);
 

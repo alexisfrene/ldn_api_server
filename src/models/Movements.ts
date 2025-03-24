@@ -36,6 +36,7 @@ export class Movement extends Model<
   declare financial_accounts_id: Uuid;
   declare expense_id: CreationOptional<Uuid>;
   declare debt_id: CreationOptional<Uuid>;
+  declare installment_id: CreationOptional<number>;
 
   declare getFinancialAccountMovements: HasOneGetAssociationMixin<FinancialAccountAttributes>;
   declare getPaymentMethodMovements: HasOneGetAssociationMixin<PaymentMethodAttributes>;
@@ -59,20 +60,25 @@ export class Movement extends Model<
       foreignKey: "user_id",
     });
 
-    const MovementExpense = Movement.belongsTo(models.Expense, {
-      as: "MovementExpense",
+    const ExpenseMovements = Movement.belongsTo(models.Expense, {
+      as: "ExpenseMovements",
       foreignKey: "expense_id",
     });
     const MovementDebts = Movement.belongsTo(models.Debt, {
       as: "MovementDebts",
       foreignKey: "debt_id",
     });
+    const MovementInstallments = Movement.belongsTo(models.Installment, {
+      as: "MovementInstallments",
+      foreignKey: "installment_id",
+    });
     return {
+      MovementInstallments: MovementInstallments,
       MovementDebts,
       FinancialAccountMovements,
       PaymentMethodMovements,
       MovementUser,
-      MovementExpense,
+      ExpenseMovements,
     };
   }
 }
@@ -136,6 +142,13 @@ export default (sequelize: Sequelize) => {
         references: {
           model: "debts",
           key: "debt_id",
+        },
+      },
+      installment_id: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: "installments",
+          key: "installment_id",
         },
       },
       createdAt: DataTypes.DATE,

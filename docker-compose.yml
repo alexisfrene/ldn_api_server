@@ -1,0 +1,77 @@
+services:
+  ldn_api:
+    build: .
+    container_name: ldn_api
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "3001:3001"
+    links:
+      - ldn_database
+    networks:
+      - ldn_network
+    depends_on:
+      - ldn_database
+  ldn_database:
+    image: postgres:17.2-alpine
+    container_name: ldn_database
+    restart: always
+    shm_size: "128mb"
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    networks:
+      - ldn_network
+    volumes:
+      - ldn_database:/var/lib/postgresql/data
+  ldn_pgadmin:
+    image: dpage/pgadmin4:9
+    container_name: ldn_pgadmin
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "5433:80"
+    networks:
+      - ldn_network
+    depends_on:
+      - ldn_database
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+  ldn_storage:
+    image: minio/minio:RELEASE.2025-02-18T16-25-55Z
+    container_name: ldn_storage
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    networks:
+      - ldn_network
+    command: server /data --console-address ":9001"
+    volumes:
+      - ldn_storage:/data
+  ldn_nginx:
+    image: nginx:1.27.4-alpine
+    container_name: ldn_nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - ldn_network
+    depends_on:
+      - ldn_api
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+
+volumes:
+  ldn_database:
+  pgadmin:
+  ldn_storage:
+
+networks:
+  ldn_network: {}

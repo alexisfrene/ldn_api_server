@@ -1,4 +1,3 @@
-import tagModel from "./Tags";
 import userModel from "./Users";
 import sizeModel from "./Sizes";
 import debtsModel from "./Debts";
@@ -15,7 +14,6 @@ import financialAccountsPaymentMethodsModel from "./FinancialAccountsPaymentMeth
 import { Sequelize } from "sequelize";
 
 interface ModelAssociations {
-  Tag: ReturnType<typeof tagModel>["associate"];
   Category: ReturnType<typeof categoryModel>["associate"];
   Product: ReturnType<typeof productModel>["associate"];
   Expense: ReturnType<typeof expenseModel>["associate"];
@@ -34,7 +32,6 @@ export interface Models {
   FinancialAccountsPaymentMethods: ReturnType<
     typeof financialAccountsPaymentMethodsModel
   >;
-  Tag: ReturnType<typeof tagModel>;
   User: ReturnType<typeof userModel>;
   Size: ReturnType<typeof sizeModel>;
   Debt: ReturnType<typeof debtsModel>;
@@ -57,7 +54,6 @@ type InitModelsReturnType = {
 };
 
 export const initModels = (sequelize: Sequelize): InitModelsReturnType => {
-  const Tag = tagModel(sequelize);
   const User = userModel(sequelize);
   const Size = sizeModel(sequelize);
   const Debt = debtsModel(sequelize);
@@ -74,7 +70,6 @@ export const initModels = (sequelize: Sequelize): InitModelsReturnType => {
     financialAccountsPaymentMethodsModel(sequelize);
 
   const models: Models = {
-    Tag,
     User,
     Size,
     Debt,
@@ -91,7 +86,6 @@ export const initModels = (sequelize: Sequelize): InitModelsReturnType => {
   };
 
   const associations = {
-    Tag: Tag.associate(models),
     Category: Category.associate(models),
     Product: Product.associate(models),
     Size: Size.associate(models),

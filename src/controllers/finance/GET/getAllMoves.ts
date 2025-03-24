@@ -8,7 +8,10 @@ export const getAllMoves = async (req: Request, res: Response) => {
   const user = await User.findByPk(user_id);
   const movements = user
     ? await user.getUserMovements({
-        order: [["entry_date", "DESC"]],
+        order: [
+          ["entry_date", "DESC"],
+          ["createdAt", "DESC"],
+        ],
       })
     : [];
   const mappedMovements = await Promise.all(

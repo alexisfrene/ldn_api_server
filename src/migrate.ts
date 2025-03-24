@@ -46,7 +46,7 @@ export const runMigrations = async () => {
   } catch (error) {
     console.error("Error en las migraciones:", error);
   } finally {
-    await sequelize.close(); // Cerrar conexión al final
+    await sequelize.close();
   }
 };
 
@@ -58,11 +58,10 @@ export const revertMigrations = async () => {
   } catch (error) {
     console.error("Error al revertir las migraciones:", error);
   } finally {
-    await sequelize.close(); // Cerrar conexión al final
+    await sequelize.close();
   }
 };
 
-// Ejecuta runMigrations solo si este archivo es el módulo principal
 if (require.main === module) {
   runMigrations();
 }

@@ -1,36 +1,14 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
 import { Op } from "sequelize";
+import { calculateTotals, endOfMonth, startOfMonth } from "@utils";
 
-const movements = models.Movement;
-interface Movement {
-  type: string;
-  value: number;
-}
+const { Movement } = models;
 
-interface TotalsByType {
-  [key: string]: number;
-}
 export const getTotalMonth = async (req: Request, res: Response) => {
   const user_id = req.user;
-  const startOfMonth = new Date(
-    new Date().getFullYear(),
-    new Date().getMonth(),
-    1,
-    0,
-    0,
-    1
-  );
-  const endOfMonth = new Date(
-    new Date().getFullYear(),
-    new Date().getMonth() + 1,
-    0,
-    23,
-    59,
-    59
-  );
 
-  const movementsAll: Movement[] = await movements.findAll({
+  const movementsAll = await Movement.findAll({
     where: {
       entry_date: {
         [Op.between]: [startOfMonth, endOfMonth],
@@ -41,18 +19,7 @@ export const getTotalMonth = async (req: Request, res: Response) => {
 
   if (!movementsAll) return new Error("No hay movimientos");
 
-  const totalsByType = movementsAll.reduce<TotalsByType>(
-    (acc: TotalsByType, item: Movement) => {
-      const type = item.type;
-      if (!acc[type]) {
-        acc[type] = 0;
-      }
-      acc[type] += item.value;
-
-      return acc;
-    },
-    { count_movements: movementsAll.length }
-  );
+  const totalsByType = calculateTotals(movementsAll);
 
   return res.status(200).json(totalsByType);
 };

@@ -23,7 +23,7 @@ export const deleteSizeValue = async (req: Request, res: Response) => {
       .json({ error: true, message: "El usuario no esta autentificado" });
   const sizeSelected = await Size.findByPk(size_id);
   const newValues = sizeSelected?.values.filter(
-    (value: { id: string }) => value.id !== size_value
+    (value) => value.id !== size_value
   );
   const userProducts = await User.findByPk(user_id)
     .then((user) => {

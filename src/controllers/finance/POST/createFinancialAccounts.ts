@@ -23,5 +23,5 @@ export const createFinancialAccounts = async (req: Request, res: Response) => {
     await Promise.all(paymentMethodsPromise);
   }
 
-  res.status(200).json({ newFinancialAccount });
+  return res.status(200).json({ newFinancialAccount });
 };

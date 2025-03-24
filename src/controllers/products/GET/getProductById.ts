@@ -7,22 +7,24 @@ export const getProductById = async (req: Request, res: Response) => {
   const productId = req.params.id;
   const user_id = req.user;
 
-  if (!user_id) res.status(400).json({ error: "Falta user_id" });
+  if (!user_id) return res.status(400).json({ error: "Falta user_id" });
   if (!productId)
-    res
+    return res
       .status(400)
       .json({ error: true, message: "No se paso un id de producto" });
   const product = await Product.findByPk(productId);
   if (!product)
-    res.status(400).json({ error: true, message: "No se encontró producto" });
+    return res
+      .status(400)
+      .json({ error: true, message: "No se encontró producto" });
 
-  const category = await product!.getCategoryProducts();
+  const category = await product.getCategoryProducts();
   const categoryValue = category
-    ? category.values.find((e) => e.id === product!.category_value)
+    ? category.values.find((e) => e.id === product.category_value)
     : null;
-  const size = await product!.getSizeProducts();
+  const size = await product.getSizeProducts();
   const sizeValue = size
-    ? size.values.find((e) => e.id === product!.size_value)
+    ? size.values.find((e) => e.id === product.size_value)
     : null;
 
   const detail = await product.getDetailProduct();
@@ -34,7 +36,7 @@ export const getProductById = async (req: Request, res: Response) => {
     title: "",
     values: [] as { id: string; label: string; images: string[] }[],
   };
-  const variations = await product!.getVariationProducts();
+  const variations = await product.getVariationProducts();
 
   if (variations) {
     variationFormat.title = variations.title;
@@ -56,9 +58,9 @@ export const getProductById = async (req: Request, res: Response) => {
   }
 
   const { name, product_id, description, price, state, stock, discount } =
-    product!;
+    product;
 
-  res.status(200).json({
+  return res.status(200).json({
     category: categoryValue?.value || null,
     detail,
     size: sizeValue?.value || null,

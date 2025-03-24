@@ -15,18 +15,18 @@ export const editProductDetails = async (req: Request, res: Response) => {
   ]);
 
   if (!req.params.id) {
-    res.status(400).json({ error: "Invalid product ID" });
+    return res.status(400).json({ error: "Invalid product ID" });
   }
   const product = await Product.findByPk(req.params.id);
   if (!product) {
-    res.status(404).json({ error: "Product not found" });
+    return res.status(404).json({ error: "Product not found" });
   }
   let selectorDetails = await product?.getDetailProduct();
-  const details = await Detail.findByPk(selectorDetails!.detail_id);
+  const details = await Detail.findByPk(selectorDetails.detail_id);
   if (!details) {
-    res.status(404).json({ error: "Details not found" });
+    return res.status(404).json({ error: "Details not found" });
   }
-  const updateDetails = await details!.update(propertiesToEdit);
+  const updateDetails = await details.update(propertiesToEdit);
 
-  res.status(200).json(updateDetails);
+  return res.status(200).json(updateDetails);
 };

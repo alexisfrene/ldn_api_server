@@ -8,9 +8,9 @@ export const deleteProduct = async (req: Request, res: Response) => {
   if (product) {
     await product.update({ state: false });
     if (!product.state) {
-      res.status(200).json("Eliminación exitosa!");
+      return res.status(200).json("Eliminación exitosa!");
     }
   }
 
-  res.status(500).json("No se pudo eliminar");
+  return res.status(500).json("No se pudo eliminar");
 };

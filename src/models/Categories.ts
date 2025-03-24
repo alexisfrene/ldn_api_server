@@ -1,16 +1,18 @@
-import { DataTypes, Model, Sequelize } from "sequelize";
-import { Models } from "@models";
-import type {
+import {
+  CreationOptional,
+  DataTypes,
   HasManyGetAssociationsMixin,
   HasOneGetAssociationMixin,
   InferAttributes,
   InferCreationAttributes,
-  CreationOptional,
+  Model,
+  Sequelize,
 } from "sequelize";
-import type { Uuid } from "../types";
-import type { ProductAttributes } from "./Products";
-import type { UserAttributes } from "./Users";
-import type { VariationAttributes } from "./Variations";
+import { Uuid } from "../types";
+import { Models } from "@models";
+import { ProductAttributes } from "./Products";
+import { UserAttributes } from "./Users";
+import { VariationAttributes } from "./Variations";
 
 type CategoriesItem = {
   id: string;

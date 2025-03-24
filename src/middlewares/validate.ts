@@ -1,17 +1,19 @@
-import { NextFunction, Request, RequestHandler, Response } from "express";
+import express from "express";
 import { ContextRunner } from "express-validator";
 
-// can be reused by many routes
-export const runValidate = (validations: ContextRunner[]): RequestHandler => {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    // sequential processing, stops running validations chain if one fails.
+export const runValidate = (validations: ContextRunner[]) => {
+  return async (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
     for (const validation of validations) {
       const result = await validation.run(req);
       if (!result.isEmpty()) {
-        next({ errors: result.array() });
+        return res.status(400).json({ errors: result.array() });
       }
     }
 
-    next();
+    return next();
   };
 };

@@ -13,19 +13,21 @@ export const getProductForCategory = async (req: Request, res: Response) => {
   const user = await User.findByPk(user_id || "");
   const products = user?.getUserProducts() ? await user.getUserProducts() : [];
   if (!products)
-    res.status(400).json({
+    return res.status(400).json({
       error: true,
       message: "El usuario no tiene productos cargados",
     });
   const category = await Category.findByPk((category_id as Uuid) || "");
 
   if (!category)
-    res.status(400).json({ error: true, message: "Categoría no encontrado" });
+    return res
+      .status(400)
+      .json({ error: true, message: "Categoría no encontrado" });
   const categoryValue = category?.values.find(
     (value: { id: string }) => value.id === category_value
   );
   if (!categoryValue)
-    res.status(400).json({
+    return res.status(400).json({
       error: true,
       message: "No se encontró el valor de la categoría",
     });
@@ -34,5 +36,5 @@ export const getProductForCategory = async (req: Request, res: Response) => {
       product.category_id === Number(category_id) &&
       product.category_value === category_value
   );
-  res.status(200).json({ res: productsForCAtegory });
+  return res.status(200).json({ res: productsForCAtegory });
 };

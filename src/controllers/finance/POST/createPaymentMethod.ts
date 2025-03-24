@@ -12,5 +12,5 @@ export const createPaymentMethod = async (req: Request, res: Response) => {
     name,
     user_id: user_id as Uuid,
   });
-  res.status(200).json(newPaymentMethod);
+  return res.status(200).json(newPaymentMethod);
 };

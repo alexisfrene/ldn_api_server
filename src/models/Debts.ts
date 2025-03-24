@@ -1,14 +1,16 @@
-import { DataTypes, Model, Sequelize } from "sequelize";
-import { Models } from "@models";
-import type {
+import {
+  CreationOptional,
+  DataTypes,
   HasManyGetAssociationsMixin,
   InferAttributes,
   InferCreationAttributes,
-  CreationOptional,
+  Model,
+  Sequelize,
 } from "sequelize";
-import type { Uuid } from "../types";
-import type { InstallmentAttributes } from "./Installments";
-import type { MovementAttributes } from "./Movements";
+import { Uuid } from "../types";
+import { Models } from "@models";
+import { InstallmentAttributes } from "./Installments";
+import { MovementAttributes } from "./Movements";
 
 export type DebtAttributes = InferAttributes<Debt>;
 export type DebtCreationAttributes = InferCreationAttributes<

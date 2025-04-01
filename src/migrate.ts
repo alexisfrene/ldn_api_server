@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import { config as connectionPSQL } from "@lib/sequelize/config";
+import { config as connectionPSQL } from "@lib/sequelize/postgres_config";
 import { SequelizeStorage, Umzug } from "umzug";
 type Env = "development" | "production";
 

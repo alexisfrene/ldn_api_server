@@ -1,13 +1,22 @@
 import fs from "node:fs";
 import * as Minio from "minio";
 import { getFileNameWithoutExtension } from "@utils";
+import { config as connectionMINIO } from "./minio_config";
+type Env = "development" | "production";
+
+const env: Env = (process.env.NODE_ENV as Env) || "development";
+
+const config = connectionMINIO[env];
+if (!config) {
+  throw new Error(`MinIO configuration for environment ${env} not found.`);
+}
 
 export const minioClient = new Minio.Client({
-  endPoint: process.env.MINIO_HOST ? process.env.MINIO_HOST : "localhost",
-  port: process.env.MINIO_PORT ? parseInt(process.env.MINIO_PORT) : 9000,
+  endPoint: config.host!,
+  port: Number(config.port),
   useSSL: false,
-  accessKey: process.env.MINIO_ACCESS_KEY,
-  secretKey: process.env.MINIO_SECRET_KEY,
+  accessKey: config.access_key,
+  secretKey: config.secret_key,
 });
 
 const getImageSize = (filePath: string) => {

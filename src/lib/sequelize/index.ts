@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import { config as connectionPSQL } from "./config";
+import { config as connectionPSQL } from "./postgres_config";
 import { initModels } from "@models";
 import { seedDatabase } from "seeders";
 

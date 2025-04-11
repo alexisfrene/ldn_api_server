@@ -2,63 +2,74 @@ import { Request, Response } from "express";
 import { models } from "@lib";
 import { deleteFromMinio } from "@lib/minio";
 
-const Category = models.Category;
-const User = models.User;
+const { Category, User } = models;
 
 export const deleteCategoryValue = async (req: Request, res: Response) => {
-  const user_id = req.user;
-  const category_id = req.params.id;
-  const category_value = req.query.value_id;
-  if (!category_id)
-    return res
-      .status(400)
-      .json({ error: true, message: "no se proporciono un category id" });
-  if (!category_value)
-    return res.status(400).json({
-      error: true,
-      message: "no se proporciono un category value id",
-    });
-  if (!user_id)
-    return res
-      .status(401)
-      .json({ error: true, message: "El usuario no esta autentificado" });
-  const categorySelected = await Category.findByPk(category_id);
-  const deleteValue = categorySelected?.values.find(
-    (value: { id: string }) => value.id === category_value
-  );
-  const newValues = categorySelected?.values.filter(
-    (value: { id: string }) => value.id !== category_value
-  );
+  try {
+    const user_id = req.user;
+    const category_id = req.params.id;
+    const category_value = req.query.value_id;
 
-  const userProducts = await User.findByPk(user_id)
-    .then((user) => {
-      if (user) {
-        return user.getUserProducts();
-      } else {
-        return [];
-      }
-    })
-    .then((products: any[]) =>
-      products.filter(
-        (product: { category_id: string; category_value: string }) =>
-          product.category_id === category_id &&
-          product.category_value === category_value
-      )
+    if (!category_id || !category_value || !user_id) {
+      return res.status(400).json({
+        error: true,
+        message: "Faltan datos: category_id, value_id o user_id",
+      });
+    }
+
+    const categorySelected = await Category.findByPk(category_id);
+    if (!categorySelected) {
+      return res.status(404).json({
+        error: true,
+        message: "Categoría no encontrada",
+      });
+    }
+
+    const deleteValue = categorySelected.values.find(
+      (value: { id: string }) => value.id === category_value
     );
-  if (userProducts) {
-    userProducts.forEach(async (product: any) => {
-      await product.update({ category_value: null });
-    });
-  }
 
-  await deleteFromMinio(`${deleteValue?.icon_url}`, `${user_id}/categories`);
-  if (categorySelected) {
-    const newValuesInCategory = await categorySelected.update({
+    if (!deleteValue) {
+      return res.status(404).json({
+        error: true,
+        message: "Valor de categoría no encontrado",
+      });
+    }
+
+    const newValues = categorySelected.values.filter(
+      (value: { id: string }) => value.id !== category_value
+    );
+
+    const user = await User.findByPk(user_id);
+    if (user) {
+      const userProducts = await user.getUserProducts({
+        where: { category_id, category_value },
+      });
+
+      await Promise.all(
+        userProducts.map((product: any) =>
+          product.update({ category_value: null })
+        )
+      );
+    }
+
+    if (deleteValue.icon_url) {
+      await deleteFromMinio(deleteValue.icon_url, `${user_id}/categories`);
+    }
+
+    const updatedCategory = await categorySelected.update({
       values: newValues,
     });
-    return res.status(200).json({ message: newValuesInCategory });
+
+    return res.status(200).json({
+      message: "Valor eliminado correctamente",
+      data: updatedCategory,
+    });
+  } catch (error) {
+    console.error("Error en deleteCategoryValue:", error);
+    return res.status(500).json({
+      error: true,
+      message: "Error interno del servidor",
+    });
   }
-  return res
-    .status(400)
-    .json({ error: true, message: "no se proporciono un category id" });
 };

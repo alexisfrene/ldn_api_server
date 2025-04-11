@@ -1,12 +1,12 @@
-import fs from "node:fs";
+import fs from "node:fs/promises";
 import * as Minio from "minio";
 import { getFileNameWithoutExtension } from "@utils";
 import { config as connectionMINIO } from "./minio_config";
+
 type Env = "development" | "production";
-
 const env: Env = (process.env.NODE_ENV as Env) || "development";
-
 const config = connectionMINIO[env];
+
 if (!config) {
   throw new Error(`MinIO configuration for environment ${env} not found.`);
 }
@@ -19,113 +19,180 @@ export const minioClient = new Minio.Client({
   secretKey: config.secret_key,
 });
 
-const getImageSize = (filePath: string) => {
-  const buffer = fs.readFileSync(filePath);
-  const header = buffer.toString("hex", 0, 24);
+const getImageSize = async (filePath: string) => {
+  try {
+    const buffer = await fs.readFile(filePath);
+    const header = buffer.toString("hex", 0, 24);
 
-  if (header.startsWith("89504e47")) {
-    return {
-      width: buffer.readUInt32BE(16),
-      height: buffer.readUInt32BE(20),
-      format: "png",
-    };
-  } else if (header.startsWith("ffd8ff")) {
-    let offset = 2;
-    while (offset < buffer.length) {
-      if (
-        buffer[offset] === 0xff &&
-        buffer[offset + 1] >= 0xc0 &&
-        buffer[offset + 1] <= 0xc3
-      ) {
-        return {
-          height: buffer.readUInt16BE(offset + 5),
-          width: buffer.readUInt16BE(offset + 7),
-          format: "jpg",
-        };
+    if (header.startsWith("89504e47")) {
+      return {
+        width: buffer.readUInt32BE(16),
+        height: buffer.readUInt32BE(20),
+        format: "png",
+      };
+    } else if (header.startsWith("ffd8ff")) {
+      let offset = 2;
+      while (offset < buffer.length) {
+        if (
+          buffer[offset] === 0xff &&
+          buffer[offset + 1] >= 0xc0 &&
+          buffer[offset + 1] <= 0xc3
+        ) {
+          return {
+            height: buffer.readUInt16BE(offset + 5),
+            width: buffer.readUInt16BE(offset + 7),
+            format: "jpg",
+          };
+        }
+        offset += buffer.readUInt16BE(offset + 2) + 2;
       }
-      offset += buffer.readUInt16BE(offset + 2) + 2;
     }
+    return null;
+  } catch (error) {
+    console.error("Error reading image size:", error);
+    return null;
   }
-
-  return null;
 };
-
-minioClient.listBuckets().then((buckets) => console.log(buckets));
 
 export const uploadToMinio = async (
   file: Express.Multer.File,
   folder: string,
   user_id: string
 ) => {
-  console.log("Hola");
   const public_id = getFileNameWithoutExtension(file.filename);
-  const bucket = process.env.MINIO_BUCKET_NAME || "";
-  console.log("bucket", bucket);
-  const exists = await minioClient.bucketExists(bucket);
-  console.log("esta", exists);
+  const bucket = config.bucket_name || "";
 
-  if (exists) {
-    console.log("Bucket " + bucket + " exists.");
-  } else {
-    await minioClient.makeBucket(bucket, "us-east-1");
-    console.log("Bucket " + bucket + ' created in "us-east-1".');
+  try {
+    const exists = await minioClient.bucketExists(bucket);
+    if (!exists) {
+      await minioClient.makeBucket(bucket, "us-east-1");
+      console.log(`Bucket ${bucket} created.`);
+    }
+
+    const resolution = await getImageSize(file.path);
+    const metaData = {
+      "Content-Type": `image/${file.mimetype.split("/")[1]}`,
+      "Content-Length": file.size,
+      "Cache-Control": `public, max-age=${60 * 60}`,
+      "X-Amz-Meta-Original-Filename": file.originalname,
+      "X-Amz-Meta-Upload-Date": new Date().toISOString(),
+      "X-Amz-Meta-User-Id": user_id,
+      "X-Amz-Meta-Category": "product category",
+      "X-Amz-Meta-Resolution": resolution
+        ? `${resolution.width}x${resolution.height}`
+        : "unknown",
+      "X-Amz-Meta-Format": file.mimetype.split("/")[1],
+    };
+
+    const res = await minioClient.fPutObject(
+      bucket,
+      `${folder}/${public_id}`,
+      file.path,
+      metaData
+    );
+
+    await fs.unlink(file.path).catch(console.error);
+
+    return res ? public_id : false;
+  } catch (error) {
+    console.error("Error uploading to MinIO:", error);
+    return false;
   }
-  const resolution = getImageSize(file.path);
-  var metaData = {
-    "Content-Type": `image/${file.mimetype.split("/")[1]}`,
-    "Content-Length": file.size,
-    "Cache-Control": `public, max-age=${60 * 60}`,
-    "X-Amz-Meta-Original-Filename": file.originalname,
-    "X-Amz-Meta-Upload-Date": new Date().toISOString(),
-    "X-Amz-Meta-User-Id": user_id,
-    "X-Amz-Meta-Category": "product category",
-    "X-Amz-Meta-Resolution": `${resolution?.width}x${resolution?.height}`,
-    "X-Amz-Meta-Format": file.mimetype.split("/")[1],
-  };
-
-  const res = await minioClient.fPutObject(
-    bucket,
-    `${folder}/${public_id}`,
-    file.path,
-    metaData
-  );
-  fs.unlinkSync(file.path);
-  console.log(" res", res);
-  if (!res) return false;
-  return public_id;
 };
 
 export const getTemporaryUrl = async (fileName: string) => {
-  const bucket = process.env.MINIO_BUCKET_NAME || "";
-  const result = await minioClient.presignedUrl(
-    "GET",
-    bucket,
-    fileName,
-    60 * 60
-  );
-
-  return result;
+  try {
+    const bucket = config.bucket_name || "";
+    return await minioClient.presignedUrl("GET", bucket, fileName, 60 * 60);
+  } catch (error) {
+    console.error("Error generating temporary URL:", error);
+    return null;
+  }
 };
 
 export const deleteFromMinio = async (fileName: string, folder: string) => {
   try {
-    const bucket = process.env.MINIO_BUCKET_NAME || "";
+    const bucket = config.bucket_name || "";
     const objectName = `${folder}/${fileName.replace(/\.[^/.]+$/, "")}`;
 
-    // Verifica si el archivo existe antes de eliminarlo
     await minioClient.statObject(bucket, objectName);
-
-    // Elimina el archivo
     await minioClient.removeObject(bucket, objectName);
 
-    console.log(`Imagen eliminada: ${objectName}`);
+    console.log(`Deleted: ${objectName}`);
     return true;
   } catch (error: any) {
-    if (error.code === "NoSuchKey") {
-      console.error("El archivo no existe en MinIO.");
+    if (error.code === "NotFound") {
+      console.error("File not found in MinIO.");
     } else {
-      console.error("Error al eliminar la imagen:", error);
+      console.error("Error deleting from MinIO:", error);
     }
+    return false;
+  }
+};
+
+export const getFileMetadata = async (fileName: string, folder: string) => {
+  try {
+    const bucket = config.bucket_name!;
+    const objectName = `${folder}/${fileName}`;
+
+    const metadata = await minioClient.statObject(bucket, objectName);
+    return metadata;
+  } catch (error) {
+    console.error("Error getting metadata:", error);
+    return null;
+  }
+};
+
+export const moveFileInMinio = async (oldPath: string, newPath: string) => {
+  try {
+    const bucket = config.bucket_name!;
+    await minioClient.copyObject(bucket, newPath, `/${bucket}/${oldPath}`);
+    await minioClient.removeObject(bucket, oldPath);
+
+    console.log(`File moved from ${oldPath} to ${newPath}`);
+    return true;
+  } catch (error) {
+    console.error("Error moving file:", error);
+    return false;
+  }
+};
+
+export const downloadFromMinio = async (
+  fileName: string,
+  folder: string,
+  destinationPath: string
+) => {
+  try {
+    const bucket = config.bucket_name || "";
+    const objectName = `${folder}/${fileName}`;
+
+    await minioClient.fGetObject(bucket, objectName, destinationPath);
+
+    console.log(`File downloaded to ${destinationPath}`);
+    return true;
+  } catch (error) {
+    console.error("Error downloading file:", error);
+    return false;
+  }
+};
+
+export const copyFileInMinio = async (
+  sourcePath: string,
+  destinationPath: string
+) => {
+  try {
+    const bucket = config.bucket_name!;
+
+    await minioClient.copyObject(
+      bucket,
+      destinationPath,
+      `/${bucket}/${sourcePath}`
+    );
+
+    console.log(`File copied from ${sourcePath} to ${destinationPath}`);
+    return true;
+  } catch (error) {
+    console.error("Error copying file:", error);
     return false;
   }
 };

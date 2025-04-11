@@ -40,6 +40,9 @@ router.get(
         format = "webp";
       }
       const imageUrl = await getTemporaryUrl(`${userId}/user/${fileName}`);
+      if (!imageUrl) {
+        return res.status(400).json({ error: "Invalid image URL" });
+      }
       const response = await axios.get<ArrayBuffer>(imageUrl, {
         responseType: "arraybuffer",
       });
@@ -56,10 +59,10 @@ router.get(
       const optimizedImage = await image.toBuffer();
 
       res.setHeader("Content-Type", `image/${format}`);
-      res.send(optimizedImage);
+      return res.send(optimizedImage);
     } catch (error) {
       console.error("Error al obtener la imagen:", error);
-      res.status(500).json({ error: "No se pudo obtener la imagen" });
+      return res.status(500).json({ error: "No se pudo obtener la imagen" });
     }
   }
 );

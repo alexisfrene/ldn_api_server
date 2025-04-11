@@ -4,14 +4,23 @@ import { Uuid } from "types";
 const { Expense } = models;
 
 export const createExpense = async (req: Request, res: Response) => {
-  const user_id = req.user;
-  const { description, name } = req.body;
+  try {
+    const user_id = req.user as Uuid;
+    const body = req.body;
 
-  const expense = await Expense.create({
-    description,
-    name,
-    user_id: user_id as Uuid,
-  });
+    if (!body?.name) {
+      return res.status(400).json({ message: "Name is required." });
+    }
 
-  return res.status(201).json(expense);
+    const expense = await Expense.create({
+      name: body?.name,
+      description: body?.description || "-",
+      user_id,
+    });
+
+    return res.status(201).json(expense);
+  } catch (error) {
+    console.error("Error creating expense:", error);
+    return res.status(500).json({ message: "Internal server error." });
+  }
 };

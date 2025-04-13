@@ -47,7 +47,7 @@ jobs:
 
       - name: Build image
         run: |
-          docker compose build . 
+          docker compose build 
           docker tag ldn_api_server ghcr.io/alexisfrene/ldn_api_server:latest
           docker push ghcr.io/alexisfrene/ldn_api_server:latest
   deploy:

@@ -58,7 +58,7 @@ jobs:
         run: sudo apt-get install -y sshpass
       - name: SSH into server
         run: |
-          sshpass -p ${{ secrets.LDN_VPS_PASSWORD }} ssh -o StrictHostKeyChecking=no -p 5367 ${{ vars.LDN_VPS_USER_ACTIONS }}@${{ vars.LDN_VPS_HOST }} <<EOF
+          sshpass -p ${{ secrets.LDN_VPS_PASSWORD }} ssh -o PubkeyAuthentication=no -o PreferredAuthentications=password -o StrictHostKeyChecking=no -p 5367 ${{ vars.LDN_VPS_USER_ACTIONS }}@${{ vars.LDN_VPS_HOST }} <<EOF
           cd /home/${{ vars.LDN_VPS_USER_ACTIONS }}/ldn_api_server/
           docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.LDN_GITHUB_TOKEN }}
           docker pull ghcr.io/alexisfrene/ldn_api_server:latest

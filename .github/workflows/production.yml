@@ -69,8 +69,8 @@ jobs:
             docker pull ghcr.io/alexisfrene/ldn_api_server:latest
 
             # Stop and remove only the API container if exists
-            docker stop ldn_api || true
-            docker rm ldn_api || true
+            docker stop ghcr.io/alexisfrene/ldn_api_server:latest || true
+            docker rm ghcr.io/alexisfrene/ldn_api_server:latest || true
 
             # Run everything with Docker Compose
             docker compose down

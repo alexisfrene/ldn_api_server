@@ -4,3 +4,4 @@ build
 .git
 Dockerfile
 README.md
+pnpm-lock.yaml

@@ -56,13 +56,23 @@ jobs:
     steps:
       - name: Install sshpass
         run: sudo apt-get install -y sshpass
-      - name: SSH into server
+
+      - name: SSH into server and deploy
         run: |
           sshpass -p ${{ secrets.LDN_VPS_PASSWORD }} ssh -o PubkeyAuthentication=no -o PreferredAuthentications=password -o StrictHostKeyChecking=no -p 5367 ${{ vars.LDN_VPS_USER_ACTIONS }}@${{ vars.LDN_VPS_HOST }} <<EOF
-          cd /home/${{ vars.LDN_VPS_USER_ACTIONS }}/ldn_api_server/
-          docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.LDN_GITHUB_TOKEN }}
-          docker pull ghcr.io/alexisfrene/ldn_api_server:latest
-          docker stop ldn_api_server
-          docker rm ldn_api_server
-          docker run -d --name ldn_api_server -p 3001:3001 ghcr.io/alexisfrene/ldn_api_server:latest 
+            cd /home/${{ vars.LDN_VPS_USER_ACTIONS }}/ldn_api_server/
+
+            # Login to GitHub Container Registry
+            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.LDN_GITHUB_TOKEN }}
+
+            # Pull latest image of your API
+            docker pull ghcr.io/alexisfrene/ldn_api_server:latest
+
+            # Stop and remove only the API container if exists
+            docker stop ldn_api || true
+            docker rm ldn_api || true
+
+            # Run everything with Docker Compose
+            docker-compose down
+            docker-compose up -d
           EOF

@@ -116,7 +116,7 @@ jobs:
             minio/minio:RELEASE.2025-02-18T16-25-55Z \
             server /data --console-address ":9001"
 
-           # Run Docker - API
+          # Run Docker - API
           docker run -d \
           --name ldn_api \
           --restart always \
@@ -124,4 +124,4 @@ jobs:
           -p 3001:3001 \
           --network ldn_network \
           ghcr.io/alexisfrene/ldn_api_server:latest
-          <<EOF
+          EOF

@@ -124,4 +124,13 @@ jobs:
           -p 3001:3001 \
           --network ldn_network \
           ghcr.io/alexisfrene/ldn_api_server:latest
+          # Run Docker - NGINX
+          docker ps -a --format '{{.Names}}' | grep -w ldn_nginx > /dev/null || docker run -d \
+            --name ldn_nginx \
+            --restart always \
+            -p 80:80 \
+            -p 443:443 \
+            --network ldn_network \
+            -v ./nginx.conf:/etc/nginx/nginx.conf:ro \
+            nginx:1.27.4-alpine
           EOF

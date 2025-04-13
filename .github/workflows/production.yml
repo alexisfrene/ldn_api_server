@@ -57,43 +57,44 @@ jobs:
       - name: SSH into server and deploy
         run: |
           sshpass -p ${{ secrets.LDN_VPS_PASSWORD }} ssh -o PubkeyAuthentication=no -o PreferredAuthentications=password -o StrictHostKeyChecking=no -p 5367 ${{ vars.LDN_VPS_USER_ACTIONS }}@${{ vars.LDN_VPS_HOST }} <<EOF
-            cd /home/${{ vars.LDN_VPS_USER_ACTIONS }}/ldn_api_server/
+          cd /home/${{ vars.LDN_VPS_USER_ACTIONS }}/ldn_api_server/
 
-            # Login to GitHub Container Registry
-            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.LDN_GITHUB_TOKEN }}
+          # Login to GitHub Container Registry
+          docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.LDN_GITHUB_TOKEN }}
 
-            # Pull latest image of your API
-            docker pull ghcr.io/alexisfrene/ldn_api_server:latest
-            # Create environment file
-            cat <<EOF > .env
-            #MINIO
-            MINIO_PORT=${{ vars.MINIO_PORT }}
-            MINIO_HOST=${{ vars.MINIO_HOST }}
-            MINIO_BUCKET_NAME=${{ vars.MINIO_BUCKET_NAME }}
-            MINIO_ACCESS_KEY=${{ secrets.MINIO_ACCESS_KEY }}
-            MINIO_SECRET_KEY=${{ secrets.MINIO_SECRET_KEY }}
-            MINIO_ROOT_USER=${{ vars.MINIO_ROOT_USER }}
-            MINIO_ROOT_PASSWORD=${{ secrets.MINIO_ROOT_PASSWORD }}
-            #DATABASE
-            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-            POSTGRES_USER=${{ vars.POSTGRES_USER }}
-            POSTGRES_DB=${{ vars.POSTGRES_DB }}
-            DATABASE_PORT=${{ vars.DATABASE_PORT }}
-            DATABASE_HOST=${{ vars.DATABASE_HOST }}
-            #PGADMIN
-            PGADMIN_DEFAULT_EMAIL=${{ vars.PGADMIN_DEFAULT_EMAIL }}
-            PGADMIN_DEFAULT_PASSWORD=${{ vars.PGADMIN_DEFAULT_PASSWORD }}
-            EOF
+          # Pull latest image of your API
+          docker pull ghcr.io/alexisfrene/ldn_api_server:latest
 
-            # Stop and remove only the API container if exists
-            docker stop ghcr.io/alexisfrene/ldn_api_server:latest || true
-            docker rm ghcr.io/alexisfrene/ldn_api_server:latest || true
+          # Create environment file
+          cat <<EOF_ENV > .env
+          #MINIO
+          MINIO_PORT=${{ vars.MINIO_PORT }}
+          MINIO_HOST=${{ vars.MINIO_HOST }}
+          MINIO_BUCKET_NAME=${{ vars.MINIO_BUCKET_NAME }}
+          MINIO_ACCESS_KEY=${{ secrets.MINIO_ACCESS_KEY }}
+          MINIO_SECRET_KEY=${{ secrets.MINIO_SECRET_KEY }}
+          MINIO_ROOT_USER=${{ vars.MINIO_ROOT_USER }}
+          MINIO_ROOT_PASSWORD=${{ secrets.MINIO_ROOT_PASSWORD }}
+          #DATABASE
+          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_USER=${{ vars.POSTGRES_USER }}
+          POSTGRES_DB=${{ vars.POSTGRES_DB }}
+          DATABASE_PORT=${{ vars.DATABASE_PORT }}
+          DATABASE_HOST=${{ vars.DATABASE_HOST }}
+          #PGADMIN
+          PGADMIN_DEFAULT_EMAIL=${{ vars.PGADMIN_DEFAULT_EMAIL }}
+          PGADMIN_DEFAULT_PASSWORD=${{ vars.PGADMIN_DEFAULT_PASSWORD }}
+          EOF_ENV
 
-            #Create Network
-            docker network inspect ldn_network > /dev/null 2>&1 || docker network create ldn_network
+          # Stop and remove only the API container if exists
+          docker stop ldn_api || true
+          docker rm ldn_api || true
 
-            # Run Docker- Database
-            docker container inspect ldn_database > /dev/null 2>&1 || docker run -d \
+          # Create Network
+          docker network inspect ldn_network > /dev/null 2>&1 || docker network create ldn_network
+
+          # Run Docker- Database
+          docker container inspect ldn_database > /dev/null 2>&1 || docker run -d \
             --name ldn_database \
             --restart always \
             --shm-size=128mb \
@@ -101,10 +102,10 @@ jobs:
             --env-file .env \
             --network ldn_network \
             -v ldn_database:/var/lib/postgresql/data \
-             postgres:17.2-alpine
+            postgres:17.2-alpine
 
-            # Run Docker - Storage 
-            docker ps -a --format '{{.Names}}' | grep -w ldn_storage > /dev/null || docker run -d \
+          # Run Docker - Storage 
+          docker ps -a --format '{{.Names}}' | grep -w ldn_storage > /dev/null || docker run -d \
             --name ldn_storage \
             --restart always \
             --env-file .env \
@@ -114,4 +115,5 @@ jobs:
             -v ldn_storage:/data \
             minio/minio:RELEASE.2025-02-18T16-25-55Z \
             server /data --console-address ":9001"
-          EOF
+
+            EOF

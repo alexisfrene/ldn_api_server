@@ -44,7 +44,7 @@ jobs:
 
       - name: Build image
         run: |
-          docker compose up -d
+          docker compose -f 'docker-compose.yml' up -d --build
           docker tag ldn_api_server ghcr.io/alexisfrene/ldn_api_server:latest
           docker push ghcr.io/alexisfrene/ldn_api_server:latest
   deploy:

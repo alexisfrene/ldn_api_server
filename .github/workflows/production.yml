@@ -126,6 +126,7 @@ jobs:
           ghcr.io/alexisfrene/ldn_api_server:latest
 
           # Create nginx.conf - NGINX  
+          rm -rf nginx.conf # elimina archivo o carpeta con ese nombre si existe
           cat <<EOF_NGINX > nginx.conf
           worker_processes auto;
           events {
@@ -162,7 +163,7 @@ jobs:
                   }
               }
           }
-              EOF_NGINX
+          EOF_NGINX
 
           # Run Docker - NGINX
           docker ps -a --format '{{.Names}}' | grep -w ldn_nginx > /dev/null || docker run -d \

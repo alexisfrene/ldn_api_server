@@ -104,6 +104,7 @@ jobs:
             --env-file .env \
             -p 5433:80 \
             --network ldn_network \
+            -v ldn_pgadmin:/var/lib/pgadmin \
             dpage/pgadmin4
           # Run Docker - Storage 
           docker ps -a --format '{{.Names}}' | grep -w ldn_storage > /dev/null || docker run -d \

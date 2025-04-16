@@ -1,22 +1,30 @@
 {
-  "cSpell.words": [
-    "alexisfrene",
-    "cloudinary",
-    "Cloudinary",
-    "dpage",
-    "github",
-    "GITHUB",
-    "nginx",
-    "originalname",
-    "pgadmin",
-    "postgres",
-    "postgresql",
-    "produc",
-    "producs",
-    "PSQL",
-    "sshpass",
-    "uuidv"
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "files.autoSave": "off",
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "prettier.singleQuote": true,
+  "prettier.semi": false,
+  "prettier.trailingComma": "es5",
+  "prettier.tabWidth": 2,
+  "prettier.jsxSingleQuote": true,
+  "prettier.arrowParens": "avoid",
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
   ],
-  "editor.cursorBlinking": "phase",
-  "editor.linkedEditing": true
+  "explorer.excludeGitIgnore": true,
+  "files.exclude": {
+    "**/.next": true,
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.turbo": true
+  },
+  "cSpell.words": ["lastname"]
 }

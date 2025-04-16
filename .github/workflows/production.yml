@@ -2,9 +2,9 @@ name: production
 
 on:
   push:
-    branches: ["main"]
+    branches: ['main']
   pull_request:
-    branches: ["main"]
+    branches: ['main']
 
 jobs:
   create-docker-image:
@@ -44,7 +44,7 @@ jobs:
 
       - name: Build image
         run: |
-          docker compose -f 'docker-compose.yml' up -d --build
+          docker build -t ldn_api_server .
           docker tag ldn_api_server ghcr.io/alexisfrene/ldn_api_server:latest
           docker push ghcr.io/alexisfrene/ldn_api_server:latest
   deploy:
@@ -58,13 +58,10 @@ jobs:
         run: |
           sshpass -p ${{ secrets.LDN_VPS_PASSWORD }} ssh -o PubkeyAuthentication=no -o PreferredAuthentications=password -o StrictHostKeyChecking=no -p 5367 ${{ vars.LDN_VPS_USER_ACTIONS }}@${{ vars.LDN_VPS_HOST }} <<EOF
           cd /home/${{ vars.LDN_VPS_USER_ACTIONS }}/ldn_api_server/
-
           # Login to GitHub Container Registry
           docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.LDN_GITHUB_TOKEN }}
-
           # Pull latest image of your API
           docker pull ghcr.io/alexisfrene/ldn_api_server:latest
-
           # Create environment file
           cat <<EOF_ENV > .env
           #MINIO
@@ -85,14 +82,11 @@ jobs:
           PGADMIN_DEFAULT_EMAIL=${{ vars.PGADMIN_DEFAULT_EMAIL }}
           PGADMIN_DEFAULT_PASSWORD=${{ vars.PGADMIN_DEFAULT_PASSWORD }}
           EOF_ENV
-
           # Stop and remove only the API container if exists
           docker stop ldn_api || true
           docker rm ldn_api || true
-
           # Create Network
           docker network inspect ldn_network > /dev/null 2>&1 || docker network create ldn_network
-
           # Run Docker- Database
           docker container inspect ldn_database > /dev/null 2>&1 || docker run -d \
             --name ldn_database \
@@ -103,7 +97,14 @@ jobs:
             --network ldn_network \
             -v ldn_database:/var/lib/postgresql/data \
             postgres:17.2-alpine
-
+          # Run Docker - PgAdmin
+          docker container inspect ldn_pgadmin > /dev/null 2>&1 || docker run -d \
+            --name ldn_pgadmin \
+            --restart always \
+            --env-file .env \
+            -p 5433:80 \
+            --network ldn_network \
+            dpage/pgadmin4
           # Run Docker - Storage 
           docker ps -a --format '{{.Names}}' | grep -w ldn_storage > /dev/null || docker run -d \
             --name ldn_storage \
@@ -124,54 +125,4 @@ jobs:
           -p 3001:3001 \
           --network ldn_network \
           ghcr.io/alexisfrene/ldn_api_server:latest
-
-          # Create nginx.conf - NGINX  
-          rm -rf nginx.conf # elimina archivo o carpeta con ese nombre si existe
-          cat <<EOF_NGINX > nginx.conf
-          worker_processes auto;
-          events {
-              worker_connections 1024;
-          }
-
-          http {
-              include /etc/nginx/mime.types;
-              server_tokens off;
-
-              server {
-                  listen 80;
-                  server_name lodenaty.com;
-
-                  location / {
-                      proxy_pass http://172.17.0.1:3055;
-                      proxy_set_header Host \$host;
-                      proxy_set_header X-Real-IP \$remote_addr;
-                      proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-                      proxy_set_header X-Forwarded-Proto \$scheme;
-                  }
-              }
-
-              server {
-                  listen 80;
-                  server_name api.lodenaty.com;
-
-                  location / {
-                      proxy_pass http://172.17.0.1:3001;
-                      proxy_set_header Host \$host;
-                      proxy_set_header X-Real-IP \$remote_addr;
-                      proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-                      proxy_set_header X-Forwarded-Proto \$scheme;
-                  }
-              }
-          }
-          EOF_NGINX
-
-          # Run Docker - NGINX
-          docker ps -a --format '{{.Names}}' | grep -w ldn_nginx > /dev/null || docker run -d \
-            --name ldn_nginx \
-            --restart always \
-            -p 80:80 \
-            -p 443:443 \
-            --network ldn_network \
-            -v ./nginx.conf:/etc/nginx/nginx.conf:ro \
-            nginx:1.27.4-alpine
           EOF

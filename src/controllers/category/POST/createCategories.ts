@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { v4 as uuidv4 } from "uuid";
 import { models } from "@lib";
 import { Uuid } from "types";
 import { uploadToMinio } from "@lib/minio";
@@ -16,7 +15,7 @@ export const createCategories = async (req: Request, res: Response) => {
       await uploadToMinio(file, `${user_id}/categories`, user_id as string);
 
       return {
-        id: uuidv4(),
+        id: crypto.randomUUID(),
         value: values[index],
         icon_url: `${files[index].filename}`,
       };

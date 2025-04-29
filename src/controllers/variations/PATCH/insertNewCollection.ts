@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { v4 as uuidv4 } from "uuid";
 import { models } from "@lib";
 import { Uuid } from "types";
 import { uploadToMinio } from "@lib/minio";
@@ -16,14 +15,14 @@ export const insertNewCollection = async (req: Request, res: Response) => {
     return res
       .status(500)
       .json({ error: true, message: "Error insertNewCollection" });
-  const uploadPromises = files.map(async (file) => {
+  const uploadPromises = files.map(async file => {
     await uploadToMinio(file, `${user_id}/variations`, user_id as string);
 
     return file.filename || "";
   });
   const images = await Promise.all(uploadPromises);
   const newCollection = {
-    id: uuidv4() as Uuid,
+    id: crypto.randomUUID() as Uuid,
     label,
     images,
   };

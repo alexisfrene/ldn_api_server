@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { v4 as uuidv4 } from "uuid";
 import { models } from "@lib";
 import { uploadToMinio } from "@lib/minio";
 
@@ -28,7 +27,7 @@ export const addCategoryValue = async (req: Request, res: Response) => {
   if (user) {
     const userCategories = await user.getUserCategories();
     const validateExistCategory = userCategories.find(
-      (category) => category.category_id === Number(category_id)
+      category => category.category_id === Number(category_id)
     );
     if (!validateExistCategory)
       return res
@@ -52,7 +51,7 @@ export const addCategoryValue = async (req: Request, res: Response) => {
         .status(400)
         .json({ error: true, message: "No se puedo subir el icono" });
     const newValue = {
-      id: uuidv4(),
+      id: crypto.randomUUID(),
       value,
       icon_url,
     };

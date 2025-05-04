@@ -43,8 +43,6 @@ export const getTotalMonth = async (req: Request, res: Response) => {
       },
     },
   });
-  console.log("totals", totals);
-  console.log("count_movements", count_movements);
 
   return res.status(200).json({
     count_movements,

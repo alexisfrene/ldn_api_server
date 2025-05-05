@@ -34,9 +34,9 @@ export const createProducts = async (req: Request, res: Response) => {
     const detailData = {
       gender: detail.gender || "unspecified",
       color: detail.color || "unspecified",
-      brand: detail.brand || "unspecified",
       style: detail.style || "unspecified",
       age: detail.age || "unspecified",
+      brand_id: detail.brand || null,
     };
 
     const newProductData = {

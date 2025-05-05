@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { models } from "@lib";
 
 const Product = models.Product;
-
+const Brand = models.Brand;
 export const getProductById = async (req: Request, res: Response) => {
   const productId = req.params.id;
   const user_id = req.user;
@@ -20,14 +20,17 @@ export const getProductById = async (req: Request, res: Response) => {
 
   const category = await product.getCategoryProducts();
   const categoryValue = category
-    ? category.values.find((e) => e.id === product.category_value)
+    ? category.values.find(e => e.id === product.category_value)
     : null;
   const size = await product.getSizeProducts();
   const sizeValue = size
-    ? size.values.find((e) => e.id === product.size_value)
+    ? size.values.find(e => e.id === product.size_value)
     : null;
 
-  const detail = await product.getDetailProduct();
+  const detail: any = await product.getDetailProduct({
+    include: [{ model: Brand, as: "BrandDetails" }],
+  });
+  console.log(detail);
   const urlCloudinary = `${req.protocol}://${req.get(
     "host"
   )}/api/products/images/${product.primary_image}`;
@@ -62,7 +65,13 @@ export const getProductById = async (req: Request, res: Response) => {
 
   return res.status(200).json({
     category: categoryValue?.value || null,
-    detail,
+    detail: {
+      gender: detail?.gender || null,
+      color: detail?.color || null,
+      style: detail?.style || null,
+      age: detail?.age || null,
+      brand: detail?.BrandDetails?.title || null,
+    },
     size: sizeValue?.value || null,
     name,
     product_id,

@@ -12,13 +12,13 @@
   "prettier.tabWidth": 2,
   "prettier.jsxSingleQuote": true,
   "prettier.arrowParens": "avoid",
+  "explorer.excludeGitIgnore": false,
   "eslint.validate": [
     "javascript",
     "javascriptreact",
     "typescript",
     "typescriptreact"
   ],
-  "explorer.excludeGitIgnore": true,
   "files.exclude": {
     "**/.next": true,
     "**/node_modules": true,

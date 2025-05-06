@@ -33,7 +33,7 @@ const accessLogStream = fs.createWriteStream(
   path.join(__dirname, "access.log"),
   { flags: "a" }
 );
-
+app.set("trust proxy", true);
 app.use(limiter);
 app.use(helmet());
 app.use(morgan("dev", { stream: accessLogStream }));

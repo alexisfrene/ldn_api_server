@@ -32,7 +32,6 @@ router.get(
   "/images/:fileName",
   async (req: Request<ImageParams, any, any, ImageQuery>, res: Response) => {
     try {
-      console.log("Obteniendo imagen");
       const { fileName } = req.params;
       const userId = req.user as string;
       let width = req.query.width ? parseInt(req.query.width) : undefined;

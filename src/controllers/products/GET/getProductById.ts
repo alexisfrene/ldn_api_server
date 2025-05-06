@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
+import { ageTranslations, genderTranslations, styleTranslations } from "mocks";
 
 const Product = models.Product;
 const Brand = models.Brand;
@@ -30,7 +31,7 @@ export const getProductById = async (req: Request, res: Response) => {
   const detail: any = await product.getDetailProduct({
     include: [{ model: Brand, as: "BrandDetails" }],
   });
-  console.log(detail);
+
   const urlCloudinary = `${req.protocol}://${req.get(
     "host"
   )}/api/products/images/${product.primary_image}`;
@@ -66,10 +67,20 @@ export const getProductById = async (req: Request, res: Response) => {
   return res.status(200).json({
     category: categoryValue?.value || null,
     detail: {
-      gender: detail?.gender || null,
+      gender: detail?.gender
+        ? genderTranslations[
+            detail.gender as keyof typeof genderTranslations
+          ] || detail.gender
+        : null,
       color: detail?.color || null,
-      style: detail?.style || null,
-      age: detail?.age || null,
+      style: detail?.style
+        ? styleTranslations[detail.style as keyof typeof styleTranslations] ||
+          detail.style
+        : null,
+      age: detail?.age
+        ? ageTranslations[detail.age as keyof typeof ageTranslations] ||
+          detail.age
+        : null,
       brand: detail?.BrandDetails?.title || null,
     },
     size: sizeValue?.value || null,

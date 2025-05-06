@@ -22,18 +22,18 @@ import { startServer } from "./startServer";
 import { initializeObjectStore } from "initializeObjectStore";
 
 const app = express();
-
+app.set("trust proxy", 1);
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000,
   limit: 1500,
-  standardHeaders: "draft-7",
+  standardHeaders: true,
   legacyHeaders: false,
 });
 const accessLogStream = fs.createWriteStream(
   path.join(__dirname, "access.log"),
   { flags: "a" }
 );
-app.set("trust proxy", true);
+
 app.use(limiter);
 app.use(helmet());
 app.use(morgan("dev", { stream: accessLogStream }));

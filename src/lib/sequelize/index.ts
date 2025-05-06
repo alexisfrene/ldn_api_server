@@ -26,7 +26,7 @@ const sequelize = new Sequelize(database, username, password, {
 
 const { associations, models } = initModels(sequelize);
 
-const forceSync = process.env.FORCE_SYNC === "true";
+const forceSync = true;
 
 sequelize
   .sync({ force: forceSync })
@@ -38,7 +38,7 @@ sequelize
       console.log("Database synchronized without seeding");
     }
   })
-  .catch((err) => {
+  .catch(err => {
     console.error("Error synchronizing database:", err);
   });
 export { models, sequelize, associations };

@@ -2,9 +2,7 @@ name: production
 
 on:
   push:
-    branches: ['main']
-  pull_request:
-    branches: ['main']
+    branches: ["main"]
 
 jobs:
   create-docker-image:

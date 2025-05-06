@@ -43,26 +43,28 @@ export const addCategoryValue = async (req: Request, res: Response) => {
         error: true,
         message: `Èl valor ( ${value} , ya esta cargado )`,
       });
-    const icon_url = files[0].filename;
-    await uploadToMinio(files[0], `${user_id}/categories`, user_id);
+    if (category_id !== "Default") {
+      const icon_url = files[0].filename;
+      await uploadToMinio(files[0], `${user_id}/categories`, user_id);
+      if (!icon_url)
+        return res
+          .status(400)
+          .json({ error: true, message: "No se puedo subir el icono" });
+      const newValue = {
+        id: crypto.randomUUID(),
+        value,
+        icon_url,
+      };
 
-    if (!icon_url)
+      const updateCategory = selectedCategory!.update({
+        values: [...selectedCategory!.values, newValue],
+      });
+
       return res
-        .status(400)
-        .json({ error: true, message: "No se puedo subir el icono" });
-    const newValue = {
-      id: crypto.randomUUID(),
-      value,
-      icon_url,
-    };
-
-    const updateCategory = selectedCategory!.update({
-      values: [...selectedCategory!.values, newValue],
-    });
-
-    return res
-      .status(200)
-      .json({ msj: "Hola", updateCategory, files: files[0] });
+        .status(200)
+        .json({ msj: "Hola", updateCategory, files: files[0] });
+    }
+    return res.status(200).json({ msj: "Hola" });
   } else {
     return res
       .status(400)

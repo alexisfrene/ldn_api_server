@@ -18,6 +18,7 @@ import { SizeAttributes } from "./Sizes";
 import { ExpenseAttributes } from "./Expenses";
 import { Models } from "@models";
 import { DebtAttributes } from "./Debts";
+import { BrandAttributes } from "./Brands";
 
 export type UserAttributes = InferAttributes<User>;
 export type UserCreationAttributes = InferCreationAttributes<
@@ -53,6 +54,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
   declare getUserSizes: HasManyGetAssociationsMixin<SizeAttributes>;
   declare getUserExpenses: HasManyGetAssociationsMixin<ExpenseAttributes>;
   declare getUserDebts: HasManyGetAssociationsMixin<DebtAttributes>;
+  declare getUserBrands: HasManyGetAssociationsMixin<BrandAttributes>;
 
   static associate(models: Models) {
     const UserSizes = User.hasMany(models.Size, {
@@ -91,7 +93,12 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
       as: "UserDebts",
       foreignKey: "user_id",
     });
+    const UserBrands = User.hasMany(models.Brand, {
+      as: "UserBrands",
+      foreignKey: "user_id",
+    });
     return {
+      UserBrands,
       UserDebts,
       UserExpenses,
       UserSizes,

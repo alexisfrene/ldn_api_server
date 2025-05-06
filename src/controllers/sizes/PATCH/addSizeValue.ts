@@ -41,8 +41,12 @@ export const addSizeValue = async (req: Request, res: Response) => {
         id: "add-" + selectedSize.values.length++,
         value,
       };
+
+      const formatValues = selectedSize.values.filter(
+        (item) => item !== undefined
+      );
       const updateSize = await selectedSize.update({
-        values: [...selectedSize.values, newValue],
+        values: [...formatValues, newValue],
       });
 
       return res.status(200).json(updateSize);

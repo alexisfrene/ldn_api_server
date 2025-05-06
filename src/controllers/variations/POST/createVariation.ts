@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { v4 as uuidv4 } from "uuid";
 import { models } from "@lib";
 import { Uuid } from "types";
 import { uploadToMinio } from "@lib/minio";
@@ -32,11 +31,11 @@ export const createVariation = async (req: Request, res: Response) => {
       .status(400)
       .json({ error: true, message: "Usuario no autorizado" });
   let newVariation = {
-    category_id: uuidv4() as Uuid,
-    category_value: uuidv4() as Uuid,
+    category_id: crypto.randomUUID() as Uuid,
+    category_value: crypto.randomUUID() as Uuid,
     title: "",
-    values: [{ id: uuidv4() as Uuid, label, images: [""] }],
-    user_id: uuidv4(),
+    values: [{ id: crypto.randomUUID() as Uuid, label, images: [""] }],
+    user_id: crypto.randomUUID() as Uuid,
   };
   if (category_id) {
     const category = await Category.findByPk(category_id);
@@ -52,14 +51,14 @@ export const createVariation = async (req: Request, res: Response) => {
       }
     }
   }
-  const uploadPromises = files.map(async (file) => {
+  const uploadPromises = files.map(async file => {
     await uploadToMinio(file, `${user_id}/variations`, user_id as string);
 
     return file.filename || "";
   });
   const images = await Promise.all(uploadPromises);
   newVariation["title"] = title;
-  newVariation["values"] = [{ id: uuidv4() as Uuid, label, images }];
+  newVariation["values"] = [{ id: crypto.randomUUID() as Uuid, label, images }];
   if (user_id) {
     newVariation["user_id"] = user_id;
   }

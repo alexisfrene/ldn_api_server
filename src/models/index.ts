@@ -1,6 +1,8 @@
+import { Sequelize } from "sequelize";
 import userModel from "./Users";
 import sizeModel from "./Sizes";
 import debtsModel from "./Debts";
+import brandModel from "./Brands";
 import detailModel from "./Details";
 import productModel from "./Products";
 import expenseModel from "./Expenses";
@@ -11,7 +13,6 @@ import installmentsModel from "./Installments";
 import paymentMethodsModel from "./PaymentMethods";
 import financialAccountsModel from "./FinancialAccounts";
 import financialAccountsPaymentMethodsModel from "./FinancialAccountsPaymentMethods";
-import { Sequelize } from "sequelize";
 
 interface ModelAssociations {
   Category: ReturnType<typeof categoryModel>["associate"];
@@ -26,6 +27,7 @@ interface ModelAssociations {
   PaymentMethod: ReturnType<typeof paymentMethodsModel>["associate"];
   FinancialAccount: ReturnType<typeof financialAccountsModel>["associate"];
   User: ReturnType<typeof userModel>["associate"];
+  Brand: ReturnType<typeof brandModel>["associate"];
 }
 
 export interface Models {
@@ -35,11 +37,12 @@ export interface Models {
   User: ReturnType<typeof userModel>;
   Size: ReturnType<typeof sizeModel>;
   Debt: ReturnType<typeof debtsModel>;
+  Brand: ReturnType<typeof brandModel>;
   Detail: ReturnType<typeof detailModel>;
   Product: ReturnType<typeof productModel>;
   Expense: ReturnType<typeof expenseModel>;
-  Movement: ReturnType<typeof movementsModel>;
   Category: ReturnType<typeof categoryModel>;
+  Movement: ReturnType<typeof movementsModel>;
   Variation: ReturnType<typeof variationModel>;
   Installment: ReturnType<typeof installmentsModel>;
   PaymentMethod: ReturnType<typeof paymentMethodsModel>;
@@ -60,8 +63,9 @@ export const initModels = (sequelize: Sequelize): InitModelsReturnType => {
   const Detail = detailModel(sequelize);
   const Product = productModel(sequelize);
   const Expense = expenseModel(sequelize);
-  const Movement = movementsModel(sequelize);
+  const Brand = brandModel(sequelize);
   const Category = categoryModel(sequelize);
+  const Movement = movementsModel(sequelize);
   const Variation = variationModel(sequelize);
   const Installment = installmentsModel(sequelize);
   const PaymentMethod = paymentMethodsModel(sequelize);
@@ -73,8 +77,9 @@ export const initModels = (sequelize: Sequelize): InitModelsReturnType => {
     User,
     Size,
     Debt,
-    Expense,
+    Brand,
     Detail,
+    Expense,
     Product,
     Movement,
     Category,
@@ -98,6 +103,7 @@ export const initModels = (sequelize: Sequelize): InitModelsReturnType => {
     PaymentMethod: PaymentMethod.associate(models),
     FinancialAccount: FinancialAccount.associate(models),
     User: User.associate(models),
+    Brand: Brand.associate(models),
   } as InitModelsReturnType["associations"];
 
   return { models, associations };

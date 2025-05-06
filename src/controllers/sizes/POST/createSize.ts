@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { v4 as uuidv4 } from "uuid";
 import { models } from "@lib";
 
 const Size = models.Size;
@@ -10,7 +9,7 @@ export const createSize = async (req: Request, res: Response) => {
   const newSize = await Size.create({
     title,
     values: values.map((e: { value: string }) => {
-      return { value: e.value, id: uuidv4() };
+      return { value: e.value, id: crypto.randomUUID() };
     }),
     user_id,
   });

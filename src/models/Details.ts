@@ -17,7 +17,6 @@ export class Detail extends Model<DetailAttributes, DetailCreationAttributes> {
   declare detail_id: CreationOptional<number>;
   declare gender: string;
   declare color: string;
-  declare brand: string;
   declare style: string;
   declare age: string;
   declare product_id: Uuid;
@@ -28,9 +27,13 @@ export class Detail extends Model<DetailAttributes, DetailCreationAttributes> {
       as: "DetailProduct",
       foreignKey: "product_id",
     });
-
+    const BrandDetails = Detail.belongsTo(models.Brand, {
+      as: "BrandDetails",
+      foreignKey: "brand_id",
+    });
     return {
       DetailProduct,
+      BrandDetails,
     };
   }
 }
@@ -48,10 +51,6 @@ export default (sequelize: Sequelize) => {
         defaultValue: "-",
       },
       color: {
-        type: DataTypes.STRING,
-        defaultValue: "-",
-      },
-      brand: {
         type: DataTypes.STRING,
         defaultValue: "-",
       },

@@ -13,11 +13,13 @@ import {
   categoriesRoutes,
   sizeRoutes,
   financeRoutes,
+  brandsRoutes,
 } from "@routes";
 import { errorHandler } from "@middlewares";
 import { sequelize } from "@lib";
 import { initializeDB } from "./initializeDB";
 import { startServer } from "./startServer";
+import { initializeObjectStore } from "initializeObjectStore";
 
 const app = express();
 
@@ -62,7 +64,8 @@ app.use(
   productsRoutes,
   categoriesRoutes,
   sizeRoutes,
-  financeRoutes
+  financeRoutes,
+  brandsRoutes
 );
 app.use(errorHandler);
 
@@ -72,6 +75,7 @@ const PORT: string | number = process.env.PORT || 3210;
 
 const main = async (): Promise<void> => {
   try {
+    await initializeObjectStore();
     await initializeDB(sequelize);
     await startServer(app, PORT);
   } catch (error) {

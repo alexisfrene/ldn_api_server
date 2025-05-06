@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import { config as connectionPSQL } from "@lib/sequelize/config";
+import { config as connectionPSQL } from "@lib/sequelize/postgres_config";
 import { SequelizeStorage, Umzug } from "umzug";
 type Env = "development" | "production";
 
@@ -23,7 +23,10 @@ const sequelize = new Sequelize(database, username, password, {
 });
 const migrator = new Umzug({
   migrations: {
-    glob: "migrations/*.ts",
+    glob:
+      process.env.NODE_ENV === "development"
+        ? "src/migrations/**/*.{ts,js}"
+        : "build/migrations/*.js",
     resolve: ({ name, path, context }) => {
       const migration = require(path!);
       return {
@@ -40,8 +43,10 @@ const migrator = new Umzug({
 
 export const runMigrations = async () => {
   try {
+    await sequelize.authenticate();
     console.log("Iniciando migraciones...");
     await migrator.up();
+
     console.log("Migraciones completadas.");
   } catch (error) {
     console.error("Error en las migraciones:", error);

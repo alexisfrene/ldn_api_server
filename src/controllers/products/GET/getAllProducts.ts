@@ -18,16 +18,18 @@ export const getAllProducts = async (req: Request, res: Response) => {
     );
     if (Array.isArray(products)) {
       const productDetails = await Promise.all(
-        products.map(async (product) => {
+        products.map(async product => {
           const productFromDB = await Product.findByPk(product.product_id);
           if (productFromDB) {
             const size = await productFromDB.getSizeProducts();
             const sizeValue = size
-              ? size.values.find((e) => e.id === productFromDB.size_value)
+              ? size.values.find(e => e.id === productFromDB.size_value)
               : null;
-            const urlCloudinary = `${req.protocol}://${req.get(
-              "host"
-            )}/api/products/images/${productFromDB.primary_image}`;
+            const urlCloudinary = `${
+              process.env.NODE_ENV === "production" ? "https" : req.protocol
+            }://${req.get("host")}/api/products/images/${
+              productFromDB.primary_image
+            }`;
             const { name, product_id, price, state } = productFromDB;
             return {
               size: sizeValue?.value || "-",

@@ -32,9 +32,9 @@ export const getProductById = async (req: Request, res: Response) => {
     include: [{ model: Brand, as: "BrandDetails" }],
   });
 
-  const urlCloudinary = `${req.protocol}://${req.get(
-    "host"
-  )}/api/products/images/${product.primary_image}`;
+  const urlCloudinary = `${
+    process.env.NODE_ENV === "production" ? "https" : req.protocol
+  }://${req.get("host")}/api/products/images/${product.primary_image}`;
   let variationFormat = {
     variation_id: "",
     title: "",
@@ -52,9 +52,12 @@ export const getProductById = async (req: Request, res: Response) => {
           label: value.label,
           images: value.images.map(
             (image: string) =>
-              `${req.protocol}://${req.get(
-                "host"
-              )}/api/variations/images/${image.replace(/\.[^/.]+$/, "")}`
+              `${
+                process.env.NODE_ENV === "production" ? "https" : req.protocol
+              }://${req.get("host")}/api/variations/images/${image.replace(
+                /\.[^/.]+$/,
+                ""
+              )}`
           ),
         });
       }

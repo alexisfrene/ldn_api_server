@@ -17,14 +17,18 @@ export const getAllCategories = async (req: Request, res: Response) => {
       order: [["category_id", "ASC"]],
     });
 
-    const formatterCategories = categories.map((category) => {
+    const formatterCategories = categories.map(category => {
       const values = category.values.map(
         (value: { icon_url: string; value: string; id: string }) => {
           return {
             icon_url:
               value.id === "default"
                 ? "https://res.cloudinary.com/daxkizsj3/image/upload/v1714359418/default_image.webp"
-                : `${req.protocol}://${req.get(
+                : `${
+                    process.env.NODE_ENV === "production"
+                      ? "https"
+                      : req.protocol
+                  }://${req.get(
                     "host"
                   )}/api/categories/images/${value.icon_url.replace(
                     /\.[^/.]+$/,

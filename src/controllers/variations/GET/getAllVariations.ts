@@ -24,9 +24,12 @@ export const getAllVariations = async (req: Request, res: Response) => {
         (collection: { images: string[]; label: string; id: string }) => {
           const images = collection.images.map(
             (image: string) =>
-              `${req.protocol}://${req.get(
-                "host"
-              )}/api/variations/images/${image.replace(/\.[^/.]+$/, "")}`
+              `${
+                process.env.NODE_ENV === "production" ? "https" : req.protocol
+              }://${req.get("host")}/api/variations/images/${image.replace(
+                /\.[^/.]+$/,
+                ""
+              )}`
           );
           return {
             id: collection.id,

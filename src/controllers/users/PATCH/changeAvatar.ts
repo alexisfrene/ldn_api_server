@@ -13,9 +13,9 @@ export const changeAvatar = async (req: Request, res: Response) => {
     return res
       .status(400)
       .json({ error: true, message: "No se mando una imagen" });
-  const public_id = `${req.protocol}://${req.get("host")}/api/user/images/${
-    file.filename
-  }`;
+  const public_id = `${
+    process.env.NODE_ENV === "production" ? "https" : req.protocol
+  }://${req.get("host")}/api/user/images/${file.filename}`;
   await uploadToMinio(file, `${user_id}/user`, user_id);
   if (!public_id)
     return res

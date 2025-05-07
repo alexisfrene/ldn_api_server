@@ -14,7 +14,7 @@ if (!config) {
 export const minioClient = new Minio.Client({
   endPoint: config.host!,
   port: Number(config.port),
-  useSSL: false,
+  useSSL: true,
   accessKey: config.access_key,
   secretKey: config.secret_key,
 });

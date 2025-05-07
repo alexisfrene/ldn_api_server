@@ -22,7 +22,7 @@ import { startServer } from "./startServer";
 import { initializeObjectStore } from "initializeObjectStore";
 
 const app = express();
-app.set("trust proxy", "loopback");
+app.set("trust proxy", "172.17.0.1");
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000,
   limit: 1500,
@@ -51,7 +51,12 @@ app.use(
   })
 );
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://lodenaty.com"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

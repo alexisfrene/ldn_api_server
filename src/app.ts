@@ -22,7 +22,7 @@ import { startServer } from "./startServer";
 import { initializeObjectStore } from "initializeObjectStore";
 
 const app = express();
-app.set("trust proxy", 1);
+app.set("trust proxy", "loopback");
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000,
   limit: 1500,

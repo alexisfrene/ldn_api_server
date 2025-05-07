@@ -53,7 +53,7 @@ app.use(
 
 app.use(
   cors({
-    origin: ["https://lodenaty.com"],
+    origin: ["http://lodenaty.com"],
     credentials: true,
   })
 );

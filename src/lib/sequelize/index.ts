@@ -26,7 +26,7 @@ const sequelize = new Sequelize(database, username, password, {
 
 const { associations, models } = initModels(sequelize);
 
-const forceSync = true;
+const forceSync = process.env.FORCE_SYNC === "true";
 
 sequelize
   .sync({ force: forceSync })

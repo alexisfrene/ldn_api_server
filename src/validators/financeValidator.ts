@@ -114,15 +114,10 @@ export const createDebtValidations = [
     .optional()
     .isString()
     .withMessage("Las notas deben ser un texto."),
-  body("current_quota")
-    .isInt({ min: 1 })
-    .withMessage(
-      "La cuota actual debe ser un número entero mayor o igual a 1."
-    ),
   body("installments")
     .isArray({ min: 1 })
     .withMessage("Se requiere al menos una cuota en installments.")
-    .custom((installments) => {
+    .custom(installments => {
       if (installments.length > 0) {
         return installments.every(
           (installment: {

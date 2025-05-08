@@ -25,7 +25,6 @@ export const createDebts = async (req: Request, res: Response) => {
     notes: req.body.notes || "Sin nota",
     name: req.body.name || "Sin nombre",
     total_debt: total_debt || 1,
-    current_quota: req.body.current_quota || 1,
     minimum_payment: req.body.minimum_payment || 1,
     payment_frequency: req.body.payment_frequency || "monthly",
     total_interest: totalInterest || 0,

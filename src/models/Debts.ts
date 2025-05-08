@@ -29,7 +29,6 @@ export class Debt extends Model<DebtAttributes, DebtCreationAttributes> {
   declare payment_frequency: CreationOptional<
     "monthly" | "bi-weekly" | "weekly"
   >;
-  declare current_quota: CreationOptional<number>;
   declare user_id: Uuid;
   declare updatedAt: Date;
   declare createdAt: Date;
@@ -103,11 +102,6 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.FLOAT,
         defaultValue: 0,
         allowNull: false,
-      },
-      current_quota: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 1,
       },
       user_id: {
         type: DataTypes.UUID,

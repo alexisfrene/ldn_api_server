@@ -9,7 +9,6 @@ const seedDebt = async (models: Models) => {
         {
           name: "Mercado Pago Créditos",
           user_id,
-          current_quota: 1,
           debt_id: "123e4567-e89b-12d3-a456-426614174000" as Uuid,
           interest_per_installment: 3.57,
           total_interest: 11.11,
@@ -22,7 +21,6 @@ const seedDebt = async (models: Models) => {
         {
           name: "Tarjeta de Crédito Naranja X",
           user_id,
-          current_quota: 1,
           debt_id: "123e4567-e89b-12d3-a456-426614174001" as Uuid,
           interest_per_installment: 3.57,
           total_interest: 11.11,
@@ -35,7 +33,6 @@ const seedDebt = async (models: Models) => {
         {
           name: "Tarjeta de Crédito Reba",
           user_id,
-          current_quota: 1,
           debt_id: "123e4567-e89b-12d3-a456-426614174002" as Uuid,
           interest_per_installment: 3.57,
           total_interest: 11.11,
@@ -48,7 +45,6 @@ const seedDebt = async (models: Models) => {
         {
           name: "Tarjeta de Crédito Banco Patagonia",
           user_id,
-          current_quota: 1,
           debt_id: "123e4567-e89b-12d3-a456-426614174003" as Uuid,
           interest_per_installment: 3.57,
           total_interest: 11.11,
@@ -61,7 +57,6 @@ const seedDebt = async (models: Models) => {
         {
           name: "Tarjeta de Crédito Uala",
           user_id,
-          current_quota: 1,
           debt_id: "123e4567-e89b-12d3-a456-426614174004" as Uuid,
           interest_per_installment: 3.57,
           total_interest: 11.11,
@@ -74,7 +69,6 @@ const seedDebt = async (models: Models) => {
         {
           name: "Moni Prestamos",
           user_id,
-          current_quota: 1,
           debt_id: "123e4567-e89b-12d3-a456-426614174005" as Uuid,
           interest_per_installment: 3.57,
           total_interest: 11.11,

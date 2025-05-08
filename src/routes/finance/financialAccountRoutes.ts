@@ -4,6 +4,7 @@ import {
   getFinancialAccounts,
   deleteFinancialAccount,
   editFinancialAccount,
+  getIsValidAccountName,
 } from "@controllers";
 import { runValidate } from "@middlewares";
 import {
@@ -15,6 +16,7 @@ import {
 const router = express.Router();
 
 router.get("/", getFinancialAccounts);
+router.get("/check-name", getIsValidAccountName);
 router.post("/", createFinancialAccounts);
 router.patch(
   "/:id",

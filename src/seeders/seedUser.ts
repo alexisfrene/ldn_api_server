@@ -1,5 +1,5 @@
-import { hashPassword } from "@utils";
 import { Models } from "@models";
+import { hashPassword } from "@utils";
 import { user_id } from "./contextSeeders";
 
 const seedUsers = async (models: Models) => {
@@ -18,7 +18,7 @@ const seedUsers = async (models: Models) => {
             "https://res.cloudinary.com/ldn-img/image/upload/v1711132173/default-avatar/male.webp",
         },
       ],
-      { ignoreDuplicates: true }
+      { ignoreDuplicates: true },
     );
 
     console.log("Seeding Users completed successfully!");

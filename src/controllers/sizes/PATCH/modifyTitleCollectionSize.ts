@@ -5,7 +5,7 @@ const Size = models.Size;
 
 export const modifyTitleCollectionSize = async (
   req: Request,
-  res: Response
+  res: Response,
 ) => {
   const size_id = req.params.id;
   const user_id = req.user;

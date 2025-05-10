@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
 import { Uuid } from "types";
+import { models } from "@lib";
 
 const Product = models.Product;
 

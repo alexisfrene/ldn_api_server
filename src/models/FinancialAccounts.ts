@@ -8,11 +8,12 @@ import {
   Model,
   Sequelize,
 } from "sequelize";
-import { Uuid } from "../types";
 import { Models } from "@models";
-import { UserAttributes } from "./Users";
+import { Uuid } from "../types";
 import { MovementAttributes } from "./Movements";
 import { PaymentMethod } from "./PaymentMethods";
+import { UserAttributes } from "./Users";
+
 export class FinancialAccount extends Model<
   InferAttributes<FinancialAccount>,
   InferCreationAttributes<FinancialAccount>
@@ -35,14 +36,14 @@ export class FinancialAccount extends Model<
       {
         as: "FinancialAccountMovements",
         foreignKey: "financial_accounts_id",
-      }
+      },
     );
     const FinancialAccountsPaymentMethods = FinancialAccount.belongsToMany(
       models.PaymentMethod,
       {
         through: models.FinancialAccountsPaymentMethods,
         foreignKey: "financial_accounts_id",
-      }
+      },
     );
     return {
       FinancialAccountUser,
@@ -84,7 +85,7 @@ export default (sequelize: Sequelize) => {
       modelName: "FinancialAccount",
       tableName: "financialAccounts",
       timestamps: true,
-    }
+    },
   );
   return FinancialAccount;
 };

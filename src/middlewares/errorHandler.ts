@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 
 interface CustomError extends Error {
   status?: number;
@@ -7,7 +7,7 @@ export const errorHandler = (
   err: CustomError,
   _req: Request,
   res: Response,
-  _next: NextFunction
+  _next: NextFunction,
 ) => {
   console.error(err.stack);
 

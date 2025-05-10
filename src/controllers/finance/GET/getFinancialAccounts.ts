@@ -11,7 +11,7 @@ export const getFinancialAccounts = async (req: Request, res: Response) => {
     const movements = user ? await user.getUserMovements() : [];
 
     const formatter = await Promise.all(
-      financialAccounts.map(async account => {
+      financialAccounts.map(async (account) => {
         const financialAccountWithPaymentMethods =
           await FinancialAccount.findOne({
             where: { financial_accounts_id: account.financial_accounts_id },
@@ -27,7 +27,7 @@ export const getFinancialAccounts = async (req: Request, res: Response) => {
 
         const filterMovements = movements.filter(
           (movement: any) =>
-            movement.financial_accounts_id === account.financial_accounts_id
+            movement.financial_accounts_id === account.financial_accounts_id,
         );
 
         const totalValue = filterMovements.reduce(
@@ -38,7 +38,7 @@ export const getFinancialAccounts = async (req: Request, res: Response) => {
               return acc + movement.value;
             }
           },
-          0
+          0,
         );
 
         return {
@@ -47,13 +47,13 @@ export const getFinancialAccounts = async (req: Request, res: Response) => {
           name: account.name,
           paymentMethods:
             financialAccountWithPaymentMethods?.PaymentMethods?.map(
-              paymentMethod => ({
+              (paymentMethod) => ({
                 name: paymentMethod.name,
                 payment_method_id: paymentMethod.payment_method_id,
-              })
+              }),
             ),
         };
-      })
+      }),
     );
 
     const sortedFormatter = formatter.sort((a, b) => b.total - a.total);
@@ -80,7 +80,9 @@ export const getIsValidAccountName = async (req: Request, res: Response) => {
     }
 
     const financialAccounts = await user.getUserFinancialAccounts();
-    const nameExists = financialAccounts.some(account => account.name === name);
+    const nameExists = financialAccounts.some(
+      (account) => account.name === name,
+    );
 
     return res.status(200).json({ isValidAccountName: !nameExists });
   } catch (error) {

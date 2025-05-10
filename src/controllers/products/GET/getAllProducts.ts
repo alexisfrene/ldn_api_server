@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
 import { env } from "config/environment";
+import { models } from "@lib";
 
 const User = models.User;
 const Product = models.Product;
@@ -15,16 +15,16 @@ export const getAllProducts = async (req: Request, res: Response) => {
         .status(400)
         .json({ error: "El usuario no tiene productos cargados" });
     const products = allProducts.filter(
-      (producto: { state: boolean }) => producto.state === true
+      (producto: { state: boolean }) => producto.state === true,
     );
     if (Array.isArray(products)) {
       const productDetails = await Promise.all(
-        products.map(async product => {
+        products.map(async (product) => {
           const productFromDB = await Product.findByPk(product.product_id);
           if (productFromDB) {
             const size = await productFromDB.getSizeProducts();
             const sizeValue = size
-              ? size.values.find(e => e.id === productFromDB.size_value)
+              ? size.values.find((e) => e.id === productFromDB.size_value)
               : null;
             const urlCloudinary = `${
               env === "production" ? "https" : req.protocol
@@ -50,7 +50,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
               state: false,
             };
           }
-        })
+        }),
       );
 
       return res.status(200).json(
@@ -58,7 +58,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
           if (a.product_id < b.product_id) return -1;
           if (a.product_id > b.product_id) return 1;
           return 0;
-        })
+        }),
       );
     }
 

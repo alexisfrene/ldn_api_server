@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
 import { Uuid } from "types";
+import { models } from "@lib";
 import { uploadToMinio } from "@lib/minio";
 
 const Variation = models.Variation;
@@ -15,7 +15,7 @@ export const insertNewCollection = async (req: Request, res: Response) => {
     return res
       .status(500)
       .json({ error: true, message: "Error insertNewCollection" });
-  const uploadPromises = files.map(async file => {
+  const uploadPromises = files.map(async (file) => {
     await uploadToMinio(file, `${user_id}/variations`, user_id as string);
 
     return file.filename || "";

@@ -12,7 +12,7 @@ const seedCategories = async (models: Models) => {
           values: [{ icon_url: "", id: "default", value: "Sin categoría" }],
         },
       ],
-      { ignoreDuplicates: true }
+      { ignoreDuplicates: true },
     );
 
     console.log("Seeding Categories completed successfully!");

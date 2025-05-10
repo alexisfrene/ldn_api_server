@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
+import { env, minioConfig } from "config/environment";
 import * as Minio from "minio";
 import { getFileNameWithoutExtension } from "@utils";
-import { env, minioConfig } from "config/environment";
 
 if (!minioConfig) {
   throw new Error(`MinIO configuration for environment ${env} not found.`);
@@ -53,7 +53,7 @@ const getImageSize = async (filePath: string) => {
 export const uploadToMinio = async (
   file: Express.Multer.File,
   folder: string,
-  user_id: string
+  user_id: string,
 ) => {
   const public_id = getFileNameWithoutExtension(file.filename);
   const bucket = minioConfig.bucketName || "";
@@ -84,7 +84,7 @@ export const uploadToMinio = async (
       bucket,
       `${folder}/${public_id}`,
       file.path,
-      metaData
+      metaData,
     );
 
     await fs.unlink(file.path).catch(console.error);
@@ -155,7 +155,7 @@ export const moveFileInMinio = async (oldPath: string, newPath: string) => {
 export const downloadFromMinio = async (
   fileName: string,
   folder: string,
-  destinationPath: string
+  destinationPath: string,
 ) => {
   try {
     const bucket = minioConfig.bucketName!;
@@ -173,7 +173,7 @@ export const downloadFromMinio = async (
 
 export const copyFileInMinio = async (
   sourcePath: string,
-  destinationPath: string
+  destinationPath: string,
 ) => {
   try {
     const bucket = minioConfig.bucketName!;
@@ -181,7 +181,7 @@ export const copyFileInMinio = async (
     await minioClient.copyObject(
       bucket,
       destinationPath,
-      `/${bucket}/${sourcePath}`
+      `/${bucket}/${sourcePath}`,
     );
 
     console.log(`File copied from ${sourcePath} to ${destinationPath}`);

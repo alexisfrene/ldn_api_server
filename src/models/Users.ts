@@ -1,24 +1,24 @@
 import {
-  Model,
-  Sequelize,
-  InferAttributes,
-  InferCreationAttributes,
   CreationOptional,
   DataTypes,
   HasManyGetAssociationsMixin,
+  InferAttributes,
+  InferCreationAttributes,
+  Model,
+  Sequelize,
 } from "sequelize";
-import { Uuid } from "../types";
-import { CategoryAttributes } from "./Categories";
-import { VariationAttributes } from "./Variations";
-import { ProductAttributes } from "./Products";
-import { FinancialAccountAttributes } from "./FinancialAccounts";
-import { PaymentMethodAttributes } from "./PaymentMethods";
-import { MovementAttributes } from "./Movements";
-import { SizeAttributes } from "./Sizes";
-import { ExpenseAttributes } from "./Expenses";
 import { Models } from "@models";
-import { DebtAttributes } from "./Debts";
+import { Uuid } from "../types";
 import { BrandAttributes } from "./Brands";
+import { CategoryAttributes } from "./Categories";
+import { DebtAttributes } from "./Debts";
+import { ExpenseAttributes } from "./Expenses";
+import { FinancialAccountAttributes } from "./FinancialAccounts";
+import { MovementAttributes } from "./Movements";
+import { PaymentMethodAttributes } from "./PaymentMethods";
+import { ProductAttributes } from "./Products";
+import { SizeAttributes } from "./Sizes";
+import { VariationAttributes } from "./Variations";
 
 export type UserAttributes = InferAttributes<User>;
 export type UserCreationAttributes = InferCreationAttributes<
@@ -189,7 +189,7 @@ export default (sequelize: Sequelize) => {
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
     },
-    { sequelize, modelName: "User", tableName: "users", timestamps: true }
+    { sequelize, modelName: "User", tableName: "users", timestamps: true },
   );
 
   return User;

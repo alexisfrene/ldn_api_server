@@ -7,12 +7,12 @@ import {
   Model,
   Sequelize,
 } from "sequelize";
-import { Uuid } from "../types";
 import { Models } from "@models";
+import { Uuid } from "../types";
+import { DebtAttributes } from "./Debts";
 import { FinancialAccountAttributes } from "./FinancialAccounts";
 import { PaymentMethodAttributes } from "./PaymentMethods";
 import { UserAttributes } from "./Users";
-import { DebtAttributes } from "./Debts";
 
 export type MovementAttributes = InferAttributes<Movement>;
 export type MovementCreationAttributes = InferCreationAttributes<
@@ -49,7 +49,7 @@ export class Movement extends Model<
       {
         as: "FinancialAccountMovements",
         foreignKey: "financial_accounts_id",
-      }
+      },
     );
     const PaymentMethodMovements = Movement.belongsTo(models.PaymentMethod, {
       as: "PaymentMethodMovements",
@@ -159,7 +159,7 @@ export default (sequelize: Sequelize) => {
       modelName: "Movement",
       tableName: "movements",
       timestamps: true,
-    }
+    },
   );
   return Movement;
 };

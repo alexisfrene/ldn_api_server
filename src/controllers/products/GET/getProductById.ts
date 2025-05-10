@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
-import { ageTranslations, genderTranslations, styleTranslations } from "mocks";
 import { env } from "config/environment";
+import { ageTranslations, genderTranslations, styleTranslations } from "mocks";
+import { models } from "@lib";
 
 const Product = models.Product;
 const Brand = models.Brand;
@@ -22,11 +22,11 @@ export const getProductById = async (req: Request, res: Response) => {
 
   const category = await product.getCategoryProducts();
   const categoryValue = category
-    ? category.values.find(e => e.id === product.category_value)
+    ? category.values.find((e) => e.id === product.category_value)
     : null;
   const size = await product.getSizeProducts();
   const sizeValue = size
-    ? size.values.find(e => e.id === product.size_value)
+    ? size.values.find((e) => e.id === product.size_value)
     : null;
 
   const detail: any = await product.getDetailProduct({
@@ -54,11 +54,11 @@ export const getProductById = async (req: Request, res: Response) => {
           images: value.images.map(
             (image: string) =>
               `${env === "production" ? "https" : req.protocol}://${req.get(
-                "host"
-              )}/api/variations/images/${image.replace(/\.[^/.]+$/, "")}`
+                "host",
+              )}/api/variations/images/${image.replace(/\.[^/.]+$/, "")}`,
           ),
         });
-      }
+      },
     );
   }
 

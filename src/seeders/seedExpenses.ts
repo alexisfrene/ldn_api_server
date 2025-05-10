@@ -1,6 +1,7 @@
-import { Models } from "@models";
 import { Uuid } from "types";
+import { Models } from "@models";
 import { user_id } from "./contextSeeders";
+
 const seedExpenses = async (models: Models) => {
   try {
     await models.Expense.bulkCreate(
@@ -30,7 +31,7 @@ const seedExpenses = async (models: Models) => {
           expense_id: "123e4567-e89b-12d3-a456-426614174003" as Uuid,
         },
       ],
-      { ignoreDuplicates: true }
+      { ignoreDuplicates: true },
     );
 
     console.log("Seeding seedExpenses completed successfully!");

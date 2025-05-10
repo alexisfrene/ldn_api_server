@@ -7,8 +7,8 @@ import {
   Sequelize,
 } from "sequelize";
 import { Uuid } from "../types";
-import { PaymentMethod } from "./PaymentMethods";
 import { FinancialAccount } from "./FinancialAccounts";
+import { PaymentMethod } from "./PaymentMethods";
 
 export type FinancialAccountsPaymentMethodsAttributes =
   InferAttributes<FinancialAccountsPaymentMethods>;
@@ -50,7 +50,7 @@ export default (sequelize: Sequelize) => {
       modelName: "financialAccountsPaymentMethods",
       tableName: "FinancialAccountsPaymentMethods",
       timestamps: true,
-    }
+    },
   );
   return FinancialAccountsPaymentMethods;
 };

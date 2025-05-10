@@ -5,7 +5,7 @@ const Category = models.Category;
 
 export const modifyTitleCollectionCategory = async (
   req: Request,
-  res: Response
+  res: Response,
 ) => {
   const category_id = req.params.id;
   const user_id = req.user;

@@ -1,26 +1,26 @@
-import "tsconfig-paths/register";
 import express from "express";
-import cors from "cors";
-import morgan from "morgan";
-import helmet from "helmet";
 import fs from "node:fs";
 import path from "node:path";
+import { port } from "config/environment";
+import cors from "cors";
 import { rateLimit } from "express-rate-limit";
+import helmet from "helmet";
+import { initializeObjectStore } from "initializeObjectStore";
+import morgan from "morgan";
+import "tsconfig-paths/register";
 import {
-  variationsRoutes,
-  usersRoutes,
-  productsRoutes,
-  categoriesRoutes,
-  sizeRoutes,
-  financeRoutes,
   brandsRoutes,
+  categoriesRoutes,
+  financeRoutes,
+  productsRoutes,
+  sizeRoutes,
+  usersRoutes,
+  variationsRoutes,
 } from "@routes";
 import { errorHandler } from "@middlewares";
 import { sequelize } from "@lib";
 import { initializeDB } from "./initializeDB";
 import { startServer } from "./startServer";
-import { initializeObjectStore } from "initializeObjectStore";
-import { port } from "config/environment";
 
 const app = express();
 app.set("trust proxy", "172.17.0.1");
@@ -32,7 +32,7 @@ const limiter = rateLimit({
 });
 const accessLogStream = fs.createWriteStream(
   path.join(__dirname, "access.log"),
-  { flags: "a" }
+  { flags: "a" },
 );
 
 app.use(limiter);
@@ -49,14 +49,14 @@ app.use(
       tokens["response-time"](req, res),
       "ms",
     ].join(" ");
-  })
+  }),
 );
 
 app.use(
   cors({
     origin: ["https://lodenaty.com", "http://localhost:5173"],
     credentials: true,
-  })
+  }),
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -71,7 +71,7 @@ app.use(
   categoriesRoutes,
   sizeRoutes,
   financeRoutes,
-  brandsRoutes
+  brandsRoutes,
 );
 app.use(errorHandler);
 

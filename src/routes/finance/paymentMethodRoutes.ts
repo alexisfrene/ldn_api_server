@@ -1,7 +1,7 @@
 import express from "express";
 import {
-  getPaymentMethodsById,
   createPaymentMethod,
+  getPaymentMethodsById,
   getPaymentMethodsByUser,
 } from "@controllers";
 import { runValidate } from "@middlewares";
@@ -13,7 +13,7 @@ router.get("/:id", getPaymentMethodsById);
 router.post(
   "/",
   runValidate(createPaymentMethodsValidations),
-  createPaymentMethod
+  createPaymentMethod,
 );
 
 export default router;

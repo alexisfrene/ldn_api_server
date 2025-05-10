@@ -51,7 +51,7 @@ const seedSizes = async (models: Models) => {
           ],
         },
       ],
-      { ignoreDuplicates: true }
+      { ignoreDuplicates: true },
     );
 
     console.log("Seeding Sizes completed successfully!");

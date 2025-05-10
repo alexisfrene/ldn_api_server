@@ -1,4 +1,5 @@
-import { QueryInterface, DataTypes } from "sequelize";
+import { DataTypes, QueryInterface } from "sequelize";
+
 type SizeItem = {
   id: number;
   value: string;
@@ -34,7 +35,7 @@ export async function up(queryInterface: QueryInterface) {
             }
             if (!item.value || typeof item.value !== "string") {
               throw new Error(
-                "Each item in values must have a 'value' property of type string"
+                "Each item in values must have a 'value' property of type string",
               );
             }
           }

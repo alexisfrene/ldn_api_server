@@ -1,5 +1,6 @@
-import { models } from "@lib";
 import { Request, Response } from "express";
+import { models } from "@lib";
+
 const { Expense } = models;
 export const updateExpense = async (req: Request, res: Response) => {
   const { expense_id } = req.params;

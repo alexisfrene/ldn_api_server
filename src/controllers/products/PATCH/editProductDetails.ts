@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { cleanObject } from "@utils";
 import { models } from "@lib";
+import { cleanObject } from "@utils";
 
 const Product = models.Product;
 const Detail = models.Detail;

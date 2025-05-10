@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
+import { jwtSecret } from "config/environment";
 import jwt from "jsonwebtoken";
 import { models } from "@lib";
-import { jwtSecret } from "config/environment";
 
 const User = models.User;
 
@@ -29,7 +29,7 @@ export const userLogin = async (req: Request, res: Response) => {
     if (userSearch) {
       const isPasswordValid = await bcrypt.compare(
         password,
-        userSearch?.password_hash || ""
+        userSearch?.password_hash || "",
       );
       if (isPasswordValid && jwtSecret) {
         const token = jwt.sign({ user_id: userSearch.user_id }, jwtSecret, {
@@ -37,7 +37,7 @@ export const userLogin = async (req: Request, res: Response) => {
         });
         await User.update(
           { session_token: token },
-          { where: { user_id: userSearch.user_id } }
+          { where: { user_id: userSearch.user_id } },
         );
         const session_token = await User.findByPk(userSearch.user_id, {
           attributes: ["session_token"],

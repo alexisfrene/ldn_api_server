@@ -1,5 +1,5 @@
-import { minioClient } from "@lib/minio";
 import { env, minioConfig } from "config/environment";
+import { minioClient } from "@lib/minio";
 
 if (!minioConfig) {
   throw new Error(`❌ MinIO config not found for environment: ${env}`);

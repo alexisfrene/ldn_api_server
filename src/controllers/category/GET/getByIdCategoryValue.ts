@@ -33,7 +33,7 @@ export const getByIdCategoryValue = async (req: Request, res: Response) => {
         category.values.find((value: { id: string }) => value.id === id)
       );
     },
-    null
+    null,
   );
 
   return res.status(200).json(selectedValue);

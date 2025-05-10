@@ -1,22 +1,23 @@
 import express, { NextFunction, Request, Response } from "express";
 import axios from "axios";
-import { upload } from "@lib";
+import sharp from "sharp";
 import {
-  getAllVariations,
-  insertVariants,
-  createVariation,
-  updateProduct,
-  deleteVariationById,
-  getVariationById,
   addImagesCollection,
+  createVariation,
+  deleteVariationById,
+  getAllVariations,
+  getVariationById,
   getVariationForCategory,
-  removeImagesCollection,
   insertNewCollection,
+  insertVariants,
+  removeImagesCollection,
+  updateProduct,
 } from "@controllers";
+import { upload } from "@lib";
 import { getTemporaryUrl } from "@lib/minio";
 
 const router = express.Router();
-import sharp from "sharp";
+
 interface ImageQuery {
   width?: string;
   height?: string;
@@ -44,7 +45,7 @@ router.get(
         format = "webp";
       }
       const imageUrl = await getTemporaryUrl(
-        `${userId}/variations/${fileName}`
+        `${userId}/variations/${fileName}`,
       );
       if (!imageUrl) {
         return res.status(400).json({ error: "Invalid image URL" });
@@ -70,7 +71,7 @@ router.get(
       console.error("Error al obtener la imagen:", error);
       return res.status(500).json({ error: "No se pudo obtener la imagen" });
     }
-  }
+  },
 );
 
 const conditionalUpload = (req: Request, res: Response, next: NextFunction) => {

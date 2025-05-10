@@ -1,13 +1,13 @@
+import { Application } from "express";
 import fs from "node:fs";
 import path from "node:path";
-import { Application } from "express";
 import { deleteFilesInTemp } from "@utils";
 
 const tempDir = path.join(process.cwd(), "temp");
 
 export const startServer = (
   app: Application,
-  port: number | string
+  port: number | string,
 ): Promise<void> => {
   return new Promise((resolve, reject) => {
     if (!fs.existsSync(tempDir)) {

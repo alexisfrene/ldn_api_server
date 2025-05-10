@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
 import { Op } from "sequelize";
+import { models } from "@lib";
 import { calculateTotals, endOfMonth, startOfMonth } from "@utils";
 
 const { User, Expense, PaymentMethod, FinancialAccount } = models;
@@ -38,7 +38,7 @@ export const getExpenses = async (req: Request, res: Response) => {
         money_outflow: totalsForAllTime.money_outflow || 0,
         count_movements: totalsForAllTime.count_movements || 0,
       };
-    })
+    }),
   );
 
   return res.status(200).json(formattedExpenses);
@@ -72,7 +72,7 @@ export const getExpenseById = async (req: Request, res: Response) => {
         id: movement.movements_id,
         entry_date: movement.entry_date,
       };
-    })
+    }),
   );
 
   return res.status(200).json({

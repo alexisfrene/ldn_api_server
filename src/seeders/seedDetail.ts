@@ -54,7 +54,7 @@ const seedDetails = async (models: Models) => {
           style: "Vintage",
         },
       ],
-      { ignoreDuplicates: true }
+      { ignoreDuplicates: true },
     );
 
     console.log("Seeding Details completed successfully!");

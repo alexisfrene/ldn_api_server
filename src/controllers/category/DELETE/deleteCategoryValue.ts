@@ -26,7 +26,7 @@ export const deleteCategoryValue = async (req: Request, res: Response) => {
     }
 
     const deleteValue = categorySelected.values.find(
-      (value: { id: string }) => value.id === category_value
+      (value: { id: string }) => value.id === category_value,
     );
 
     if (!deleteValue) {
@@ -37,7 +37,7 @@ export const deleteCategoryValue = async (req: Request, res: Response) => {
     }
 
     const newValues = categorySelected.values.filter(
-      (value: { id: string }) => value.id !== category_value
+      (value: { id: string }) => value.id !== category_value,
     );
 
     const user = await User.findByPk(user_id);
@@ -48,8 +48,8 @@ export const deleteCategoryValue = async (req: Request, res: Response) => {
 
       await Promise.all(
         userProducts.map((product: any) =>
-          product.update({ category_value: null })
-        )
+          product.update({ category_value: null }),
+        ),
       );
     }
 

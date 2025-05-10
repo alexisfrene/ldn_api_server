@@ -1,18 +1,18 @@
 import { Sequelize } from "sequelize";
-import userModel from "./Users";
-import sizeModel from "./Sizes";
-import debtsModel from "./Debts";
 import brandModel from "./Brands";
-import detailModel from "./Details";
-import productModel from "./Products";
-import expenseModel from "./Expenses";
-import movementsModel from "./Movements";
 import categoryModel from "./Categories";
-import variationModel from "./Variations";
-import installmentsModel from "./Installments";
-import paymentMethodsModel from "./PaymentMethods";
+import debtsModel from "./Debts";
+import detailModel from "./Details";
+import expenseModel from "./Expenses";
 import financialAccountsModel from "./FinancialAccounts";
 import financialAccountsPaymentMethodsModel from "./FinancialAccountsPaymentMethods";
+import installmentsModel from "./Installments";
+import movementsModel from "./Movements";
+import paymentMethodsModel from "./PaymentMethods";
+import productModel from "./Products";
+import sizeModel from "./Sizes";
+import userModel from "./Users";
+import variationModel from "./Variations";
 
 interface ModelAssociations {
   Category: ReturnType<typeof categoryModel>["associate"];

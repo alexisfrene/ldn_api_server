@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import bcrypt from "bcrypt";
-import { MovementAttributes } from "@models/Movements";
 import { saltRounds } from "config/environment";
+import { MovementAttributes } from "@models/Movements";
 
 interface TotalsByType {
   [key: string]: number;
@@ -14,7 +14,7 @@ const tempDir = path.join(process.cwd(), "temp");
 
 if (!saltRounds) {
   throw new Error(
-    "The salt rounds were not found in the environment variables"
+    "The salt rounds were not found in the environment variables",
   );
 }
 
@@ -25,7 +25,7 @@ export const hashPassword = async (password: string): Promise<string> => {
 };
 
 export const getFileNameWithoutExtension = (
-  fileNameWithExtension: string
+  fileNameWithExtension: string,
 ): string => {
   const lastIndex = fileNameWithExtension.lastIndexOf(".");
   if (lastIndex !== -1) {
@@ -36,10 +36,10 @@ export const getFileNameWithoutExtension = (
 
 export const cleanObject = (
   obj: Record<string, any>,
-  keysToCheck: string[]
+  keysToCheck: string[],
 ) => {
   const propertiesToEdit: Record<string, any> = {};
-  keysToCheck.forEach(key => {
+  keysToCheck.forEach((key) => {
     if (obj.hasOwnProperty(key)) {
       if (obj[key] === null || obj[key] === undefined || obj[key] === "") {
         delete obj[key];
@@ -91,14 +91,14 @@ export const deleteFilesInTemp = () => {
 
     if (files.length === 0) {
       console.log(
-        'La carpeta "temp" está vacía, no hay archivos para eliminar.'
+        'La carpeta "temp" está vacía, no hay archivos para eliminar.',
       );
       return;
     }
-    files.forEach(file => {
+    files.forEach((file) => {
       const filePath = path.join(tempDir, file);
 
-      fs.unlink(filePath, err => {
+      fs.unlink(filePath, (err) => {
         if (err) {
           console.error(`Error eliminando el archivo ${file}: ${err.message}`);
         } else {
@@ -115,7 +115,7 @@ export const calculateTotals = (movements: MovementAttributes[]) =>
       totals[movement.type] = (totals[movement.type] || 0) + movement.value;
       return totals;
     },
-    { count_movements: movements.length }
+    { count_movements: movements.length },
   );
 
 const currentYear = new Date().getFullYear();
@@ -128,7 +128,7 @@ export const endOfMonth = new Date(
   0,
   23,
   59,
-  59
+  59,
 );
 
 export const validateUserInput = (data: any) => {

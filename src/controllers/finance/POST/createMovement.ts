@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
 import { Uuid } from "types";
+import { models } from "@lib";
 
 const { Movement, Debt, Installment } = models;
 
@@ -17,13 +17,13 @@ export const createMovement = async (req: Request, res: Response) => {
   const date = entry_date?.split("-");
   if (type === "debt") {
     const installmentsSelect = await Debt.findByPk(req.body?.debt_id).then(
-      (res) => res?.getDebtInstallments()
+      (res) => res?.getDebtInstallments(),
     );
     const filterInstallment = installmentsSelect?.find(
-      (e) => e.installment_id === req.body.installment_id
+      (e) => e.installment_id === req.body.installment_id,
     );
     const installmentUpdate = await Installment.findByPk(
-      filterInstallment?.installment_id
+      filterInstallment?.installment_id,
     );
     installmentUpdate?.update({ status: "paid" });
 

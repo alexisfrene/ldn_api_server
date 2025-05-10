@@ -1,13 +1,13 @@
 import express from "express";
 import {
   createExpense,
-  getExpenses,
-  getExpenseById,
-  updateExpense,
   deleteExpense,
+  getExpenseById,
+  getExpenses,
+  updateExpense,
 } from "@controllers";
-import { createExpenseValidations } from "@validators";
 import { runValidate } from "@middlewares";
+import { createExpenseValidations } from "@validators";
 
 const router = express.Router();
 

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
 import { Uuid } from "types";
+import { models } from "@lib";
 import { uploadToMinio } from "@lib/minio";
 
 const User = models.User;
@@ -42,7 +42,7 @@ export const createVariation = async (req: Request, res: Response) => {
 
     if (category) {
       const verifyCategory = category.values.find(
-        (value: { id: string }) => value.id === category_value
+        (value: { id: string }) => value.id === category_value,
       );
 
       if (verifyCategory) {
@@ -51,7 +51,7 @@ export const createVariation = async (req: Request, res: Response) => {
       }
     }
   }
-  const uploadPromises = files.map(async file => {
+  const uploadPromises = files.map(async (file) => {
     await uploadToMinio(file, `${user_id}/variations`, user_id as string);
 
     return file.filename || "";

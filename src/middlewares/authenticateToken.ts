@@ -1,12 +1,12 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
+import { jwtSecret } from "config/environment";
 import jwt from "jsonwebtoken";
 import { Uuid } from "../types";
-import { jwtSecret } from "config/environment";
 
 export const authenticateToken = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const token = req.headers.authorization?.split(" ")[1];
 
@@ -22,13 +22,13 @@ export const authenticateToken = async (
     token,
     jwtSecret || "",
     { algorithms: ["HS256"] },
-    async err => {
+    async (err) => {
       if (err) {
         return res.status(401).json({ message: "Unauthorized: Invalid token" });
       }
       req.user = decodedToken.user_id;
 
       return next();
-    }
+    },
   );
 };

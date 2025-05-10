@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
 import { InferAttributes } from "sequelize";
 import { Movement } from "@models/Movements";
+import { models } from "@lib";
 
 const { PaymentMethod, FinancialAccount } = models;
 type MovementWithRelations = InferAttributes<Movement> & {
@@ -47,7 +47,7 @@ export const getAllMoves = async (req: Request, res: Response) => {
       offset,
     });
 
-  const formatted = rows.map(movement => ({
+  const formatted = rows.map((movement) => ({
     label: movement.label,
     value: movement.value,
     type: movement.type,

@@ -1,23 +1,24 @@
 import express, { Request, Response } from "express";
-import { conditionalUpload, handleProductType } from "@middlewares";
+import axios from "axios";
+import sharp from "sharp";
 import {
-  deleteProduct,
-  createProducts,
-  getAllProducts,
-  editProductDetails,
-  editProductData,
   changeImageProduct,
-  getProductById,
-  linkVariation,
-  getProductForCategory,
+  createProducts,
+  deleteProduct,
+  editProductData,
+  editProductDetails,
+  getAllProducts,
   getImageProduct,
+  getProductById,
+  getProductForCategory,
+  linkVariation,
 } from "@controllers";
+import { conditionalUpload, handleProductType } from "@middlewares";
 import { upload } from "@lib";
 import { getTemporaryUrl } from "@lib/minio";
-import axios from "axios";
+
 const router = express.Router();
 
-import sharp from "sharp";
 interface ImageQuery {
   width?: string;
   height?: string;
@@ -69,7 +70,7 @@ router.get(
       console.error("Error al obtener la imagen:", error);
       return res.status(500).json({ error: "No se pudo obtener la imagen" });
     }
-  }
+  },
 );
 
 router.get("/", async (req, res) => {
@@ -86,7 +87,7 @@ router.post(
   "/",
 
   upload.single("file"),
-  createProducts
+  createProducts,
 );
 
 router.delete("/:id", deleteProduct);

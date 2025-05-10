@@ -1,10 +1,10 @@
 import express from "express";
 import {
   createDebts,
+  deleteDebt,
+  editDebt,
   getAllDebts,
   getDebtsById,
-  editDebt,
-  deleteDebt,
 } from "@controllers";
 import { runValidate } from "@middlewares";
 import { createDebtValidations } from "@validators";

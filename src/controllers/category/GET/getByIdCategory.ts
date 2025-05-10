@@ -29,7 +29,7 @@ export const getByIdCategory = async (req: Request, res: Response) => {
       order: [["category_id", "ASC"]],
     });
     const selectedCategory = categories.find(
-      (category) => category.category_id === Number(id)
+      (category) => category.category_id === Number(id),
     );
 
     return res.status(200).json(selectedCategory);

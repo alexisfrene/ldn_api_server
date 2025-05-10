@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import axios from "axios";
-import { models, sequelize } from "@lib";
 import { Uuid } from "types";
+import { models, sequelize } from "@lib";
 import { uploadToMinio } from "@lib/minio";
 
 const { Product, Category, Size, Detail } = models;
@@ -60,7 +60,7 @@ export const createProducts = async (req: Request, res: Response) => {
       const category = await Category.findByPk(category_id);
       if (
         category?.values?.some(
-          (value: { id: string }) => value.id === category_value
+          (value: { id: string }) => value.id === category_value,
         )
       ) {
         newProductData.category_id = category_id;
@@ -86,12 +86,12 @@ export const createProducts = async (req: Request, res: Response) => {
 
     try {
       const { data } = await axios.get(
-        "https://dolarapi.com/v1/dolares/contadoconliqui"
+        "https://dolarapi.com/v1/dolares/contadoconliqui",
       );
       newProductData.dollar_today = Math.floor(Number(data?.venta)) || 1;
     } catch {
       console.warn(
-        "No se pudo obtener el valor del dólar, usando 1 por defecto."
+        "No se pudo obtener el valor del dólar, usando 1 por defecto.",
       );
     }
 

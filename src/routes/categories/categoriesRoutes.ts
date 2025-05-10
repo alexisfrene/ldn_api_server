@@ -1,13 +1,7 @@
 import express, { Request, Response } from "express";
+import axios from "axios";
 import { matchedData, validationResult } from "express-validator";
-import { upload } from "@lib";
-import { runValidate } from "@middlewares";
-import {
-  getByIdCategoryValidator,
-  deleteByIdCategoryValidator,
-  createCategoryValidator,
-  updateCategoryValidator,
-} from "@validators";
+import sharp from "sharp";
 import {
   addCategoryValue,
   createCategories,
@@ -19,12 +13,18 @@ import {
   getByIdValueImageURL,
   modifyTitleCollectionCategory,
 } from "@controllers";
+import { runValidate } from "@middlewares";
+import {
+  createCategoryValidator,
+  deleteByIdCategoryValidator,
+  getByIdCategoryValidator,
+  updateCategoryValidator,
+} from "@validators";
+import { upload } from "@lib";
 import { getTemporaryUrl } from "@lib/minio";
 
 const router = express.Router();
 
-import axios from "axios";
-import sharp from "sharp";
 interface ImageQuery {
   width?: string;
   height?: string;
@@ -52,7 +52,7 @@ router.get(
         format = "webp";
       }
       const imageUrl = await getTemporaryUrl(
-        `${userId}/categories/${fileName}`
+        `${userId}/categories/${fileName}`,
       );
       if (!imageUrl) {
         return res.status(400).json({ error: "Invalid image URL" });
@@ -78,7 +78,7 @@ router.get(
       console.error("Error al obtener la imagen:", error);
       return res.status(500).json({ error: "No se pudo obtener la imagen" });
     }
-  }
+  },
 );
 
 router.get("/:id", runValidate(getByIdCategoryValidator), async (req, res) => {
@@ -105,7 +105,7 @@ router.delete(
     }
 
     return res.status(400).json({ errors: result.array() });
-  }
+  },
 );
 router.get("/", getAllCategories);
 
@@ -113,7 +113,7 @@ router.post(
   "/",
   upload.array("files"),
   runValidate(createCategoryValidator),
-  createCategories
+  createCategories,
 );
 
 router.patch(
@@ -129,7 +129,7 @@ router.patch(
     }
 
     return res.status(400).json({ errors: result.array() });
-  }
+  },
 );
 
 export default router;

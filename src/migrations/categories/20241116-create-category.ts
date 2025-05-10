@@ -1,4 +1,5 @@
-import { QueryInterface, DataTypes } from "sequelize";
+import { DataTypes, QueryInterface } from "sequelize";
+
 type CategoriesItem = {
   id: string;
   value: string;
@@ -38,12 +39,12 @@ export async function up(queryInterface: QueryInterface) {
             }
             if (!item.icon_url || typeof item.icon_url !== "string") {
               throw new Error(
-                "Each item in values must have an 'icon_url' property of type string"
+                "Each item in values must have an 'icon_url' property of type string",
               );
             }
             if (!item.value || typeof item.value !== "string") {
               throw new Error(
-                "Each item in values must have a 'value' property of type string"
+                "Each item in values must have a 'value' property of type string",
               );
             }
           }

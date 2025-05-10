@@ -21,7 +21,7 @@ export const addSizeValue = async (req: Request, res: Response) => {
   if (user) {
     const userSizes = await user.getUserSizes();
     const validateExistSize = userSizes.find(
-      (size) => size.size_id === Number(size_id)
+      (size) => size.size_id === Number(size_id),
     );
     if (!validateExistSize)
       return res
@@ -30,7 +30,7 @@ export const addSizeValue = async (req: Request, res: Response) => {
     const selectedSize = await Size.findByPk(size_id);
     if (selectedSize) {
       const validateRepeatValue = selectedSize.values.find(
-        (e) => e.value === value
+        (e) => e.value === value,
       );
       if (validateRepeatValue)
         return res.status(400).json({
@@ -43,7 +43,7 @@ export const addSizeValue = async (req: Request, res: Response) => {
       };
 
       const formatValues = selectedSize.values.filter(
-        (item) => item !== undefined
+        (item) => item !== undefined,
       );
       const updateSize = await selectedSize.update({
         values: [...formatValues, newValue],

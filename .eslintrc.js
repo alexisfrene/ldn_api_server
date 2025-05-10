@@ -19,5 +19,6 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  rules: {},
+  plugins: ["n"],
+  rules: { "n/prefer-node-protocol": "error"},
 };

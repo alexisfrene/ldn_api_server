@@ -7,8 +7,8 @@ import {
   Model,
   Sequelize,
 } from "sequelize";
-import { Uuid } from "../types";
 import { Models } from "@models";
+import { Uuid } from "../types";
 import { ProductAttributes } from "./Products";
 import { UserAttributes } from "./Users";
 
@@ -75,7 +75,7 @@ export default (sequelize: Sequelize) => {
               }
               if (!item.value || typeof item.value !== "string") {
                 throw new Error(
-                  "Each item in values must have a 'value' property of type string"
+                  "Each item in values must have a 'value' property of type string",
                 );
               }
             }
@@ -83,7 +83,7 @@ export default (sequelize: Sequelize) => {
         },
       },
     },
-    { sequelize, modelName: "Size", tableName: "sizes", timestamps: false }
+    { sequelize, modelName: "Size", tableName: "sizes", timestamps: false },
   );
   return Size;
 };

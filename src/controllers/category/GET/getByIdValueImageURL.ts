@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
 import { env } from "config/environment";
+import { models } from "@lib";
 
 const User = models.User;
 
@@ -34,7 +34,7 @@ export const getByIdValueImageURL = async (req: Request, res: Response) => {
         category.values.find((value: { id: string }) => value.id === id)
       );
     },
-    null
+    null,
   );
 
   if (!selectedValue) {
@@ -45,10 +45,10 @@ export const getByIdValueImageURL = async (req: Request, res: Response) => {
     selectedValue.id === "default"
       ? "https://res.cloudinary.com/daxkizsj3/image/upload/v1714359418/default_image.webp"
       : `${env === "production" ? "https" : req.protocol}://${req.get(
-          "host"
+          "host",
         )}/api/categories/images/${selectedValue.icon_url.replace(
           /\.[^/.]+$/,
-          ""
+          "",
         )}`;
 
   return res.status(200).json(url);

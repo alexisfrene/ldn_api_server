@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { cleanObject } from "@utils";
 import { models } from "@lib";
+import { cleanObject } from "@utils";
 
 const Product = models.Product;
 const Category = models.Category;
@@ -26,7 +26,7 @@ export const editProductData = async (req: Request, res: Response) => {
       const newCategory = await Category.findByPk(propertiesToEdit.category_id);
       if (newCategory) {
         const valuesNewCategory = newCategory.values.find(
-          (value) => value.id === propertiesToEdit.category_value
+          (value) => value.id === propertiesToEdit.category_value,
         );
 
         if (!valuesNewCategory) {
@@ -39,7 +39,7 @@ export const editProductData = async (req: Request, res: Response) => {
       const newSize = await Size.findByPk(propertiesToEdit.size_id);
       if (newSize) {
         const valuesNewSize = newSize.values.find(
-          (value) => value.id === propertiesToEdit.size_value
+          (value) => value.id === propertiesToEdit.size_value,
         );
         if (!valuesNewSize) {
           return res.status(400).json({ error: "Talla/numero invalida" });

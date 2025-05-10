@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
 import { env } from "config/environment";
+import { models } from "@lib";
 
 const User = models.User;
 
@@ -26,15 +26,15 @@ export const getAllVariations = async (req: Request, res: Response) => {
           const images = collection.images.map(
             (image: string) =>
               `${env === "production" ? "https" : req.protocol}://${req.get(
-                "host"
-              )}/api/variations/images/${image.replace(/\.[^/.]+$/, "")}`
+                "host",
+              )}/api/variations/images/${image.replace(/\.[^/.]+$/, "")}`,
           );
           return {
             id: collection.id,
             label: collection.label,
             images,
           };
-        }
+        },
       );
 
       return {
@@ -42,7 +42,7 @@ export const getAllVariations = async (req: Request, res: Response) => {
         title: variation.title,
         values,
       };
-    }
+    },
   );
 
   return res.status(200).json(variationsMapper);

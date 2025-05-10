@@ -23,7 +23,7 @@ export const deleteSizeValue = async (req: Request, res: Response) => {
       .json({ error: true, message: "El usuario no esta autentificado" });
   const sizeSelected = await Size.findByPk(size_id);
   const newValues = sizeSelected?.values.filter(
-    (value) => value.id !== size_value
+    (value) => value.id !== size_value,
   );
   const userProducts = await User.findByPk(user_id)
     .then((user) => {
@@ -36,8 +36,8 @@ export const deleteSizeValue = async (req: Request, res: Response) => {
     .then((products: any[]) =>
       products.filter(
         (product: { size_id: string; size_value: string }) =>
-          product.size_id === size_id && product.size_value === size_value
-      )
+          product.size_id === size_id && product.size_value === size_value,
+      ),
     );
   if (userProducts) {
     userProducts.forEach(async (product: any) => {

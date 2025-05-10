@@ -67,7 +67,7 @@ export const createMovementValidations = [
   body("type")
     .isIn(["inflow_of_money", "money_outflow", "debt"])
     .withMessage(
-      'El tipo debe ser "inflow_of_money" o "money_outflow" , "debt.'
+      'El tipo debe ser "inflow_of_money" o "money_outflow" , "debt.',
     ),
   body("value")
     .isInt({ min: 1 })
@@ -104,7 +104,7 @@ export const createDebtValidations = [
   body("payment_frequency")
     .isIn(["monthly", "bi-weekly", "weekly"])
     .withMessage(
-      'La frecuencia de pago debe ser "monthly", "bi-weekly" o "weekly".'
+      'La frecuencia de pago debe ser "monthly", "bi-weekly" o "weekly".',
     ),
   body("minimum_payment")
     .optional()
@@ -117,7 +117,7 @@ export const createDebtValidations = [
   body("installments")
     .isArray({ min: 1 })
     .withMessage("Se requiere al menos una cuota en installments.")
-    .custom(installments => {
+    .custom((installments) => {
       if (installments.length > 0) {
         return installments.every(
           (installment: {
@@ -129,13 +129,13 @@ export const createDebtValidations = [
             installment.amount > 0 &&
             typeof installment.due_date === "string" &&
             new Date(installment.due_date).toString() !== "Invalid Date" &&
-            ["unpaid", "paid"].includes(installment.status)
+            ["unpaid", "paid"].includes(installment.status),
         );
       }
       return true;
     })
     .withMessage(
-      "Cada cuota debe tener un monto positivo, una fecha de vencimiento válida y un estado adecuado (unpaid, paid)."
+      "Cada cuota debe tener un monto positivo, una fecha de vencimiento válida y un estado adecuado (unpaid, paid).",
     ),
 ];
 

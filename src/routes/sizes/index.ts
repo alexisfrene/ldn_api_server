@@ -7,7 +7,7 @@ const router = express.Router();
 router.use(
   "/size",
   authenticateToken,
-  asyncHandler(async (req, res, next) => sizeRoutes(req, res, next))
+  asyncHandler(async (req, res, next) => sizeRoutes(req, res, next)),
 );
 
 export { router };

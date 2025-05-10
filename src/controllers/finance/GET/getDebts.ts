@@ -30,7 +30,7 @@ export const getAllDebts = async (req: Request, res: Response) => {
   const sums = await Installment.findAll({
     where: {
       debt_id: {
-        [Op.in]: debts.map(d => d.debt_id),
+        [Op.in]: debts.map((d) => d.debt_id),
       },
     },
     attributes: [
@@ -38,7 +38,7 @@ export const getAllDebts = async (req: Request, res: Response) => {
       [
         Sequelize.fn(
           "SUM",
-          Sequelize.literal(`CASE WHEN status = 'paid' THEN amount ELSE 0 END`)
+          Sequelize.literal(`CASE WHEN status = 'paid' THEN amount ELSE 0 END`),
         ),
         "total_paid",
       ],
@@ -46,8 +46,8 @@ export const getAllDebts = async (req: Request, res: Response) => {
         Sequelize.fn(
           "SUM",
           Sequelize.literal(
-            `CASE WHEN status = 'unpaid' THEN amount ELSE 0 END`
-          )
+            `CASE WHEN status = 'unpaid' THEN amount ELSE 0 END`,
+          ),
         ),
         "total_unpaid",
       ],
@@ -72,7 +72,7 @@ export const getAllDebts = async (req: Request, res: Response) => {
   let debtsTotalUnpaid = 0;
 
   const formattedDebts = await Promise.all(
-    debts.map(async debt => {
+    debts.map(async (debt) => {
       const installments = await Installment.findAll({
         where: { debt_id: debt.debt_id },
         attributes: ["installment_id", "amount", "due_date", "status"],
@@ -100,7 +100,7 @@ export const getAllDebts = async (req: Request, res: Response) => {
         notes: debt.notes,
         installments,
       };
-    })
+    }),
   );
 
   return res.status(200).json({

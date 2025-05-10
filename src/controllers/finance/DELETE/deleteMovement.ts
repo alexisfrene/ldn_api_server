@@ -19,7 +19,7 @@ export const deleteMovement = async (req: Request, res: Response) => {
     movement.installment_id
   ) {
     await Installment.findByPk(movement.installment_id).then((res) =>
-      res?.update({ status: "unpaid" })
+      res?.update({ status: "unpaid" }),
     );
   }
 

@@ -1,5 +1,5 @@
-import { Models } from "@models";
 import { Uuid } from "types";
+import { Models } from "@models";
 
 const seedInstallment = async (models: Models) => {
   try {
@@ -354,7 +354,7 @@ const seedInstallment = async (models: Models) => {
           status: "unpaid",
         },
       ],
-      { ignoreDuplicates: true }
+      { ignoreDuplicates: true },
     );
 
     console.log("Seeding seedInstallment completed successfully!");

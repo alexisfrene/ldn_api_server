@@ -25,7 +25,7 @@ export const deleteSizeCollection = async (req: Request, res: Response) => {
       }
     })
     .then((products) =>
-      products.filter((product) => product.size_id === Number(size_id))
+      products.filter((product) => product.size_id === Number(size_id)),
     );
   if (userProducts) {
     userProducts.forEach(async (product: any) => {

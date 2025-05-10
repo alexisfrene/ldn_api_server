@@ -1,5 +1,5 @@
-import { env } from "config/environment";
 import { Request, Response } from "express";
+import { env } from "config/environment";
 
 export const getImageProduct = async (req: Request, res: Response) => {
   const user_id = req.user;
@@ -13,7 +13,7 @@ export const getImageProduct = async (req: Request, res: Response) => {
     env === "production" ? "https" : req.protocol
   }://${req.get("host")}/api/products/images/${query.public_id.replace(
     /\.[^/.]+$/,
-    ""
+    "",
   )}`;
 
   if (!image_url) {

@@ -1,12 +1,13 @@
-import { models } from "@lib";
 import { Request, Response } from "express";
 import { Uuid } from "types";
+import { models } from "@lib";
+
 const { Debt, Installment } = models;
 
 export const createDebts = async (req: Request, res: Response) => {
   const total_debt = req.body.installments.reduce(
     (sum: number, installment: { amount: number }) => sum + installment.amount,
-    0
+    0,
   );
 
   const totalInterest =
@@ -16,7 +17,7 @@ export const createDebts = async (req: Request, res: Response) => {
   const effectiveInterestPerInstallment =
     (Math.pow(
       total_debt / req.body.money_to_receive,
-      1 / req.body.installments.length
+      1 / req.body.installments.length,
     ) -
       1) *
     100;
@@ -43,7 +44,7 @@ export const createDebts = async (req: Request, res: Response) => {
         due_date: new Date(installment.due_date),
         status: installment.status,
         debt_id: newDebts.debt_id,
-      })
+      }),
   );
   await Promise.all(promiseInstallment);
   return res.status(200).json({});

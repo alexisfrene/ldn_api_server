@@ -1,7 +1,7 @@
 import express from "express";
+import { createBrand, getAllBrands } from "@controllers";
 import { runValidate } from "@middlewares";
 import { createBrandValidator } from "@validators";
-import { createBrand, getAllBrands } from "@controllers";
 
 const router = express.Router();
 

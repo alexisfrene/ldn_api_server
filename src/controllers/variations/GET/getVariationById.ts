@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
 import { env } from "config/environment";
+import { models } from "@lib";
 
 const User = models.User;
 
@@ -21,7 +21,7 @@ export const getVariationById = async (req: Request, res: Response) => {
       .json({ error: true, message: "No se encontró ninguna variación " });
   const variationSelected = userVariations.filter(
     (variation: { variation_id: string }) =>
-      variation.variation_id === variationId
+      variation.variation_id === variationId,
   );
   if (!variationSelected)
     return res
@@ -33,8 +33,8 @@ export const getVariationById = async (req: Request, res: Response) => {
       const images = collection.images.map(
         (image: string) =>
           `${env === "production" ? "https" : req.protocol}://${req.get(
-            "host"
-          )}/api/variations/images/${image.replace(/\.[^/.]+$/, "")}`
+            "host",
+          )}/api/variations/images/${image.replace(/\.[^/.]+$/, "")}`,
       );
       return {
         id: collection.id,

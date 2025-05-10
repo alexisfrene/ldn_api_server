@@ -5,7 +5,7 @@ const User = models.User;
 
 export const getPreferenceInProductView = async (
   req: Request,
-  res: Response
+  res: Response,
 ) => {
   const user_id = req.user;
   if (user_id) {

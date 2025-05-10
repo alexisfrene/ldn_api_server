@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
 import { Op, Sequelize } from "sequelize";
+import { models } from "@lib";
 import { endOfMonth, startOfMonth } from "@utils";
 
 const { Movement } = models;

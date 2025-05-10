@@ -5,7 +5,7 @@ export const runValidate = (validations: ContextRunner[]) => {
   return async (
     req: express.Request,
     res: express.Response,
-    next: express.NextFunction
+    next: express.NextFunction,
   ) => {
     for (const validation of validations) {
       const result = await validation.run(req);

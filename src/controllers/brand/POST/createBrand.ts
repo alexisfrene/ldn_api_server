@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
 import { Uuid } from "types";
+import { models } from "@lib";
+
 const { Brand } = models;
 
 export const createBrand = async (req: Request, res: Response) => {

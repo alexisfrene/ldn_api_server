@@ -7,8 +7,8 @@ import {
   Model,
   Sequelize,
 } from "sequelize";
-import { Uuid } from "../types";
 import { Models } from "@models";
+import { Uuid } from "../types";
 import { MovementAttributes } from "./Movements";
 
 export type ExpenseAttributes = InferAttributes<Expense>;
@@ -72,7 +72,7 @@ export default (sequelize: Sequelize) => {
       modelName: "Expense",
       tableName: "expenses",
       timestamps: true,
-    }
+    },
   );
   return Expense;
 };

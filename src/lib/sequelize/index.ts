@@ -1,8 +1,7 @@
-import { Sequelize } from "sequelize";
-
-import { initModels } from "@models";
-import { seedDatabase } from "seeders";
 import { databaseConfig, env, forceSync } from "config/environment";
+import { seedDatabase } from "seeders";
+import { Sequelize } from "sequelize";
+import { initModels } from "@models";
 
 if (!databaseConfig) {
   throw new Error(`Database configuration for environment ${env} not found.`);
@@ -31,7 +30,7 @@ sequelize
       console.log("Database synchronized without seeding");
     }
   })
-  .catch(err => {
+  .catch((err) => {
     console.error("Error synchronizing database:", err);
   });
 export { models, sequelize, associations };

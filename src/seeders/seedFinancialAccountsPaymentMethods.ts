@@ -42,7 +42,7 @@ const seedFinancialAccountsPaymentMethods = async (models: Models) => {
           payment_method_id: 101,
         },
       ],
-      { ignoreDuplicates: true }
+      { ignoreDuplicates: true },
     );
 
     console.log("Seeding FinancialAccounts completed successfully!");

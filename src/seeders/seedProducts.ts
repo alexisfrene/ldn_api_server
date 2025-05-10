@@ -98,7 +98,7 @@ const seedProducts = async (models: Models) => {
           size_value: "1",
         },
       ],
-      { ignoreDuplicates: true }
+      { ignoreDuplicates: true },
     );
 
     console.log("Seeding Products completed successfully!");

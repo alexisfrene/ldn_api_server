@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
 import { env } from "config/environment";
+import { models } from "@lib";
+
 //import { getTemporaryUrl } from "@lib/minio";
 
 const User = models.User;
@@ -18,7 +19,7 @@ export const getAllCategories = async (req: Request, res: Response) => {
       order: [["category_id", "ASC"]],
     });
 
-    const formatterCategories = categories.map(category => {
+    const formatterCategories = categories.map((category) => {
       const values = category.values.map(
         (value: { icon_url: string; value: string; id: string }) => {
           return {
@@ -26,15 +27,15 @@ export const getAllCategories = async (req: Request, res: Response) => {
               value.id === "default"
                 ? "https://res.cloudinary.com/daxkizsj3/image/upload/v1714359418/default_image.webp"
                 : `${env === "production" ? "https" : req.protocol}://${req.get(
-                    "host"
+                    "host",
                   )}/api/categories/images/${value.icon_url.replace(
                     /\.[^/.]+$/,
-                    ""
+                    "",
                   )}`,
             value: value.value,
             id: value.id,
           };
-        }
+        },
       );
       return {
         title: category.title,

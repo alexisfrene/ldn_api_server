@@ -1,14 +1,14 @@
 import express, { Request, Response } from "express";
+import axios from "axios";
+import sharp from "sharp";
 import {
+  changeAvatar,
   getAvatar,
   getPreferenceInProductView,
   preferenceInProductView,
-  changeAvatar,
 } from "@controllers";
 import { upload } from "@lib";
 import { getTemporaryUrl } from "@lib/minio";
-import axios from "axios";
-import sharp from "sharp";
 
 const router = express.Router();
 
@@ -63,7 +63,7 @@ router.get(
       console.error("Error al obtener la imagen:", error);
       return res.status(500).json({ error: "No se pudo obtener la imagen" });
     }
-  }
+  },
 );
 
 router.get("/preference", getPreferenceInProductView);

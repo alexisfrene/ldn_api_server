@@ -27,7 +27,7 @@ export const addCategoryValue = async (req: Request, res: Response) => {
   if (user) {
     const userCategories = await user.getUserCategories();
     const validateExistCategory = userCategories.find(
-      category => category.category_id === Number(category_id)
+      (category) => category.category_id === Number(category_id),
     );
     if (!validateExistCategory)
       return res
@@ -36,7 +36,7 @@ export const addCategoryValue = async (req: Request, res: Response) => {
     const selectedCategory = await Category.findByPk(category_id);
 
     const validateRepeatValue = selectedCategory!.values.find(
-      (e: { value: string }) => e.value === value
+      (e: { value: string }) => e.value === value,
     );
     if (validateRepeatValue)
       return res.status(400).json({

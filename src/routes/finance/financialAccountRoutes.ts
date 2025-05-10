@@ -1,9 +1,9 @@
 import express from "express";
 import {
   createFinancialAccounts,
-  getFinancialAccounts,
   deleteFinancialAccount,
   editFinancialAccount,
+  getFinancialAccounts,
   getIsValidAccountName,
 } from "@controllers";
 import { runValidate } from "@middlewares";
@@ -21,12 +21,12 @@ router.post("/", createFinancialAccounts);
 router.patch(
   "/:id",
   runValidate(editFinancialAccountValidations),
-  editFinancialAccount
+  editFinancialAccount,
 );
 router.delete(
   "/:id",
   runValidate(deleteFinancialAccountValidations),
-  deleteFinancialAccount
+  deleteFinancialAccount,
 );
 
 export default router;

@@ -1,17 +1,12 @@
+import { databaseConfig, env } from "config/environment";
 import { Sequelize } from "sequelize";
-import { config as connectionPSQL } from "@lib/sequelize/postgres_config";
 import { SequelizeStorage, Umzug } from "umzug";
-type Env = "development" | "production";
 
-const env: Env = (env as Env) || "development";
-
-const config = connectionPSQL[env];
-
-if (!config) {
+if (!databaseConfig) {
   throw new Error(`Database configuration for environment ${env} not found.`);
 }
 
-const { database, username, password, host } = config;
+const { database, username, password, host } = databaseConfig;
 if (!database || !username || !password || !host) {
   throw new Error("Missing required connection configuration properties.");
 }

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
+
 const { Expense } = models;
 
 export const deleteExpense = async (req: Request, res: Response) => {

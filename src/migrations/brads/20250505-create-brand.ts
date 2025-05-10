@@ -1,4 +1,4 @@
-import { QueryInterface, DataTypes } from "sequelize";
+import { DataTypes, QueryInterface } from "sequelize";
 
 async function up(queryInterface: QueryInterface) {
   await queryInterface.createTable("brands", {

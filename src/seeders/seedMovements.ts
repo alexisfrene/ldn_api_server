@@ -1146,7 +1146,7 @@ const seedMovements = async (models: Models) => {
           value: 9800,
         },
       ],
-      { ignoreDuplicates: true }
+      { ignoreDuplicates: true },
     );
 
     console.log("Seeding Movements completed successfully!");

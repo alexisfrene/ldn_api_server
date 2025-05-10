@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
 import { Uuid } from "types";
+import { models } from "@lib";
 
 const { FinancialAccount, FinancialAccountsPaymentMethods } = models;
 
@@ -18,7 +18,7 @@ export const createFinancialAccounts = async (req: Request, res: Response) => {
       FinancialAccountsPaymentMethods.create({
         financial_accounts_id: newFinancialAccount.financial_accounts_id,
         payment_method_id: paymentMethod,
-      })
+      }),
     );
     await Promise.all(paymentMethodsPromise);
   }

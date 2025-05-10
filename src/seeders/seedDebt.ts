@@ -1,5 +1,5 @@
-import { Models } from "@models";
 import { Uuid } from "types";
+import { Models } from "@models";
 import { user_id } from "./contextSeeders";
 
 const seedDebt = async (models: Models) => {
@@ -79,7 +79,7 @@ const seedDebt = async (models: Models) => {
           money_to_receive: 90000,
         },
       ],
-      { ignoreDuplicates: true }
+      { ignoreDuplicates: true },
     );
 
     console.log("Seeding seedDebt completed successfully!");

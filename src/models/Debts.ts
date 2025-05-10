@@ -7,8 +7,8 @@ import {
   Model,
   Sequelize,
 } from "sequelize";
-import { Uuid } from "../types";
 import { Models } from "@models";
+import { Uuid } from "../types";
 import { InstallmentAttributes } from "./Installments";
 import { MovementAttributes } from "./Movements";
 
@@ -123,7 +123,7 @@ export default (sequelize: Sequelize) => {
       modelName: "Debt",
       tableName: "debts",
       timestamps: true,
-    }
+    },
   );
 
   return Debt;

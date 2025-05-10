@@ -9,10 +9,10 @@ import {
   NonAttribute,
   Sequelize,
 } from "sequelize";
-import { Uuid } from "../types";
-import { UserAttributes } from "./Users";
-import { ProductAttributes } from "./Products";
 import { Models } from "@models";
+import { Uuid } from "../types";
+import { ProductAttributes } from "./Products";
+import { UserAttributes } from "./Users";
 
 type VariationItem = {
   id: Uuid;
@@ -94,7 +94,7 @@ export default (sequelize: Sequelize) => {
       modelName: "Variation",
       tableName: "variations",
       timestamps: true,
-    }
+    },
   );
   return Variation;
 };

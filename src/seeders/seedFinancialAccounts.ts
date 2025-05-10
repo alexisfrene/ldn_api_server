@@ -52,7 +52,7 @@ const seedFinancialAccounts = async (models: Models) => {
           name: "Banco BNA",
         },
       ],
-      { ignoreDuplicates: true }
+      { ignoreDuplicates: true },
     );
 
     console.log("Seeding FinancialAccounts completed successfully!");

@@ -22,7 +22,7 @@ export const getVariationForCategory = async (req: Request, res: Response) => {
   const categoryForCategory = categories.filter(
     (item) =>
       item.category_id === category &&
-      item.values.find((item: { id: string }) => item.id === value)
+      item.values.find((item: { id: string }) => item.id === value),
   );
   if (!categoryForCategory)
     return res
@@ -31,7 +31,8 @@ export const getVariationForCategory = async (req: Request, res: Response) => {
   const variations = await user?.getUserVariations().then((res: any[]) => {
     return res.filter(
       (variation) =>
-        variation.category_id === category && variation.category_value === value
+        variation.category_id === category &&
+        variation.category_value === value,
     );
   });
   if (!variations)

@@ -8,10 +8,10 @@ import {
   Model,
   Sequelize,
 } from "sequelize";
-import { Uuid } from "../types";
 import { Models } from "@models";
-import { UserAttributes } from "./Users";
+import { Uuid } from "../types";
 import { MovementAttributes } from "./Movements";
+import { UserAttributes } from "./Users";
 
 export type PaymentMethodAttributes = InferAttributes<PaymentMethod>;
 export type PaymentMethodCreationAttributes =
@@ -42,7 +42,7 @@ export class PaymentMethod extends Model<
       {
         through: models.FinancialAccountsPaymentMethods,
         foreignKey: "payment_method_id",
-      }
+      },
     );
 
     return {
@@ -76,7 +76,7 @@ export default (sequelize: Sequelize) => {
       modelName: "PaymentMethod",
       tableName: "paymentMethods",
       timestamps: false,
-    }
+    },
   );
   return PaymentMethod;
 };

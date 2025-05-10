@@ -1,19 +1,19 @@
 import {
-  Model,
-  Sequelize,
-  InferAttributes,
-  InferCreationAttributes,
   CreationOptional,
   DataTypes,
   HasOneGetAssociationMixin,
+  InferAttributes,
+  InferCreationAttributes,
+  Model,
+  Sequelize,
 } from "sequelize";
-import { Uuid } from "../types";
-import { SizeAttributes } from "./Sizes";
-import { Variation } from "./Variations";
-import { CategoryAttributes } from "./Categories";
-import { User } from "./Users";
-import { DetailAttributes } from "./Details";
 import { Models } from "@models";
+import { Uuid } from "../types";
+import { CategoryAttributes } from "./Categories";
+import { DetailAttributes } from "./Details";
+import { SizeAttributes } from "./Sizes";
+import { User } from "./Users";
+import { Variation } from "./Variations";
 
 export type ProductAttributes = InferAttributes<Product>;
 export type ProductCreationAttributes = InferCreationAttributes<Product>;
@@ -152,7 +152,7 @@ export default (sequelize: Sequelize) => {
       modelName: "Product",
       tableName: "products",
       timestamps: true,
-    }
+    },
   );
 
   return Product;

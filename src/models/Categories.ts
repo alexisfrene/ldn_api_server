@@ -8,8 +8,8 @@ import {
   Model,
   Sequelize,
 } from "sequelize";
-import { Uuid } from "../types";
 import { Models } from "@models";
+import { Uuid } from "../types";
 import { ProductAttributes } from "./Products";
 import { UserAttributes } from "./Users";
 import { VariationAttributes } from "./Variations";
@@ -92,12 +92,12 @@ export default (sequelize: Sequelize) => {
               }
               if (!item.icon_url || typeof item.icon_url !== "string") {
                 throw new Error(
-                  "Each item in values must have an 'icon_url' property of type string"
+                  "Each item in values must have an 'icon_url' property of type string",
                 );
               }
               if (!item.value || typeof item.value !== "string") {
                 throw new Error(
-                  "Each item in values must have a 'value' property of type string"
+                  "Each item in values must have a 'value' property of type string",
                 );
               }
             }
@@ -110,7 +110,7 @@ export default (sequelize: Sequelize) => {
       modelName: "Category",
       tableName: "categories",
       timestamps: false,
-    }
+    },
   );
   return Category;
 };

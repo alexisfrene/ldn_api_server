@@ -7,7 +7,7 @@ const router = express.Router();
 router.use(
   "/variations",
   authenticateToken,
-  asyncHandler(async (req, res, next) => variationsRoutes(req, res, next))
+  asyncHandler(async (req, res, next) => variationsRoutes(req, res, next)),
 );
 
 export { router };

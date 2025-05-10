@@ -7,8 +7,8 @@ import {
   Model,
   Sequelize,
 } from "sequelize";
-import { Uuid } from "../types";
 import { Models } from "@models";
+import { Uuid } from "../types";
 import { DebtAttributes } from "./Debts";
 
 export type InstallmentAttributes = InferAttributes<Installment>;
@@ -75,7 +75,7 @@ export default (sequelize: Sequelize) => {
       modelName: "Installment",
       tableName: "installments",
       timestamps: false,
-    }
+    },
   );
   return Installment;
 };

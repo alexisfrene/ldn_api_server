@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import { upload } from "@lib";
 
 export const conditionalUpload = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   const { type } = req.query;
   if (type === "image") {

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
+import { env } from "config/environment";
 import { models } from "@lib";
 import { uploadToMinio } from "@lib/minio";
-import { env } from "config/environment";
 
 const User = models.User;
 

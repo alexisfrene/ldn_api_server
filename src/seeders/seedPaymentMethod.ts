@@ -21,7 +21,7 @@ const seedPaymentMethods = async (models: Models) => {
           name: "Point",
         },
       ],
-      { ignoreDuplicates: true }
+      { ignoreDuplicates: true },
     );
 
     console.log("Seeding PaymentMethods completed successfully!");

@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { Uuid } from "../types";
+import { jwtSecret } from "config/environment";
 
 export const authenticateToken = async (
   req: Request,
@@ -19,9 +20,9 @@ export const authenticateToken = async (
 
   return jwt.verify(
     token,
-    process.env.JWT_SECRET || "",
+    jwtSecret || "",
     { algorithms: ["HS256"] },
-    async (err) => {
+    async err => {
       if (err) {
         return res.status(401).json({ message: "Unauthorized: Invalid token" });
       }

@@ -3,7 +3,7 @@ import { config as connectionPSQL } from "@lib/sequelize/postgres_config";
 import { SequelizeStorage, Umzug } from "umzug";
 type Env = "development" | "production";
 
-const env: Env = (process.env.NODE_ENV as Env) || "development";
+const env: Env = (env as Env) || "development";
 
 const config = connectionPSQL[env];
 
@@ -24,7 +24,7 @@ const sequelize = new Sequelize(database, username, password, {
 const migrator = new Umzug({
   migrations: {
     glob:
-      process.env.NODE_ENV === "development"
+      env === "development"
         ? "src/migrations/**/*.{ts,js}"
         : "build/migrations/*.js",
     resolve: ({ name, path, context }) => {

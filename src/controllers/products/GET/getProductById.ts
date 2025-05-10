@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
 import { ageTranslations, genderTranslations, styleTranslations } from "mocks";
+import { env } from "config/environment";
 
 const Product = models.Product;
 const Brand = models.Brand;
@@ -33,7 +34,7 @@ export const getProductById = async (req: Request, res: Response) => {
   });
 
   const urlCloudinary = `${
-    process.env.NODE_ENV === "production" ? "https" : req.protocol
+    env === "production" ? "https" : req.protocol
   }://${req.get("host")}/api/products/images/${product.primary_image}`;
   let variationFormat = {
     variation_id: "",
@@ -52,12 +53,9 @@ export const getProductById = async (req: Request, res: Response) => {
           label: value.label,
           images: value.images.map(
             (image: string) =>
-              `${
-                process.env.NODE_ENV === "production" ? "https" : req.protocol
-              }://${req.get("host")}/api/variations/images/${image.replace(
-                /\.[^/.]+$/,
-                ""
-              )}`
+              `${env === "production" ? "https" : req.protocol}://${req.get(
+                "host"
+              )}/api/variations/images/${image.replace(/\.[^/.]+$/, "")}`
           ),
         });
       }

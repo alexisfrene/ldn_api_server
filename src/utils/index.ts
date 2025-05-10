@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import bcrypt from "bcrypt";
 import { MovementAttributes } from "@models/Movements";
+import { saltRounds } from "config/environment";
 
 interface TotalsByType {
   [key: string]: number;
@@ -11,13 +12,11 @@ process.loadEnvFile();
 
 const tempDir = path.join(process.cwd(), "temp");
 
-const saltRoundsString = process.env.SALT_ROUNDS;
-if (!saltRoundsString) {
+if (!saltRounds) {
   throw new Error(
     "The salt rounds were not found in the environment variables"
   );
 }
-const saltRounds = parseInt(saltRoundsString, 10);
 
 export const hashPassword = async (password: string): Promise<string> => {
   const salt = await bcrypt.genSalt(saltRounds);
@@ -40,7 +39,7 @@ export const cleanObject = (
   keysToCheck: string[]
 ) => {
   const propertiesToEdit: Record<string, any> = {};
-  keysToCheck.forEach((key) => {
+  keysToCheck.forEach(key => {
     if (obj.hasOwnProperty(key)) {
       if (obj[key] === null || obj[key] === undefined || obj[key] === "") {
         delete obj[key];
@@ -96,10 +95,10 @@ export const deleteFilesInTemp = () => {
       );
       return;
     }
-    files.forEach((file) => {
+    files.forEach(file => {
       const filePath = path.join(tempDir, file);
 
-      fs.unlink(filePath, (err) => {
+      fs.unlink(filePath, err => {
         if (err) {
           console.error(`Error eliminando el archivo ${file}: ${err.message}`);
         } else {

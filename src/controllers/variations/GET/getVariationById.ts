@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
+import { env } from "config/environment";
 
 const User = models.User;
 
@@ -31,12 +32,9 @@ export const getVariationById = async (req: Request, res: Response) => {
     .map((collection: { images: string[]; label: string; id: string }) => {
       const images = collection.images.map(
         (image: string) =>
-          `${
-            process.env.NODE_ENV === "production" ? "https" : req.protocol
-          }://${req.get("host")}/api/variations/images/${image.replace(
-            /\.[^/.]+$/,
-            ""
-          )}`
+          `${env === "production" ? "https" : req.protocol}://${req.get(
+            "host"
+          )}/api/variations/images/${image.replace(/\.[^/.]+$/, "")}`
       );
       return {
         id: collection.id,

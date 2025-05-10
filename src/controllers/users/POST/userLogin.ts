@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { models } from "@lib";
+import { jwtSecret } from "config/environment";
 
 const User = models.User;
 
@@ -30,12 +31,10 @@ export const userLogin = async (req: Request, res: Response) => {
         password,
         userSearch?.password_hash || ""
       );
-      if (isPasswordValid && process.env.JWT_SECRET) {
-        const token = jwt.sign(
-          { user_id: userSearch.user_id },
-          process.env.JWT_SECRET,
-          { expiresIn: "30d" }
-        );
+      if (isPasswordValid && jwtSecret) {
+        const token = jwt.sign({ user_id: userSearch.user_id }, jwtSecret, {
+          expiresIn: "30d",
+        });
         await User.update(
           { session_token: token },
           { where: { user_id: userSearch.user_id } }

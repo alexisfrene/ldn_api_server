@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
+import { env } from "config/environment";
 
 const User = models.User;
 
@@ -43,9 +44,7 @@ export const getByIdValueImageURL = async (req: Request, res: Response) => {
   const url =
     selectedValue.id === "default"
       ? "https://res.cloudinary.com/daxkizsj3/image/upload/v1714359418/default_image.webp"
-      : `${
-          process.env.NODE_ENV === "production" ? "https" : req.protocol
-        }://${req.get(
+      : `${env === "production" ? "https" : req.protocol}://${req.get(
           "host"
         )}/api/categories/images/${selectedValue.icon_url.replace(
           /\.[^/.]+$/,

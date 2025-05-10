@@ -20,6 +20,7 @@ import { sequelize } from "@lib";
 import { initializeDB } from "./initializeDB";
 import { startServer } from "./startServer";
 import { initializeObjectStore } from "initializeObjectStore";
+import { port } from "config/environment";
 
 const app = express();
 app.set("trust proxy", "172.17.0.1");
@@ -76,7 +77,7 @@ app.use(errorHandler);
 
 process.loadEnvFile();
 
-const PORT: string | number = process.env.PORT || 3210;
+const PORT: string | number = port;
 
 const main = async (): Promise<void> => {
   try {

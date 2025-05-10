@@ -1,22 +1,18 @@
 import fs from "node:fs/promises";
 import * as Minio from "minio";
 import { getFileNameWithoutExtension } from "@utils";
-import { config as connectionMINIO } from "./minio_config";
+import { env, minioConfig } from "config/environment";
 
-type Env = "development" | "production";
-const env: Env = (process.env.NODE_ENV as Env) || "development";
-const config = connectionMINIO[env];
-
-if (!config) {
+if (!minioConfig) {
   throw new Error(`MinIO configuration for environment ${env} not found.`);
 }
 
 export const minioClient = new Minio.Client({
-  endPoint: config.host!,
-  port: Number(config.port),
+  endPoint: minioConfig.host!,
+  port: Number(minioConfig.port),
   useSSL: false,
-  accessKey: config.access_key,
-  secretKey: config.secret_key,
+  accessKey: minioConfig.accessKey,
+  secretKey: minioConfig.secretKey,
 });
 
 const getImageSize = async (filePath: string) => {
@@ -60,7 +56,7 @@ export const uploadToMinio = async (
   user_id: string
 ) => {
   const public_id = getFileNameWithoutExtension(file.filename);
-  const bucket = config.bucket_name || "";
+  const bucket = minioConfig.bucketName || "";
 
   try {
     const exists = await minioClient.bucketExists(bucket);
@@ -102,7 +98,7 @@ export const uploadToMinio = async (
 
 export const getTemporaryUrl = async (fileName: string) => {
   try {
-    const bucket = config.bucket_name || "";
+    const bucket = minioConfig.bucketName || "";
     return await minioClient.presignedUrl("GET", bucket, fileName, 60 * 60);
   } catch (error) {
     console.error("Error generating temporary URL:", error);
@@ -112,7 +108,7 @@ export const getTemporaryUrl = async (fileName: string) => {
 
 export const deleteFromMinio = async (fileName: string, folder: string) => {
   try {
-    const bucket = config.bucket_name || "";
+    const bucket = minioConfig.bucketName || "";
     const objectName = `${folder}/${fileName.replace(/\.[^/.]+$/, "")}`;
 
     await minioClient.statObject(bucket, objectName);
@@ -131,7 +127,7 @@ export const deleteFromMinio = async (fileName: string, folder: string) => {
 
 export const getFileMetadata = async (fileName: string, folder: string) => {
   try {
-    const bucket = config.bucket_name!;
+    const bucket = minioConfig.bucketName!;
     const objectName = `${folder}/${fileName}`;
 
     const metadata = await minioClient.statObject(bucket, objectName);
@@ -144,7 +140,7 @@ export const getFileMetadata = async (fileName: string, folder: string) => {
 
 export const moveFileInMinio = async (oldPath: string, newPath: string) => {
   try {
-    const bucket = config.bucket_name!;
+    const bucket = minioConfig.bucketName!;
     await minioClient.copyObject(bucket, newPath, `/${bucket}/${oldPath}`);
     await minioClient.removeObject(bucket, oldPath);
 
@@ -162,7 +158,7 @@ export const downloadFromMinio = async (
   destinationPath: string
 ) => {
   try {
-    const bucket = config.bucket_name || "";
+    const bucket = minioConfig.bucketName!;
     const objectName = `${folder}/${fileName}`;
 
     await minioClient.fGetObject(bucket, objectName, destinationPath);
@@ -180,7 +176,7 @@ export const copyFileInMinio = async (
   destinationPath: string
 ) => {
   try {
-    const bucket = config.bucket_name!;
+    const bucket = minioConfig.bucketName!;
 
     await minioClient.copyObject(
       bucket,

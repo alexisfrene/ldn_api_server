@@ -1,3 +1,4 @@
+import { env } from "config/environment";
 import { Request, Response } from "express";
 
 export const getImageProduct = async (req: Request, res: Response) => {
@@ -9,7 +10,7 @@ export const getImageProduct = async (req: Request, res: Response) => {
   if (typeof query.public_id !== "string")
     return res.status(400).json({ error: "public_id invalido" });
   const image_url = `${
-    process.env.NODE_ENV === "production" ? "https" : req.protocol
+    env === "production" ? "https" : req.protocol
   }://${req.get("host")}/api/products/images/${query.public_id.replace(
     /\.[^/.]+$/,
     ""

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
 import { uploadToMinio } from "@lib/minio";
+import { env } from "config/environment";
 
 const User = models.User;
 
@@ -14,7 +15,7 @@ export const changeAvatar = async (req: Request, res: Response) => {
       .status(400)
       .json({ error: true, message: "No se mando una imagen" });
   const public_id = `${
-    process.env.NODE_ENV === "production" ? "https" : req.protocol
+    env === "production" ? "https" : req.protocol
   }://${req.get("host")}/api/user/images/${file.filename}`;
   await uploadToMinio(file, `${user_id}/user`, user_id);
   if (!public_id)

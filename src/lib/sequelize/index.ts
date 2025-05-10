@@ -1,19 +1,14 @@
 import { Sequelize } from "sequelize";
-import { config as connectionPSQL } from "./postgres_config";
+
 import { initModels } from "@models";
 import { seedDatabase } from "seeders";
+import { databaseConfig, env, forceSync } from "config/environment";
 
-type Env = "development" | "production";
-
-const env: Env = (process.env.NODE_ENV as Env) || "development";
-
-const config = connectionPSQL[env];
-
-if (!config) {
+if (!databaseConfig) {
   throw new Error(`Database configuration for environment ${env} not found.`);
 }
 
-const { database, username, password, host } = config;
+const { database, username, password, host } = databaseConfig;
 if (!database || !username || !password || !host) {
   throw new Error("Missing required connection configuration properties.");
 }
@@ -25,8 +20,6 @@ const sequelize = new Sequelize(database, username, password, {
 });
 
 const { associations, models } = initModels(sequelize);
-
-const forceSync = process.env.FORCE_SYNC === "true";
 
 sequelize
   .sync({ force: forceSync })

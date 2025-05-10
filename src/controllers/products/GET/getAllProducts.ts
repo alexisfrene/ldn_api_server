@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { models } from "@lib";
+import { env } from "config/environment";
 
 const User = models.User;
 const Product = models.Product;
@@ -26,7 +27,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
               ? size.values.find(e => e.id === productFromDB.size_value)
               : null;
             const urlCloudinary = `${
-              process.env.NODE_ENV === "production" ? "https" : req.protocol
+              env === "production" ? "https" : req.protocol
             }://${req.get("host")}/api/products/images/${
               productFromDB.primary_image
             }`;

@@ -6,11 +6,8 @@ import {
   getAllMoves,
 } from "@controllers";
 import { runValidate } from "@middlewares";
-import {
-  createMovementValidations,
-  deleteMovementValidations,
-  editMovementValidations,
-} from "@validators";
+import { createMovementValidations, deleteMovementValidations, editMovementValidations } from "validators/financeValidator";
+
 
 const router = express.Router();
 

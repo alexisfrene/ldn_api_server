@@ -5,7 +5,7 @@ import {
   getPaymentMethodsByUser,
 } from "@controllers";
 import { runValidate } from "@middlewares";
-import { createPaymentMethodsValidations } from "@validators";
+import { createPaymentMethodsValidations } from "validators/financeValidator";
 
 const router = express.Router();
 router.get("/", getPaymentMethodsByUser);

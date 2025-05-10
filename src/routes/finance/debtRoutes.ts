@@ -7,7 +7,8 @@ import {
   getDebtsById,
 } from "@controllers";
 import { runValidate } from "@middlewares";
-import { createDebtValidations } from "@validators";
+import { createDebtValidations } from "validators/financeValidator";
+
 
 const router = express.Router();
 router.get("/", getAllDebts);

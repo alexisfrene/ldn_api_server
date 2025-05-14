@@ -6,6 +6,7 @@ import {
   deleteSizeCollection,
   deleteSizeValue,
   getAllSizes,
+  getIdsForSizeName,
   modifyTitleCollectionSize,
 } from "@controllers";
 import { runValidate } from "@middlewares";
@@ -17,7 +18,15 @@ import {
 
 const router = express.Router();
 
-router.get("/", getAllSizes);
+router.get("/", (req, res) => {
+  const { collection_item_name } = req.query;
+  console.log("collection_item_name", collection_item_name);
+  if (collection_item_name) {
+    return getIdsForSizeName(req, res);
+  } else {
+    return getAllSizes(req, res);
+  }
+});
 
 router.post("/", runValidate(createSizeValidator), createSize);
 

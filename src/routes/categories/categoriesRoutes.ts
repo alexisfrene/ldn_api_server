@@ -11,6 +11,7 @@ import {
   getByIdCategory,
   getByIdCategoryValue,
   getByIdValueImageURL,
+  getIdsForCategoryName,
   modifyTitleCollectionCategory,
 } from "@controllers";
 import { runValidate } from "@middlewares";
@@ -107,7 +108,15 @@ router.delete(
     return res.status(400).json({ errors: result.array() });
   },
 );
-router.get("/", getAllCategories);
+router.get("/", (req, res) => {
+  const { collection_item_name } = req.query;
+  console.log("collection_item_name", collection_item_name);
+  if (collection_item_name) {
+    return getIdsForCategoryName(req, res);
+  } else {
+    return getAllCategories(req, res);
+  }
+});
 
 router.post(
   "/",

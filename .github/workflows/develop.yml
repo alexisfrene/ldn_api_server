@@ -1,11 +1,11 @@
-name: production
+name: develop
 
 on:
   push:
     branches: ["develop"]
 
 jobs:
-  create-docker-image:
+  test-ts:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code

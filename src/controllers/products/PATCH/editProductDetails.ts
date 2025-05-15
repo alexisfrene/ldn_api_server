@@ -22,11 +22,19 @@ export const editProductDetails = async (req: Request, res: Response) => {
     return res.status(404).json({ error: "Product not found" });
   }
   let selectorDetails = await product?.getDetailProduct();
+
   const details = await Detail.findByPk(selectorDetails.detail_id);
   if (!details) {
     return res.status(404).json({ error: "Details not found" });
   }
-  const updateDetails = await details.update(propertiesToEdit);
+
+  const updateDetails = await details.update({
+    gender: propertiesToEdit.gender,
+    color: propertiesToEdit.color,
+    style: propertiesToEdit.style,
+    age: propertiesToEdit.age,
+    brand_id: propertiesToEdit?.brand,
+  });
 
   return res.status(200).json(updateDetails);
 };

@@ -21,6 +21,7 @@ export class Detail extends Model<DetailAttributes, DetailCreationAttributes> {
   declare style: string;
   declare age: string;
   declare product_id: Uuid;
+  declare brand_id: number;
 
   declare getDetailProduct: HasOneGetAssociationMixin<ProductAttributes>;
   static associate(models: Models) {
@@ -62,6 +63,10 @@ export default (sequelize: Sequelize) => {
       age: {
         type: DataTypes.STRING,
         defaultValue: "-",
+      },
+      brand_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
       },
     },
     {

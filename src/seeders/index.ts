@@ -1,4 +1,5 @@
 import { Models } from "@models";
+import seedBrand from "./seedBrand";
 import seedCategories from "./seedCategories";
 import seedDebt from "./seedDebt";
 import seedDetails from "./seedDetail";
@@ -17,6 +18,7 @@ export const seedDatabase = async (models: Models) => {
   await seedCategories(models);
   await seedSizes(models);
   await seedProducts(models);
+  await seedBrand(models);
   await seedDetails(models);
   await seedPaymentMethods(models);
   await seedFinancialAccounts(models);

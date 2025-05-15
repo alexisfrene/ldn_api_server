@@ -34,7 +34,8 @@ jobs:
           DATABASE_HOST=${{ vars.DATABASE_HOST }}
           EOF
 
-      - name: Test TypeScript
-        run: |
-          pnpm install
-          pnpm check:ts
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: TypeScript Check
+        run: pnpm check:ts

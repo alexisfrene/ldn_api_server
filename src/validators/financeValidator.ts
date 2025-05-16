@@ -39,8 +39,8 @@ export const editMovementValidations = [
     .withMessage("La etiqueta debe ser una cadena."),
   body("value")
     .optional()
-    .isInt({ gt: 0 })
-    .withMessage("El valor debe ser un número entero positivo."),
+    .isFloat({ gt: 0 })
+    .withMessage("El valor debe ser un número positivo."),
   body("type")
     .optional()
     .isIn(["inflow_of_money", "money_outflow"])
@@ -70,7 +70,7 @@ export const createMovementValidations = [
       'El tipo debe ser "inflow_of_money" o "money_outflow" , "debt.',
     ),
   body("value")
-    .isInt({ min: 1 })
+    .isFloat({ min: 1 })
     .withMessage("El valor debe ser un número entero positivo.")
     .notEmpty()
     .withMessage("El valor es obligatorio."),

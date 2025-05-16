@@ -83,12 +83,7 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", getProductById);
 
-router.post(
-  "/",
-
-  upload.single("file"),
-  createProducts,
-);
+router.post("/", upload.single("file"), createProducts);
 
 router.delete("/:id", deleteProduct);
 

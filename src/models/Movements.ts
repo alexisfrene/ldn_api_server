@@ -106,7 +106,7 @@ export default (sequelize: Sequelize) => {
         defaultValue: "inflow_of_money",
       },
       value: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
         defaultValue: 0,
       },

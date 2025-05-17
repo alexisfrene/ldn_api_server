@@ -1,5 +1,7 @@
 import { BrandAttributes } from "@brands-models/brand.model";
 import { CategoryAttributes } from "@categories-models/category.model";
+import { SizeAttributes } from "@sizes-models/sizes.model";
+import { VariationAttributes } from "@variations-models/variation.model";
 import {
   CreationOptional,
   DataTypes,
@@ -10,15 +12,13 @@ import {
   Sequelize,
 } from "sequelize";
 import { Models } from "@models";
-import { Uuid } from "../types";
-import { DebtAttributes } from "./Debts";
-import { ExpenseAttributes } from "./Expenses";
-import { FinancialAccountAttributes } from "./FinancialAccounts";
-import { MovementAttributes } from "./Movements";
-import { PaymentMethodAttributes } from "./PaymentMethods";
-import { ProductAttributes } from "./Products";
-import { SizeAttributes } from "./Sizes";
-import { VariationAttributes } from "./Variations";
+import { DebtAttributes } from "../../../models/Debts";
+import { ExpenseAttributes } from "../../../models/Expenses";
+import { FinancialAccountAttributes } from "../../../models/FinancialAccounts";
+import { MovementAttributes } from "../../../models/Movements";
+import { PaymentMethodAttributes } from "../../../models/PaymentMethods";
+import { Uuid } from "../../../types";
+import { ProductAttributes } from "../../products/models/product.model";
 
 export type UserAttributes = InferAttributes<User>;
 export type UserCreationAttributes = InferCreationAttributes<

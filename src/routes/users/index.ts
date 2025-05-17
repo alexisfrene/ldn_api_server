@@ -1,8 +1,8 @@
 import express from "express";
 import { asyncHandler, authenticateToken } from "@middlewares";
-import loginRoutes from "./loginRoutes";
-import registerRoutes from "./registerRouter";
-import usersRoutes from "./usersRoutes";
+import loginRoutes from "../../features/users/routes/login.route";
+import registerRoutes from "../../features/users/routes/register.route";
+import usersRoutes from "../../features/users/routes/users.routes";
 
 const router = express.Router();
 

@@ -1,3 +1,4 @@
+import { UserAttributes } from "@users-models/user.model";
 import {
   CreationOptional,
   DataTypes,
@@ -9,7 +10,6 @@ import {
 } from "sequelize";
 import { Uuid } from "types";
 import { Models } from "@models";
-import { UserAttributes } from "@models/Users";
 
 export type BrandAttributes = InferAttributes<
   Brand,

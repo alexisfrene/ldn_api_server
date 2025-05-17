@@ -7,9 +7,9 @@ import {
   Model,
   Sequelize,
 } from "sequelize";
+import { Uuid } from "types";
 import { Models } from "@models";
-import { Uuid } from "../types";
-import { ProductAttributes } from "./Products";
+import { ProductAttributes } from "./product.model";
 
 export type DetailAttributes = InferAttributes<Detail, { omit: "product_id" }>;
 export type DetailCreationAttributes = InferCreationAttributes<Detail>;

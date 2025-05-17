@@ -1,6 +1,6 @@
 import express from "express";
 import { asyncHandler, authenticateToken } from "@middlewares";
-import sizeRoutes from "./sizesRoutes";
+import sizeRoutes from "../../features/sizes/routes/size.routes";
 
 const router = express.Router();
 

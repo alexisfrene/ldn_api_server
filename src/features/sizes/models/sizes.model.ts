@@ -1,3 +1,5 @@
+import { ProductAttributes } from "@products-models/product.model";
+import { UserAttributes } from "@users-models/user.model";
 import {
   CreationOptional,
   DataTypes,
@@ -7,10 +9,8 @@ import {
   Model,
   Sequelize,
 } from "sequelize";
+import { Uuid } from "types";
 import { Models } from "@models";
-import { Uuid } from "../types";
-import { ProductAttributes } from "./Products";
-import { UserAttributes } from "./Users";
 
 type SizeItem = {
   id: string;

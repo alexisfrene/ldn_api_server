@@ -1,4 +1,6 @@
 import { CategoryAttributes } from "@categories-models/category.model";
+import { SizeAttributes } from "@sizes-models/sizes.model";
+import { Variation } from "@variations-models/variation.model";
 import {
   CreationOptional,
   DataTypes,
@@ -9,11 +11,9 @@ import {
   Sequelize,
 } from "sequelize";
 import { Models } from "@models";
-import { Uuid } from "../types";
-import { DetailAttributes } from "./Details";
-import { SizeAttributes } from "./Sizes";
-import { User } from "./Users";
-import { Variation } from "./Variations";
+import { Uuid } from "../../../types";
+import { User } from "../../users/models/user.model";
+import { DetailAttributes } from "./detail.model";
 
 export type ProductAttributes = InferAttributes<Product>;
 export type ProductCreationAttributes = InferCreationAttributes<Product>;

@@ -13,11 +13,11 @@ export {
   createSizeValidator,
   editSizeValidator,
   deleteSizeValidator,
-} from "./sizeValidator";
+} from "../features/sizes/validators/size.validator";
 export {
   userRegisterValidator,
   userLoginValidator,
   editPreferencesValidator,
-} from "./userValidator";
+} from "../features/users/validators/user.validator";
 export { createExpenseValidations } from "./expenseValidator";
 export { createBrandValidator } from "../features/brands/validators/brand.validator";

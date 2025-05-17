@@ -20,6 +20,7 @@ export class FinancialAccount extends Model<
 > {
   declare financial_accounts_id: CreationOptional<Uuid>;
   declare name: string;
+  declare active: boolean;
   declare user_id: Uuid;
   declare PaymentMethods?: PaymentMethod[];
 
@@ -68,6 +69,11 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
+      },
+      active: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
       },
       name: {
         type: DataTypes.STRING,

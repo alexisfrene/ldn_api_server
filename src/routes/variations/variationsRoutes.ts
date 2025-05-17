@@ -1,18 +1,16 @@
 import express, { NextFunction, Request, Response } from "express";
+import { addImagesCollection } from "@variations-controllers/add-collection-image.controller";
+import { insertNewCollection } from "@variations-controllers/create-collection.controller";
+import { createVariation } from "@variations-controllers/create-variation.controller";
+import { removeImagesCollection } from "@variations-controllers/delete-collection-image.controller";
+import { deleteVariationById } from "@variations-controllers/delete-variation.controller";
+import { updateProduct } from "@variations-controllers/edit-variation.controller";
+import { getAllVariations } from "@variations-controllers/get-all.controller";
+import { getVariationForCategory } from "@variations-controllers/get-by-category.controller";
+import { getVariationById } from "@variations-controllers/get-by-id.controller";
+import { insertVariants } from "@variations-controllers/link-variation.controller";
 import axios from "axios";
 import sharp from "sharp";
-import {
-  addImagesCollection,
-  createVariation,
-  deleteVariationById,
-  getAllVariations,
-  getVariationById,
-  getVariationForCategory,
-  insertNewCollection,
-  insertVariants,
-  removeImagesCollection,
-  updateProduct,
-} from "@controllers";
 import { upload } from "@lib";
 import { getTemporaryUrl } from "@lib/minio";
 

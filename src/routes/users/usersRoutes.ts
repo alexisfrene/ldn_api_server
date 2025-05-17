@@ -1,12 +1,10 @@
 import express, { Request, Response } from "express";
+import { changeAvatar } from "@users-controllers/edit-avatar-image.controller";
+import { getAvatar } from "@users-controllers/get-avatar.controller";
+import { preferenceInProductView } from "@users-controllers/get-product-view-preference.controller";
+import { getPreferenceInProductView } from "@users-controllers/get-user-preferences.controller";
 import axios from "axios";
 import sharp from "sharp";
-import {
-  changeAvatar,
-  getAvatar,
-  getPreferenceInProductView,
-  preferenceInProductView,
-} from "@controllers";
 import { upload } from "@lib";
 import { getTemporaryUrl } from "@lib/minio";
 

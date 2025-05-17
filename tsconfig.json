@@ -44,7 +44,34 @@
       "@categories-routes/*": ["features/categories/routes/*"],
       "@categories-types/*": ["features/categories/types/*"],
       "@categories-validators/*": ["features/categories/validators/*"],
-      //
+      //products paths
+      "@products-controllers/*": ["features/products/controllers/*"],
+      "@products-services/*": ["features/products/services/*"],
+      "@products-models/*": ["features/products/models/*"],
+      "@products-routes/*": ["features/products/routes/*"],
+      "@products-types/*": ["features/products/types/*"],
+      "@products-validators/*": ["features/products/validators/*"],
+      //users paths
+      "@users-controllers/*": ["features/users/controllers/*"],
+      "@users-services/*": ["features/users/services/*"],
+      "@users-models/*": ["features/users/models/*"],
+      "@users-routes/*": ["features/users/routes/*"],
+      "@users-types/*": ["features/users/types/*"],
+      "@users-validators/*": ["features/users/validators/*"],
+      //sizes paths
+      "@sizes-controllers/*": ["features/sizes/controllers/*"],
+      "@sizes-services/*": ["features/sizes/services/*"],
+      "@sizes-models/*": ["features/sizes/models/*"],
+      "@sizes-routes/*": ["features/sizes/routes/*"],
+      "@sizes-types/*": ["features/sizes/types/*"],
+      "@sizes-validators/*": ["features/sizes/validators/*"],
+      //variations paths
+      "@variations-controllers/*": ["features/variations/controllers/*"],
+      "@variations-services/*": ["features/variations/services/*"],
+      "@variations-models/*": ["features/variations/models/*"],
+      "@variations-routes/*": ["features/variations/routes/*"],
+      "@variations-types/*": ["features/variations/types/*"],
+      "@variations-validators/*": ["features/variations/validators/*"],
       "@routes/*": ["routes/*"], // Para rutas específicas
       "@routes": ["routes/index"],
       "@utils": ["utils/index"],

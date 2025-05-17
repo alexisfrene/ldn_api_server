@@ -1,14 +1,12 @@
 import express from "express";
+import { addSizeValue } from "@sizes-controllers/add-value.controller";
+import { createSize } from "@sizes-controllers/create-size.controller";
+import { deleteSizeCollection } from "@sizes-controllers/delete-collection.controller";
+import { deleteSizeValue } from "@sizes-controllers/delete-value.controller";
+import { modifyTitleCollectionSize } from "@sizes-controllers/edit-collection-title.controller";
+import { getAllSizes } from "@sizes-controllers/get-all.controller";
+import { getIdsForSizeName } from "@sizes-controllers/get-size-by-name.controller";
 import { matchedData, validationResult } from "express-validator";
-import {
-  addSizeValue,
-  createSize,
-  deleteSizeCollection,
-  deleteSizeValue,
-  getAllSizes,
-  getIdsForSizeName,
-  modifyTitleCollectionSize,
-} from "@controllers";
 import { runValidate } from "@middlewares";
 import {
   createSizeValidator,

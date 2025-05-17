@@ -1,18 +1,16 @@
 import express, { Request, Response } from "express";
+import { changeImageProduct } from "@products-controllers/change-image.controller";
+import { createProducts } from "@products-controllers/create-product.controller";
+import { deleteProduct } from "@products-controllers/delete-product.controller";
+import { editProductData } from "@products-controllers/edit-product-data.controller";
+import { editProductDetails } from "@products-controllers/edit-product-details.controller";
+import { getAllProducts } from "@products-controllers/get-all.controller";
+import { getProductById } from "@products-controllers/get-by-id.controller";
+import { getImageProduct } from "@products-controllers/get-image.controller";
+import { getProductForCategory } from "@products-controllers/get-product-by-category.controller";
+import { linkVariation } from "@products-controllers/link-variation.controller";
 import axios from "axios";
 import sharp from "sharp";
-import {
-  changeImageProduct,
-  createProducts,
-  deleteProduct,
-  editProductData,
-  editProductDetails,
-  getAllProducts,
-  getImageProduct,
-  getProductById,
-  getProductForCategory,
-  linkVariation,
-} from "@controllers";
 import { conditionalUpload, handleProductType } from "@middlewares";
 import { upload } from "@lib";
 import { getTemporaryUrl } from "@lib/minio";

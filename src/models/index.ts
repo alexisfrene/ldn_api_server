@@ -1,6 +1,6 @@
+import brandModel from "@brands-models/brand.model";
+import categoryModel from "@categories-models/category.model";
 import { Sequelize } from "sequelize";
-import brandModel from "./Brands";
-import categoryModel from "./Categories";
 import debtsModel from "./Debts";
 import detailModel from "./Details";
 import expenseModel from "./Expenses";

@@ -1,19 +1,17 @@
 import express, { Request, Response } from "express";
+import { addCategoryValue } from "@categories-controllers/add-value.controller";
+import { createCategories } from "@categories-controllers/create-category.controller";
+import { deleteCategoryCollection } from "@categories-controllers/delete-collection.controller";
+import { deleteCategoryValue } from "@categories-controllers/delete-value.controller";
+import { getAllCategories } from "@categories-controllers/get-all.controller";
+import { getByIdCategory } from "@categories-controllers/get-by-id.controller";
+import { getIdsForCategoryName } from "@categories-controllers/get-ids-for-name.controller";
+import { getByIdCategoryValue } from "@categories-controllers/get-value-by-id.controller";
+import { getByIdValueImageURL } from "@categories-controllers/get-value-image-by-id.controller";
+import { modifyTitleCollectionCategory } from "@categories-controllers/modify-collection-title.controller";
 import axios from "axios";
 import { matchedData, validationResult } from "express-validator";
 import sharp from "sharp";
-import {
-  addCategoryValue,
-  createCategories,
-  deleteCategoryCollection,
-  deleteCategoryValue,
-  getAllCategories,
-  getByIdCategory,
-  getByIdCategoryValue,
-  getByIdValueImageURL,
-  getIdsForCategoryName,
-  modifyTitleCollectionCategory,
-} from "@controllers";
 import { runValidate } from "@middlewares";
 import {
   createCategoryValidator,

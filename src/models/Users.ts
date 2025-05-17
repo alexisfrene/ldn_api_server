@@ -1,3 +1,5 @@
+import { BrandAttributes } from "@brands-models/brand.model";
+import { CategoryAttributes } from "@categories-models/category.model";
 import {
   CreationOptional,
   DataTypes,
@@ -9,8 +11,6 @@ import {
 } from "sequelize";
 import { Models } from "@models";
 import { Uuid } from "../types";
-import { BrandAttributes } from "./Brands";
-import { CategoryAttributes } from "./Categories";
 import { DebtAttributes } from "./Debts";
 import { ExpenseAttributes } from "./Expenses";
 import { FinancialAccountAttributes } from "./FinancialAccounts";

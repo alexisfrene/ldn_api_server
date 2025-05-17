@@ -20,7 +20,7 @@ export class FinancialAccount extends Model<
 > {
   declare financial_accounts_id: CreationOptional<Uuid>;
   declare name: string;
-  declare active: boolean;
+  declare active: CreationOptional<boolean>;
   declare user_id: Uuid;
   declare PaymentMethods?: PaymentMethod[];
 

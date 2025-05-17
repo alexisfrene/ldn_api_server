@@ -1,3 +1,4 @@
+import { CategoryAttributes } from "@categories-models/category.model";
 import {
   CreationOptional,
   DataTypes,
@@ -9,7 +10,6 @@ import {
 } from "sequelize";
 import { Models } from "@models";
 import { Uuid } from "../types";
-import { CategoryAttributes } from "./Categories";
 import { DetailAttributes } from "./Details";
 import { SizeAttributes } from "./Sizes";
 import { User } from "./Users";

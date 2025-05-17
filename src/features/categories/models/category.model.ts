@@ -8,11 +8,11 @@ import {
   Model,
   Sequelize,
 } from "sequelize";
+import { Uuid } from "types";
 import { Models } from "@models";
-import { Uuid } from "../types";
-import { ProductAttributes } from "./Products";
-import { UserAttributes } from "./Users";
-import { VariationAttributes } from "./Variations";
+import { ProductAttributes } from "@models/Products";
+import { UserAttributes } from "@models/Users";
+import { VariationAttributes } from "@models/Variations";
 
 type CategoriesItem = {
   id: string;

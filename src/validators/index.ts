@@ -3,7 +3,7 @@ export {
   getByIdCategoryValidator,
   deleteByIdCategoryValidator,
   updateCategoryValidator,
-} from "./categoryValidator";
+} from "../features/categories/validators/category-validator";
 export {
   createFinancialAccountValidations,
   editFinancialAccountValidations,
@@ -20,4 +20,4 @@ export {
   editPreferencesValidator,
 } from "./userValidator";
 export { createExpenseValidations } from "./expenseValidator";
-export { createBrandValidator } from "./brandValidator";
+export { createBrandValidator } from "../features/brands/validators/brand.validator";

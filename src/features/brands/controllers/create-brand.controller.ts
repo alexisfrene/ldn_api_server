@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createBrandService } from "@brands-services/create-brand.service";
+import { createBrandService } from "@brands-services/create-brand.services";
 import { Uuid } from "types";
 
 export async function createBrandController(req: Request, res: Response) {

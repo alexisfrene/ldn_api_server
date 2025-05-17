@@ -37,6 +37,7 @@
       "@brands-routes/*": ["features/brands/routes/*"],
       "@brands-types/*": ["features/brands/types/*"],
       "@brands-validators/*": ["features/brands/validators/*"],
+      "@brands-seeders/*": ["features/brands/seeders/*"],
       //categories paths
       "@categories-controllers/*": ["features/categories/controllers/*"],
       "@categories-services/*": ["features/categories/services/*"],
@@ -44,6 +45,7 @@
       "@categories-routes/*": ["features/categories/routes/*"],
       "@categories-types/*": ["features/categories/types/*"],
       "@categories-validators/*": ["features/categories/validators/*"],
+      "@categories-seeders/*": ["features/categories/seeders/*"],
       //products paths
       "@products-controllers/*": ["features/products/controllers/*"],
       "@products-services/*": ["features/products/services/*"],
@@ -51,6 +53,7 @@
       "@products-routes/*": ["features/products/routes/*"],
       "@products-types/*": ["features/products/types/*"],
       "@products-validators/*": ["features/products/validators/*"],
+      "@products-seeders/*": ["features/products/seeders/*"],
       //users paths
       "@users-controllers/*": ["features/users/controllers/*"],
       "@users-services/*": ["features/users/services/*"],
@@ -58,6 +61,7 @@
       "@users-routes/*": ["features/users/routes/*"],
       "@users-types/*": ["features/users/types/*"],
       "@users-validators/*": ["features/users/validators/*"],
+      "@users-seeders/*": ["features/users/seeders/*"],
       //sizes paths
       "@sizes-controllers/*": ["features/sizes/controllers/*"],
       "@sizes-services/*": ["features/sizes/services/*"],
@@ -65,6 +69,7 @@
       "@sizes-routes/*": ["features/sizes/routes/*"],
       "@sizes-types/*": ["features/sizes/types/*"],
       "@sizes-validators/*": ["features/sizes/validators/*"],
+      "@sizes-seeders/*": ["features/sizes/seeders/*"],
       //variations paths
       "@variations-controllers/*": ["features/variations/controllers/*"],
       "@variations-services/*": ["features/variations/services/*"],
@@ -72,6 +77,8 @@
       "@variations-routes/*": ["features/variations/routes/*"],
       "@variations-types/*": ["features/variations/types/*"],
       "@variations-validators/*": ["features/variations/validators/*"],
+      "@variations-seeders/*": ["features/variations/seeders/*"],
+      //
       "@routes/*": ["routes/*"], // Para rutas específicas
       "@routes": ["routes/index"],
       "@utils": ["utils/index"],

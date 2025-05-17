@@ -1,6 +1,6 @@
 import { Models } from "@models";
 import { hashPassword } from "@utils";
-import { user_id } from "./contextSeeders";
+import { user_id } from "@utils";
 
 const seedUsers = async (models: Models) => {
   try {

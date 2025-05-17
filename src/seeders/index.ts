@@ -1,17 +1,17 @@
+import seedBrand from "@brands-seeders/brand.seeder";
+import seedCategories from "@categories-seeders/category.seeder";
+import seedDetails from "@products-seeders/detail.seeder";
+import seedProducts from "@products-seeders/product.seeder";
+import seedSizes from "@sizes-seeders/size.seeder";
+import seedUsers from "@users-seeders/user.seeder";
 import { Models } from "@models";
-import seedBrand from "./seedBrand";
-import seedCategories from "./seedCategories";
 import seedDebt from "./seedDebt";
-import seedDetails from "./seedDetail";
 import seedExpenses from "./seedExpenses";
 import seedFinancialAccounts from "./seedFinancialAccounts";
 import seedFinancialAccountsPaymentMethods from "./seedFinancialAccountsPaymentMethods";
 import seedInstallment from "./seedInstallment";
 import seedMovements from "./seedMovements";
 import seedPaymentMethods from "./seedPaymentMethod";
-import seedProducts from "./seedProducts";
-import seedSizes from "./seedSizes";
-import seedUsers from "./seedUser";
 
 export const seedDatabase = async (models: Models) => {
   await seedUsers(models);

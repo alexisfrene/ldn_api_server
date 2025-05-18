@@ -73,6 +73,14 @@
       "@event-calendar-types/*": ["features/calendar-event/types/*"],
       "@event-calendar-validators/*": ["features/calendar-event/validators/*"],
       "@event-calendar-seeders/*": ["features/calendar-event/seeders/*"],
+      //account paths
+      "@accounts-controllers/*": ["features/accounts/controllers/*"],
+      "@accounts-services/*": ["features/accounts/services/*"],
+      "@accounts-models/*": ["features/accounts/models/*"],
+      "@accounts-routes/*": ["features/accounts/routes/*"],
+      "@accounts-types/*": ["features/accounts/types/*"],
+      "@accounts-validators/*": ["features/accounts/validators/*"],
+      "@accounts-seeders/*": ["features/accounts/seeders/*"],
       //shared paths
       "@routes/*": ["routes/*"],
       "@routes": ["routes/index"],

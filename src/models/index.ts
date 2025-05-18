@@ -1,5 +1,6 @@
 import brandModel from "@brands-models/brand.model";
 import categoryModel from "@categories-models/category.model";
+import eventCalendarModel from "@event-calendar-models/calendar-event.model";
 import detailModel from "@products-models/detail.model";
 import productModel from "@products-models/product.model";
 import sizesModel from "@sizes-models/sizes.model";
@@ -28,6 +29,7 @@ interface ModelAssociations {
   FinancialAccount: ReturnType<typeof financialAccountsModel>["associate"];
   User: ReturnType<typeof userModel>["associate"];
   Brand: ReturnType<typeof brandModel>["associate"];
+  EventCalendar: ReturnType<typeof eventCalendarModel>["associate"];
 }
 
 export interface Models {
@@ -46,6 +48,7 @@ export interface Models {
   Variation: ReturnType<typeof variationModel>;
   Installment: ReturnType<typeof installmentsModel>;
   PaymentMethod: ReturnType<typeof paymentMethodsModel>;
+  EventCalendar: ReturnType<typeof eventCalendarModel>;
   FinancialAccount: ReturnType<typeof financialAccountsModel>;
 }
 
@@ -66,6 +69,7 @@ export const initModels = (sequelize: Sequelize): InitModelsReturnType => {
   const Brand = brandModel(sequelize);
   const Category = categoryModel(sequelize);
   const Movement = movementsModel(sequelize);
+  const EventCalendar = eventCalendarModel(sequelize);
   const Variation = variationModel(sequelize);
   const Installment = installmentsModel(sequelize);
   const PaymentMethod = paymentMethodsModel(sequelize);
@@ -85,6 +89,7 @@ export const initModels = (sequelize: Sequelize): InitModelsReturnType => {
     Category,
     Variation,
     Installment,
+    EventCalendar,
     PaymentMethod,
     FinancialAccount,
     FinancialAccountsPaymentMethods,
@@ -104,6 +109,7 @@ export const initModels = (sequelize: Sequelize): InitModelsReturnType => {
     FinancialAccount: FinancialAccount.associate(models),
     User: User.associate(models),
     Brand: Brand.associate(models),
+    EventCalendar: EventCalendar.associate(models),
   } as InitModelsReturnType["associations"];
 
   return { models, associations };

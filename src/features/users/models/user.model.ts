@@ -1,5 +1,6 @@
 import { BrandAttributes } from "@brands-models/brand.model";
 import { CategoryAttributes } from "@categories-models/category.model";
+import { CalendarEventAttributes } from "@event-calendar-models/calendar-event.model";
 import { SizeAttributes } from "@sizes-models/sizes.model";
 import { VariationAttributes } from "@variations-models/variation.model";
 import {
@@ -55,7 +56,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
   declare getUserExpenses: HasManyGetAssociationsMixin<ExpenseAttributes>;
   declare getUserDebts: HasManyGetAssociationsMixin<DebtAttributes>;
   declare getUserBrands: HasManyGetAssociationsMixin<BrandAttributes>;
-
+  declare getUserEventsCalendar: HasManyGetAssociationsMixin<CalendarEventAttributes>;
   static associate(models: Models) {
     const UserSizes = User.hasMany(models.Size, {
       as: "UserSizes",
@@ -97,6 +98,10 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
       as: "UserBrands",
       foreignKey: "user_id",
     });
+    const UserEventsCalendar = User.hasMany(models.EventCalendar, {
+      as: "UserEventsCalendar",
+      foreignKey: "user_id",
+    });
     return {
       UserBrands,
       UserDebts,
@@ -108,6 +113,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
       UserFinancialAccounts,
       UserPaymentMethods,
       UserMovements,
+      UserEventsCalendar,
     };
   }
 }

@@ -78,7 +78,17 @@
       "@variations-types/*": ["features/variations/types/*"],
       "@variations-validators/*": ["features/variations/validators/*"],
       "@variations-seeders/*": ["features/variations/seeders/*"],
-      //
+      //event calendar paths
+      "@event-calendar-controllers/*": [
+        "features/calendar-event/controllers/*"
+      ],
+      "@event-calendar-services/*": ["features/calendar-event/services/*"],
+      "@event-calendar-models/*": ["features/calendar-event/models/*"],
+      "@event-calendar-routes/*": ["features/calendar-event/routes/*"],
+      "@event-calendar-types/*": ["features/calendar-event/types/*"],
+      "@event-calendar-validators/*": ["features/calendar-event/validators/*"],
+      "@event-calendar-seeders/*": ["features/calendar-event/seeders/*"],
+      //shared paths
       "@routes/*": ["routes/*"], // Para rutas específicas
       "@routes": ["routes/index"],
       "@utils": ["utils/index"],

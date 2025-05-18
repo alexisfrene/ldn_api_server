@@ -11,6 +11,7 @@ import "tsconfig-paths/register";
 import {
   brandsRoutes,
   categoriesRoutes,
+  eventCalendarRoutes,
   financeRoutes,
   productsRoutes,
   sizeRoutes,
@@ -72,6 +73,7 @@ app.use(
   sizeRoutes,
   financeRoutes,
   brandsRoutes,
+  eventCalendarRoutes,
 );
 app.use(errorHandler);
 

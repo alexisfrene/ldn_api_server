@@ -1,6 +1,7 @@
 import { Application } from "express";
 import fs from "node:fs";
 import path from "node:path";
+import { runMigrations } from "migrate";
 import { deleteFilesInTemp } from "@utils";
 
 const tempDir = path.join(process.cwd(), "temp");
@@ -22,6 +23,7 @@ export const startServer = (
     }, 3600000);
 
     try {
+      runMigrations();
       app.listen(port, () => {
         console.log(`Servidor en ejecución en http://localhost:${port}`);
         resolve();

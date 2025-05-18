@@ -20,4 +20,4 @@ export {
   editPreferencesValidator,
 } from "../features/users/validators/user.validator";
 export { createExpenseValidations } from "./expenseValidator";
-export { createBrandValidator } from "../features/brands/validators/brand.validator";
+export { createBrandValidator } from "../features/brands/validators/brand.create.validator";

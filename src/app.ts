@@ -2,6 +2,7 @@ import express from "express";
 import fs from "node:fs";
 import path from "node:path";
 import brandsRoutes from "@brands-routes/brand.routes";
+import categoriesRoutes from "@categories-routes/categories.routes";
 import { port } from "config/environment";
 import cors from "cors";
 import { rateLimit } from "express-rate-limit";
@@ -10,7 +11,6 @@ import { initializeObjectStore } from "initializeObjectStore";
 import morgan from "morgan";
 import "tsconfig-paths/register";
 import {
-  categoriesRoutes,
   eventCalendarRoutes,
   financeRoutes,
   productsRoutes,

@@ -1,12 +1,4 @@
-import { body, query } from "express-validator";
-
-export const getByIdCategoryValidator = [
-  query("type").notEmpty().isString().isIn(["collection", "value", "icon"]),
-];
-
-export const deleteByIdCategoryValidator = [
-  query("type").notEmpty().isString().isIn(["collection", "value"]),
-];
+import { body } from "express-validator";
 
 export const createCategoryValidator = [
   body("title").notEmpty().isString().isLength({ min: 3, max: 50 }),
@@ -22,12 +14,4 @@ export const createCategoryValidator = [
       return true;
     })
     .withMessage('El campo "values" debe contener solo strings.'),
-];
-
-export const updateCategoryValidator = [
-  query("type")
-    .notEmpty()
-    .isString()
-    .isIn(["add", "title"])
-    .withMessage("Falta un tipo"),
 ];

@@ -21,15 +21,12 @@ const migrator = new Umzug({
     glob:
       env === "development"
         ? "src/migrations/**/*.{ts,js}"
-        : "build/migrations/*.js",
-    resolve: ({ name, path, context }) => {
-      const migration = require(path!);
-      return {
-        name,
-        up: async () => migration.up(context),
-        down: async () => migration.down(context),
-      };
-    },
+        : "build/migrations/**/*.js",
+    resolve: ({ name, path, context }) => ({
+      name,
+      up: async () => (await import(path!)).up(context),
+      down: async () => (await import(path!)).down(context),
+    }),
   },
   context: sequelize.getQueryInterface(),
   storage: new SequelizeStorage({ sequelize }),

@@ -1,24 +1,24 @@
+import brandModel from "@brands-models/brand.model";
+import categoryModel from "@categories-models/category.model";
+import detailModel from "@products-models/detail.model";
+import productModel from "@products-models/product.model";
+import sizesModel from "@sizes-models/sizes.model";
+import variationModel from "@variations-models/variation.model";
 import { Sequelize } from "sequelize";
-import brandModel from "./Brands";
-import categoryModel from "./Categories";
+import userModel from "../features/users/models/user.model";
 import debtsModel from "./Debts";
-import detailModel from "./Details";
 import expenseModel from "./Expenses";
 import financialAccountsModel from "./FinancialAccounts";
 import financialAccountsPaymentMethodsModel from "./FinancialAccountsPaymentMethods";
 import installmentsModel from "./Installments";
 import movementsModel from "./Movements";
 import paymentMethodsModel from "./PaymentMethods";
-import productModel from "./Products";
-import sizeModel from "./Sizes";
-import userModel from "./Users";
-import variationModel from "./Variations";
 
 interface ModelAssociations {
   Category: ReturnType<typeof categoryModel>["associate"];
   Product: ReturnType<typeof productModel>["associate"];
   Expense: ReturnType<typeof expenseModel>["associate"];
-  Size: ReturnType<typeof sizeModel>["associate"];
+  Size: ReturnType<typeof sizesModel>["associate"];
   Detail: ReturnType<typeof detailModel>["associate"];
   Variation: ReturnType<typeof variationModel>["associate"];
   Movement: ReturnType<typeof movementsModel>["associate"];
@@ -35,7 +35,7 @@ export interface Models {
     typeof financialAccountsPaymentMethodsModel
   >;
   User: ReturnType<typeof userModel>;
-  Size: ReturnType<typeof sizeModel>;
+  Size: ReturnType<typeof sizesModel>;
   Debt: ReturnType<typeof debtsModel>;
   Brand: ReturnType<typeof brandModel>;
   Detail: ReturnType<typeof detailModel>;
@@ -58,7 +58,7 @@ type InitModelsReturnType = {
 
 export const initModels = (sequelize: Sequelize): InitModelsReturnType => {
   const User = userModel(sequelize);
-  const Size = sizeModel(sequelize);
+  const Size = sizesModel(sequelize);
   const Debt = debtsModel(sequelize);
   const Detail = detailModel(sequelize);
   const Product = productModel(sequelize);

@@ -30,6 +30,55 @@
     "moduleResolution": "NodeNext" /* Specify how TypeScript looks up a file from a given module specifier. */,
     "baseUrl": "src" /* Specify the base directory to resolve non-relative module names. */,
     "paths": {
+      //brands paths
+      "@brands-controllers/*": ["features/brands/controllers/*"],
+      "@brands-services/*": ["features/brands/services/*"],
+      "@brands-models/*": ["features/brands/models/*"],
+      "@brands-routes/*": ["features/brands/routes/*"],
+      "@brands-types/*": ["features/brands/types/*"],
+      "@brands-validators/*": ["features/brands/validators/*"],
+      "@brands-seeders/*": ["features/brands/seeders/*"],
+      //categories paths
+      "@categories-controllers/*": ["features/categories/controllers/*"],
+      "@categories-services/*": ["features/categories/services/*"],
+      "@categories-models/*": ["features/categories/models/*"],
+      "@categories-routes/*": ["features/categories/routes/*"],
+      "@categories-types/*": ["features/categories/types/*"],
+      "@categories-validators/*": ["features/categories/validators/*"],
+      "@categories-seeders/*": ["features/categories/seeders/*"],
+      //products paths
+      "@products-controllers/*": ["features/products/controllers/*"],
+      "@products-services/*": ["features/products/services/*"],
+      "@products-models/*": ["features/products/models/*"],
+      "@products-routes/*": ["features/products/routes/*"],
+      "@products-types/*": ["features/products/types/*"],
+      "@products-validators/*": ["features/products/validators/*"],
+      "@products-seeders/*": ["features/products/seeders/*"],
+      //users paths
+      "@users-controllers/*": ["features/users/controllers/*"],
+      "@users-services/*": ["features/users/services/*"],
+      "@users-models/*": ["features/users/models/*"],
+      "@users-routes/*": ["features/users/routes/*"],
+      "@users-types/*": ["features/users/types/*"],
+      "@users-validators/*": ["features/users/validators/*"],
+      "@users-seeders/*": ["features/users/seeders/*"],
+      //sizes paths
+      "@sizes-controllers/*": ["features/sizes/controllers/*"],
+      "@sizes-services/*": ["features/sizes/services/*"],
+      "@sizes-models/*": ["features/sizes/models/*"],
+      "@sizes-routes/*": ["features/sizes/routes/*"],
+      "@sizes-types/*": ["features/sizes/types/*"],
+      "@sizes-validators/*": ["features/sizes/validators/*"],
+      "@sizes-seeders/*": ["features/sizes/seeders/*"],
+      //variations paths
+      "@variations-controllers/*": ["features/variations/controllers/*"],
+      "@variations-services/*": ["features/variations/services/*"],
+      "@variations-models/*": ["features/variations/models/*"],
+      "@variations-routes/*": ["features/variations/routes/*"],
+      "@variations-types/*": ["features/variations/types/*"],
+      "@variations-validators/*": ["features/variations/validators/*"],
+      "@variations-seeders/*": ["features/variations/seeders/*"],
+      //
       "@routes/*": ["routes/*"], // Para rutas específicas
       "@routes": ["routes/index"],
       "@utils": ["utils/index"],
@@ -68,7 +117,7 @@
     // "sourceMap": true,                                /* Create source map files for emitted JavaScript files. */
     // "inlineSourceMap": true,                          /* Include sourcemap files inside the emitted JavaScript. */
     // "outFile": "./",                                  /* Specify a file that bundles all outputs into one JavaScript file. If 'declaration' is true, also designates a file that bundles all .d.ts output. */
-    "outDir": "./build" /* Specify an output folder for all emitted files. */,
+    "outDir": "build" /* Specify an output folder for all emitted files. */,
     // "removeComments": true,                           /* Disable emitting comments. */
     // "noEmit": true,                                   /* Disable emitting files from a compilation. */
     // "importHelpers": true,                            /* Allow importing helper functions from tslib once per project, instead of including them per-file. */

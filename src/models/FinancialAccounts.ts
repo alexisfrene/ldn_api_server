@@ -9,10 +9,10 @@ import {
   Sequelize,
 } from "sequelize";
 import { Models } from "@models";
+import { UserAttributes } from "../features/users/models/user.model";
 import { Uuid } from "../types";
 import { MovementAttributes } from "./Movements";
 import { PaymentMethod } from "./PaymentMethods";
-import { UserAttributes } from "./Users";
 
 export class FinancialAccount extends Model<
   InferAttributes<FinancialAccount>,
@@ -20,6 +20,7 @@ export class FinancialAccount extends Model<
 > {
   declare financial_accounts_id: CreationOptional<Uuid>;
   declare name: string;
+  declare active: CreationOptional<boolean>;
   declare user_id: Uuid;
   declare PaymentMethods?: PaymentMethod[];
 
@@ -68,6 +69,11 @@ export default (sequelize: Sequelize) => {
         type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
+      },
+      active: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
       },
       name: {
         type: DataTypes.STRING,

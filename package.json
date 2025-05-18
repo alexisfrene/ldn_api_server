@@ -10,6 +10,7 @@
     "start": "node  build/app.js",
     "migrate": "node build/runMigrations.js",
     "migrate-dev": "npx ts-node-dev -r tsconfig-paths/register src/runMigrations.ts",
+    "check:ts": "tsc --noEmit",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,md}\""
   },
   "keywords": [],

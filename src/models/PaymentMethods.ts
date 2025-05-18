@@ -9,9 +9,9 @@ import {
   Sequelize,
 } from "sequelize";
 import { Models } from "@models";
+import { UserAttributes } from "../features/users/models/user.model";
 import { Uuid } from "../types";
 import { MovementAttributes } from "./Movements";
-import { UserAttributes } from "./Users";
 
 export type PaymentMethodAttributes = InferAttributes<PaymentMethod>;
 export type PaymentMethodCreationAttributes =

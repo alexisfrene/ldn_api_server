@@ -8,11 +8,11 @@ import {
   Sequelize,
 } from "sequelize";
 import { Models } from "@models";
+import { UserAttributes } from "../features/users/models/user.model";
 import { Uuid } from "../types";
 import { DebtAttributes } from "./Debts";
 import { FinancialAccountAttributes } from "./FinancialAccounts";
 import { PaymentMethodAttributes } from "./PaymentMethods";
-import { UserAttributes } from "./Users";
 
 export type MovementAttributes = InferAttributes<Movement>;
 export type MovementCreationAttributes = InferCreationAttributes<
@@ -106,7 +106,7 @@ export default (sequelize: Sequelize) => {
         defaultValue: "inflow_of_money",
       },
       value: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
         defaultValue: 0,
       },

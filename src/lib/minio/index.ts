@@ -109,7 +109,7 @@ export const getTemporaryUrl = async (fileName: string) => {
 export const deleteFromMinio = async (fileName: string, folder: string) => {
   try {
     const bucket = minioConfig.bucketName || "";
-    const objectName = `${folder}/${fileName.replace(/\.[^/.]+$/, "")}`;
+    const objectName = `${folder}/${fileName}`;
 
     await minioClient.statObject(bucket, objectName);
     await minioClient.removeObject(bucket, objectName);

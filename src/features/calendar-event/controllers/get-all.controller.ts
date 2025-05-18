@@ -18,8 +18,17 @@ export const getAllEvents = async (req: Request, res: Response) => {
     const events = await user.getUserEventsCalendar({
       order: [["calendar_event_id", "ASC"]],
     });
-
-    return res.status(200).json(events);
+    const eventsMapped = events.map((event) => ({
+      id: event.calendar_event_id,
+      title: event.title,
+      start: event.start,
+      end: event.end,
+      allDay: event.allDay,
+      color: event.color,
+      location: event.location,
+      description: event.description,
+    }));
+    return res.status(200).json(eventsMapped);
   } catch (e) {
     return res.status(400).json([]);
   }

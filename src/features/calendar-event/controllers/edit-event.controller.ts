@@ -1,16 +1,21 @@
 import { Request, Response } from "express";
 import { EventCreation } from "@event-calendar-types/calendar-event";
-import { Uuid } from "types";
 import { models } from "@lib";
 
 const EventCalendar = models.EventCalendar;
 
-export const createEvent = async (req: Request, res: Response) => {
+export const editEvent = async (req: Request, res: Response) => {
   try {
     const { title, description, start, end, allDay, color, location } =
       req.body as EventCreation;
 
-    const newEvent = await EventCalendar.create({
+    const eventSelected = await EventCalendar.findByPk(req.params.id);
+    if (!eventSelected)
+      return res
+        .status(404)
+        .json({ message: "Evento no encontrado", error: true });
+
+    const updateEvent = await eventSelected.update({
       title,
       description,
       start,
@@ -18,10 +23,9 @@ export const createEvent = async (req: Request, res: Response) => {
       allDay,
       color,
       location,
-      user_id: req.user as Uuid,
     });
 
-    return res.status(200).json(newEvent);
+    return res.status(200).json(updateEvent);
   } catch (error) {
     console.log(error);
     return res.status(500).json([]);

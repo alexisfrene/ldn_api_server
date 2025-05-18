@@ -81,7 +81,7 @@ export default (sequelize: Sequelize) => {
       sequelize,
       modelName: "CalendarEvent",
       tableName: "calendar_events",
-      timestamps: true, // para createdAt, updatedAt
+      timestamps: true, 
     },
   );
 

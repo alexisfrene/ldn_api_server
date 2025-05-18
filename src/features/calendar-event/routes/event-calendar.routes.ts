@@ -8,7 +8,7 @@ import { asyncHandler, authenticateToken } from "@middlewares";
 const router = express.Router();
 
 router.use(
-  "/brands",
+  "/event-calendar",
   authenticateToken,
   asyncHandler(async (req, res, next) => getRoutes(req, res, next)),
   asyncHandler(async (req, res, next) => postRoutes(req, res, next)),

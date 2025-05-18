@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Uuid } from "types";
-import { models } from "@lib";
+import { models } from "@lib/sequelize";
 
 const { Movement, Debt, Installment } = models;
 

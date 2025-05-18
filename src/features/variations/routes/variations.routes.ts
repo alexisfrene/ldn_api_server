@@ -11,8 +11,8 @@ import { getVariationById } from "@variations-controllers/get-by-id.controller";
 import { insertVariants } from "@variations-controllers/link-variation.controller";
 import axios from "axios";
 import sharp from "sharp";
-import { upload } from "@lib";
 import { getTemporaryUrl } from "@lib/minio";
+import { upload } from "@lib/multer";
 
 const router = express.Router();
 

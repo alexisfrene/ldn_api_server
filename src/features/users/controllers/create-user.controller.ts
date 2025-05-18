@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Op } from "sequelize";
-import { models } from "@lib";
+import { models } from "@lib/sequelize";
 import { hashPassword, validateUserInput } from "@utils";
 
 const { User, Category, Size } = models;

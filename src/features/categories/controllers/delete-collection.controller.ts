@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
 import { deleteFromMinio } from "@lib/minio";
+import { models } from "@lib/sequelize";
 
 const Category = models.Category;
 const User = models.User;

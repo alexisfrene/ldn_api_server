@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Op } from "sequelize";
-import { models } from "@lib";
+import { models } from "@lib/sequelize";
 import { calculateTotals, endOfMonth, startOfMonth } from "@utils";
 
 const { User, Expense, PaymentMethod, FinancialAccount } = models;

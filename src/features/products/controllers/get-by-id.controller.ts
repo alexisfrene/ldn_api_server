@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { env } from "config/environment";
 import { ageTranslations, genderTranslations, styleTranslations } from "mocks";
-import { models } from "@lib";
+import { models } from "@lib/sequelize";
 
 const Product = models.Product;
 const Brand = models.Brand;

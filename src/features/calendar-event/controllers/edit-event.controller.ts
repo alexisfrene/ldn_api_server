@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { EventCreation } from "@event-calendar-types/calendar-event";
-import { models } from "@lib";
+import { models } from "@lib/sequelize";
 
 const EventCalendar = models.EventCalendar;
 

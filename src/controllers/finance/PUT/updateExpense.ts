@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
+import { models } from "@lib/sequelize";
 
 const { Expense } = models;
 export const updateExpense = async (req: Request, res: Response) => {

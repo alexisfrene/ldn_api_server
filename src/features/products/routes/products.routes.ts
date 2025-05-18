@@ -12,8 +12,8 @@ import { linkVariation } from "@products-controllers/link-variation.controller";
 import axios from "axios";
 import sharp from "sharp";
 import { conditionalUpload, handleProductType } from "@middlewares";
-import { upload } from "@lib";
 import { getTemporaryUrl } from "@lib/minio";
+import { upload } from "@lib/multer";
 
 const router = express.Router();
 

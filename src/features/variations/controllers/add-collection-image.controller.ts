@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
 import { uploadToMinio } from "@lib/minio";
+import { models } from "@lib/sequelize";
 
 const Variation = models.Variation;
 

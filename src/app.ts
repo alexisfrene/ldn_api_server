@@ -19,7 +19,7 @@ import {
   variationsRoutes,
 } from "@routes";
 import { errorHandler } from "@middlewares";
-import { sequelize } from "@lib";
+import { sequelize } from "@lib/sequelize";
 import { initializeDB } from "./initializeDB";
 import { startServer } from "./startServer";
 

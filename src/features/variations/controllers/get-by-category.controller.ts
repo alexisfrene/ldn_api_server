@@ -1,14 +1,11 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
+import { models } from "@lib/sequelize";
 
 const User = models.User;
 
 export const getVariationForCategory = async (req: Request, res: Response) => {
   const user_id = req.user;
-  const { category, value } = req.query as {
-    category: number | undefined;
-    value: string | undefined;
-  };
+  const { category, value } = req.query;
   if (!user_id) return res.status(401).json({ error: "No authority" });
   const user = await User.findByPk(user_id);
   if (!user)
@@ -19,9 +16,10 @@ export const getVariationForCategory = async (req: Request, res: Response) => {
       message: "No se paso los parámetros esperados",
     });
   const categories = await user?.getUserCategories();
+
   const categoryForCategory = categories.filter(
     (item) =>
-      item.category_id === category &&
+      item.category_id === Number(category) &&
       item.values.find((item: { id: string }) => item.id === value),
   );
   if (!categoryForCategory)

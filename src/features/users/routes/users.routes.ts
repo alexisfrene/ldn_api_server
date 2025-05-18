@@ -5,8 +5,8 @@ import { preferenceInProductView } from "@users-controllers/get-product-view-pre
 import { getPreferenceInProductView } from "@users-controllers/get-user-preferences.controller";
 import axios from "axios";
 import sharp from "sharp";
-import { upload } from "@lib";
 import { getTemporaryUrl } from "@lib/minio";
+import { upload } from "@lib/multer";
 
 const router = express.Router();
 

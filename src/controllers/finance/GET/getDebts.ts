@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Op, Sequelize } from "sequelize";
-import { models } from "@lib";
+import { models } from "@lib/sequelize";
 
 const { Debt, Installment } = models;
 

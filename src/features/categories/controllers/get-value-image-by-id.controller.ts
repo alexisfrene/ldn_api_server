@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { env } from "config/environment";
-import { models } from "@lib";
+import { models } from "@lib/sequelize";
 
 const User = models.User;
 

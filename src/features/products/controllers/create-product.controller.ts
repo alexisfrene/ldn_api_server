@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import axios from "axios";
 import { Uuid } from "types";
-import { models, sequelize } from "@lib";
 import { uploadToMinio } from "@lib/minio";
+import { models, sequelize } from "@lib/sequelize";
 
 const { Product, Category, Size, Detail } = models;
 

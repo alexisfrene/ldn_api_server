@@ -19,8 +19,8 @@ import {
   getByIdCategoryValidator,
   updateCategoryValidator,
 } from "@validators";
-import { upload } from "@lib";
 import { getTemporaryUrl } from "@lib/minio";
+import { upload } from "@lib/multer";
 
 const router = express.Router();
 

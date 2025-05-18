@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { InferAttributes } from "sequelize";
 import { Movement } from "@models/Movements";
-import { models } from "@lib";
+import { models } from "@lib/sequelize";
 
 const { PaymentMethod, FinancialAccount } = models;
 type MovementWithRelations = InferAttributes<Movement> & {

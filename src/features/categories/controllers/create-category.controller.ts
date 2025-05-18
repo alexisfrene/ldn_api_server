@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Uuid } from "types";
-import { models } from "@lib";
 import { uploadToMinio } from "@lib/minio";
+import { models } from "@lib/sequelize";
 
 const Category = models.Category;
 

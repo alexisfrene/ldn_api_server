@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { jwtSecret } from "config/environment";
 import jwt from "jsonwebtoken";
-import { models } from "@lib";
+import { models } from "@lib/sequelize";
 
 const User = models.User;
 

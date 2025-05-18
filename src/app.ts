@@ -3,6 +3,9 @@ import fs from "node:fs";
 import path from "node:path";
 import brandsRoutes from "@brands-routes/brand.routes";
 import categoriesRoutes from "@categories-routes/categories.routes";
+import eventCalendarRoutes from "@event-calendar-routes/event-calendar.routes";
+import productsRoutes from "@products-routes/products.routes";
+import sizeRoutes from "@sizes-routes/size.routes";
 import { port } from "config/environment";
 import cors from "cors";
 import { rateLimit } from "express-rate-limit";
@@ -10,14 +13,7 @@ import helmet from "helmet";
 import { initializeObjectStore } from "initializeObjectStore";
 import morgan from "morgan";
 import "tsconfig-paths/register";
-import {
-  eventCalendarRoutes,
-  financeRoutes,
-  productsRoutes,
-  sizeRoutes,
-  usersRoutes,
-  variationsRoutes,
-} from "@routes";
+import { financeRoutes, usersRoutes, variationsRoutes } from "@routes";
 import { errorHandler } from "@middlewares";
 import { sequelize } from "@lib/sequelize";
 import { initializeDB } from "./initializeDB";

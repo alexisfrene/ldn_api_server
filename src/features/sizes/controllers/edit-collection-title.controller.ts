@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
-import { models } from "@lib/sequelize";
-
-const Size = models.Size;
+import { modifyTitleCollectionSizeService } from "../services/edit-collection-title.services";
 
 export const modifyTitleCollectionSize = async (
   req: Request,
@@ -10,22 +8,10 @@ export const modifyTitleCollectionSize = async (
   const size_id = req.params.id;
   const user_id = req.user;
   const { title } = req.body;
-  if (!user_id)
-    return res
-      .status(401)
-      .json({ error: true, message: "Usuario no autorizado" });
-  if (!size_id)
-    return res.status(400).json({
-      error: true,
-      message: "No se proporciono un id del numero/talla",
-    });
-  const sizeSelected = await Size.findByPk(size_id);
-  if (!sizeSelected)
-    return res
-      .status(400)
-      .json({ error: true, message: "No se encontró la numero/talla" });
-  const updateSize = await sizeSelected.update({
+  const result = await modifyTitleCollectionSizeService(
+    user_id,
+    size_id,
     title,
-  });
-  return res.status(200).json(updateSize);
+  );
+  return res.status(result.status).json(result.body);
 };

@@ -1,32 +1,5 @@
 import { body, param } from "express-validator";
 
-export const createFinancialAccountValidations = [
-  body("name").isString().withMessage("El nombre debe ser una cadena."),
-  body("type")
-    .isIn(["inflow_of_money", "money_outflow", "debt"])
-    .withMessage("Tipo debe ser uno de: inflow_of_money, money_outflow, debt."),
-];
-
-export const editFinancialAccountValidations = [
-  param("id").isUUID().withMessage("El ID debe ser un UUID válido."),
-  body("name")
-    .optional()
-    .isString()
-    .withMessage("El nombre debe ser una cadena."),
-  body("type")
-    .optional()
-    .isIn(["inflow_of_money", "money_outflow", "debt"])
-    .withMessage("Tipo debe ser uno de: inflow_of_money, money_outflow, debt."),
-  body("values")
-    .optional()
-    .isArray()
-    .withMessage("Los valores deben ser un arreglo."),
-];
-
-export const deleteFinancialAccountValidations = [
-  param("id").isUUID().withMessage("El ID debe ser un UUID válido."),
-];
-
 export const editMovementValidations = [
   param("id").isUUID().withMessage("El ID debe ser un UUID válido."),
   body("entry_date")

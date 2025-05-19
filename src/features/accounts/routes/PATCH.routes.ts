@@ -1,11 +1,7 @@
 import express from "express";
 import { editFinancialAccount } from "@accounts-controllers/edit-account.controller";
+import { editFinancialAccountValidations } from "@accounts-validators/account.validator";
 import { runValidate } from "@middlewares";
-import {
-  //createFinancialAccountValidations,
-
-  editFinancialAccountValidations,
-} from "@validators";
 
 const router = express.Router();
 

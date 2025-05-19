@@ -1,3 +1,4 @@
+import seedFinancialAccounts from "@accounts-seeders/account.seeder";
 import seedBrand from "@brands-seeders/brand.seeder";
 import seedCategories from "@categories-seeders/category.seeder";
 import seedDetails from "@products-seeders/detail.seeder";
@@ -5,7 +6,6 @@ import seedProducts from "@products-seeders/product.seeder";
 import seedSizes from "@sizes-seeders/size.seeder";
 import seedUsers from "@users-seeders/user.seeder";
 import { Models } from "@models";
-import seedFinancialAccounts from "../features/accounts/seeders/account.seeder";
 import seedDebt from "./seedDebt";
 import seedExpenses from "./seedExpenses";
 import seedFinancialAccountsPaymentMethods from "./seedFinancialAccountsPaymentMethods";

@@ -1,7 +1,7 @@
 import express from "express";
 import { deleteFinancialAccount } from "@accounts-controllers/delete-account.controller";
+import { deleteFinancialAccountValidations } from "@accounts-validators/account.validator";
 import { runValidate } from "@middlewares";
-import { deleteFinancialAccountValidations } from "@validators";
 
 const router = express.Router();
 

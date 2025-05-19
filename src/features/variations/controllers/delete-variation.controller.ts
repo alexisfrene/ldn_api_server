@@ -1,28 +1,9 @@
 import { Request, Response } from "express";
-import { deleteFromMinio } from "@lib/minio";
-import { models } from "@lib/sequelize";
-
-const Variation = models.Variation;
+import { deleteVariationByIdService } from "../services/delete-variation.services";
 
 export const deleteVariationById = async (req: Request, res: Response) => {
   const variationId = req.params.id;
   const user_id = req.user;
-  const variation = await Variation.findByPk(variationId);
-  if (!user_id)
-    return res.status(500).json({ message: "No autorizado", error: true });
-  if (!variation) {
-    return res
-      .status(404)
-      .json({ message: "variación no encontrado", error: true });
-  }
-
-  await variation.values.forEach(async (value: { images: string[] }) => {
-    value.images.map(async (image: string) => {
-      await deleteFromMinio(image, `${user_id}/variations`);
-    });
-  });
-
-  await variation.destroy();
-
-  return res.status(200).json({ message: "variación eliminado correctamente" });
+  const result = await deleteVariationByIdService(variationId, user_id);
+  return res.status(result.status).json(result.body);
 };

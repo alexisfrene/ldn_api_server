@@ -1,16 +1,8 @@
 import { Request, Response } from "express";
-import { models } from "@lib/sequelize";
-
-const Product = models.Product;
+import { deleteProductService } from "../services/delete-product.services";
 
 export const deleteProduct = async (req: Request, res: Response) => {
-  const product = await Product.findByPk(req.params.id);
-  if (product) {
-    await product.update({ state: false });
-    if (!product.state) {
-      return res.status(200).json("Eliminación exitosa!");
-    }
-  }
-
-  return res.status(500).json("No se pudo eliminar");
+  const productId = req.params.id;
+  const result = await deleteProductService(productId);
+  return res.status(result.status).json(result.body);
 };

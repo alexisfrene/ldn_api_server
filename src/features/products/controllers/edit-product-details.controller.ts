@@ -1,40 +1,8 @@
 import { Request, Response } from "express";
-import { models } from "@lib/sequelize";
-import { cleanObject } from "@utils";
-
-const Product = models.Product;
-const Detail = models.Detail;
+import { editProductDetailsService } from "../services/edit-product-details.services";
 
 export const editProductDetails = async (req: Request, res: Response) => {
-  const propertiesToEdit = cleanObject(req.body, [
-    "gender",
-    "color",
-    "brand",
-    "style",
-    "age",
-  ]);
-
-  if (!req.params.id) {
-    return res.status(400).json({ error: "Invalid product ID" });
-  }
-  const product = await Product.findByPk(req.params.id);
-  if (!product) {
-    return res.status(404).json({ error: "Product not found" });
-  }
-  let selectorDetails = await product?.getDetailProduct();
-
-  const details = await Detail.findByPk(selectorDetails.detail_id);
-  if (!details) {
-    return res.status(404).json({ error: "Details not found" });
-  }
-
-  const updateDetails = await details.update({
-    gender: propertiesToEdit.gender,
-    color: propertiesToEdit.color,
-    style: propertiesToEdit.style,
-    age: propertiesToEdit.age,
-    brand_id: propertiesToEdit?.brand,
-  });
-
-  return res.status(200).json(updateDetails);
+  const productId = req.params.id;
+  const result = await editProductDetailsService(productId, req.body);
+  return res.status(result.status).json(result.body);
 };

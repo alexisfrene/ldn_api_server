@@ -1,6 +1,9 @@
+import { FinancialAccountAttributes } from "@accounts-models/accounts.model";
 import { BrandAttributes } from "@brands-models/brand.model";
 import { CategoryAttributes } from "@categories-models/category.model";
+import { DebtAttributes } from "@debt-models/debts.model";
 import { CalendarEventAttributes } from "@event-calendar-models/calendar-event.model";
+import { ExpenseAttributes } from "@expense-models/expenses.model";
 import { SizeAttributes } from "@sizes-models/sizes.model";
 import { VariationAttributes } from "@variations-models/variation.model";
 import {
@@ -13,12 +16,9 @@ import {
   Sequelize,
 } from "sequelize";
 import { Models } from "@models";
-import { DebtAttributes } from "../../../models/Debts";
-import { ExpenseAttributes } from "../../../models/Expenses";
-import { FinancialAccountAttributes } from "../../../models/FinancialAccounts";
-import { MovementAttributes } from "../../../models/Movements";
-import { PaymentMethodAttributes } from "../../../models/PaymentMethods";
 import { Uuid } from "../../../types";
+import { MovementAttributes } from "../../movements/models/movements.model";
+import { PaymentMethodAttributes } from "../../payment-methods/models/payment-methods.model";
 import { ProductAttributes } from "../../products/models/product.model";
 
 export type UserAttributes = InferAttributes<User>;

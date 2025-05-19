@@ -1,9 +1,14 @@
 import express from "express";
 import fs from "node:fs";
 import path from "node:path";
+import accountsRoutes from "@accounts-routes/accounts.routes";
 import brandsRoutes from "@brands-routes/brand.routes";
 import categoriesRoutes from "@categories-routes/categories.routes";
+import debtsRoutes from "@debt-routes/debt.routes";
 import eventCalendarRoutes from "@event-calendar-routes/event-calendar.routes";
+import expenseRoutes from "@expense-routes/expense.routes";
+import movementsRoutes from "@movement-routes/movement.routes";
+import paymentMethodsRoutes from "@payment-methods-routes/payment-methods.routes";
 import productsRoutes from "@products-routes/products.routes";
 import sizeRoutes from "@sizes-routes/size.routes";
 import usersRoutes from "@users-routes/users.routes";
@@ -15,7 +20,6 @@ import helmet from "helmet";
 import { initializeObjectStore } from "initializeObjectStore";
 import morgan from "morgan";
 import "tsconfig-paths/register";
-import { financeRoutes } from "@routes";
 import { errorHandler } from "@middlewares";
 import { sequelize } from "@lib/sequelize";
 import { initializeDB } from "./initializeDB";
@@ -69,9 +73,13 @@ app.use(
   productsRoutes,
   categoriesRoutes,
   sizeRoutes,
-  financeRoutes,
+  accountsRoutes,
   brandsRoutes,
   eventCalendarRoutes,
+  expenseRoutes,
+  movementsRoutes,
+  debtsRoutes,
+  paymentMethodsRoutes,
 );
 app.use(errorHandler);
 

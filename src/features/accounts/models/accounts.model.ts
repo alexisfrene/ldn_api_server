@@ -1,4 +1,6 @@
+import { PaymentMethod } from "@payment-methods-models/payment-methods.model";
 import { UserAttributes } from "@users-models/user.model";
+import { MovementAttributes } from "features/movements/models/movements.model";
 import {
   CreationOptional,
   DataTypes,
@@ -11,8 +13,6 @@ import {
 } from "sequelize";
 import { Uuid } from "types";
 import { Models } from "@models";
-import { MovementAttributes } from "@models/Movements";
-import { PaymentMethod } from "@models/PaymentMethods";
 
 export class FinancialAccount extends Model<
   InferAttributes<FinancialAccount>,

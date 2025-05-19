@@ -1,9 +1,9 @@
 import express from "express";
 import { addSizeValue } from "@sizes-controllers/add-value.controller";
 import { modifyTitleCollectionSize } from "@sizes-controllers/edit-collection-title.controller";
+import { editSizeValidator } from "@sizes-validators/size.validator";
 import { matchedData, validationResult } from "express-validator";
 import { runValidate } from "@middlewares";
-import { editSizeValidator } from "@validators";
 
 const router = express.Router();
 

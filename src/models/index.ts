@@ -1,24 +1,24 @@
+import financialAccountsModel from "@accounts-models/accounts.model";
 import brandModel from "@brands-models/brand.model";
 import categoryModel from "@categories-models/category.model";
+import debtsModel from "@debt-models/debts.model";
 import eventCalendarModel from "@event-calendar-models/calendar-event.model";
+import expensesModel from "@expense-models/expenses.model";
 import detailModel from "@products-models/detail.model";
 import productModel from "@products-models/product.model";
 import sizesModel from "@sizes-models/sizes.model";
 import variationModel from "@variations-models/variation.model";
 import { Sequelize } from "sequelize";
+import financialAccountsPaymentMethodsModel from "../features/accounts/models/accounts-payment-methods.model";
+import installmentsModel from "../features/debts/models/installments.model";
+import movementsModel from "../features/movements/models/movements.model";
+import paymentMethodsModel from "../features/payment-methods/models/payment-methods.model";
 import userModel from "../features/users/models/user.model";
-import debtsModel from "./Debts";
-import expenseModel from "./Expenses";
-import financialAccountsModel from "./FinancialAccounts";
-import financialAccountsPaymentMethodsModel from "./FinancialAccountsPaymentMethods";
-import installmentsModel from "./Installments";
-import movementsModel from "./Movements";
-import paymentMethodsModel from "./PaymentMethods";
 
 interface ModelAssociations {
   Category: ReturnType<typeof categoryModel>["associate"];
   Product: ReturnType<typeof productModel>["associate"];
-  Expense: ReturnType<typeof expenseModel>["associate"];
+  Expense: ReturnType<typeof expensesModel>["associate"];
   Size: ReturnType<typeof sizesModel>["associate"];
   Detail: ReturnType<typeof detailModel>["associate"];
   Variation: ReturnType<typeof variationModel>["associate"];
@@ -42,7 +42,7 @@ export interface Models {
   Brand: ReturnType<typeof brandModel>;
   Detail: ReturnType<typeof detailModel>;
   Product: ReturnType<typeof productModel>;
-  Expense: ReturnType<typeof expenseModel>;
+  Expense: ReturnType<typeof expensesModel>;
   Category: ReturnType<typeof categoryModel>;
   Movement: ReturnType<typeof movementsModel>;
   Variation: ReturnType<typeof variationModel>;
@@ -65,7 +65,7 @@ export const initModels = (sequelize: Sequelize): InitModelsReturnType => {
   const Debt = debtsModel(sequelize);
   const Detail = detailModel(sequelize);
   const Product = productModel(sequelize);
-  const Expense = expenseModel(sequelize);
+  const Expense = expensesModel(sequelize);
   const Brand = brandModel(sequelize);
   const Category = categoryModel(sequelize);
   const Movement = movementsModel(sequelize);

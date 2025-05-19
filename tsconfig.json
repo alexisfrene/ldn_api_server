@@ -81,7 +81,43 @@
       "@accounts-types/*": ["features/accounts/types/*"],
       "@accounts-validators/*": ["features/accounts/validators/*"],
       "@accounts-seeders/*": ["features/accounts/seeders/*"],
-      //shared paths
+      //expense paths
+      "@expense-controllers/*": ["features/expense/controllers/*"],
+      "@expense-services/*": ["features/expense/services/*"],
+      "@expense-models/*": ["features/expense/models/*"],
+      "@expense-routes/*": ["features/expense/routes/*"],
+      "@expense-types/*": ["features/expense/types/*"],
+      "@expense-validators/*": ["features/expense/validators/*"],
+      "@expense-seeders/*": ["features/expense/seeders/*"],
+      //movement paths
+      "@movement-controllers/*": ["features/movements/controllers/*"],
+      "@movement-services/*": ["features/movements/services/*"],
+      "@movement-models/*": ["features/movements/models/*"],
+      "@movement-routes/*": ["features/movements/routes/*"],
+      "@movement-types/*": ["features/movements/types/*"],
+      "@movement-validators/*": ["features/movements/validators/*"],
+      "@movement-seeders/*": ["features/movements/seeders/*"],
+      //payment-methods paths
+      "@payment-methods-controllers/*": [
+        "features/payment-methods/controllers/*"
+      ],
+      "@payment-methods-services/*": ["features/payment-methods/services/*"],
+      "@payment-methods-models/*": ["features/payment-methods/models/*"],
+      "@payment-methods-routes/*": ["features/payment-methods/routes/*"],
+      "@payment-methods-types/*": ["features/payment-methods/types/*"],
+      "@payment-methods-validators/*": [
+        "features/payment-methods/validators/*"
+      ],
+      "@payment-methods-seeders/*": ["features/payment-methods/seeders/*"],
+      //debt paths
+      "@debt-controllers/*": ["features/debts/controllers/*"],
+      "@debt-services/*": ["features/debts/services/*"],
+      "@debt-models/*": ["features/debts/models/*"],
+      "@debt-routes/*": ["features/debts/routes/*"],
+      "@debt-types/*": ["features/debts/types/*"],
+      "@debt-validators/*": ["features/debts/validators/*"],
+      "@debt-seeders/*": ["features/debts/seeders/*"],
+      //notifications paths
       "@routes/*": ["routes/*"],
       "@routes": ["routes/index"],
       "@utils": ["utils/index"],

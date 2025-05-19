@@ -1,7 +1,7 @@
 import express from "express";
 import { createSize } from "@sizes-controllers/create-size.controller";
+import { createSizeValidator } from "@sizes-validators/size.validator";
 import { runValidate } from "@middlewares";
-import { createSizeValidator } from "@validators";
 
 const router = express.Router();
 

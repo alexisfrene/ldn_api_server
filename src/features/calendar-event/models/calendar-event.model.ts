@@ -17,7 +17,7 @@ export class CalendarEvent extends Model<
   CalendarEventAttributes,
   CalendarEventCreationAttributes
 > {
-  declare calendar_event_id: CreationOptional<number>; // ID autoincremental
+  declare calendar_event_id: CreationOptional<number>;
   declare title: string;
   declare description: CreationOptional<string | null>;
   declare start: Date;
@@ -25,7 +25,7 @@ export class CalendarEvent extends Model<
   declare allDay: CreationOptional<boolean>;
   declare color: CreationOptional<string | null>;
   declare location: CreationOptional<string | null>;
-  declare user_id: Uuid; // FK a usuario
+  declare user_id: Uuid;
 
   static associate(models: Models) {
     CalendarEvent.belongsTo(models.User, {
@@ -81,7 +81,7 @@ export default (sequelize: Sequelize) => {
       sequelize,
       modelName: "CalendarEvent",
       tableName: "calendar_events",
-      timestamps: true, 
+      timestamps: true,
     },
   );
 

@@ -1,16 +1,11 @@
 import { Request, Response } from "express";
 import { Uuid } from "types";
-import { models } from "@lib/sequelize";
-
-const { PaymentMethod } = models;
+import { createPaymentMethodService } from "../services/create-payment-method.services";
 
 export const createPaymentMethod = async (req: Request, res: Response) => {
-  const user_id = req.user;
+  const user_id = req.user as Uuid;
   const { name } = req.body;
 
-  const newPaymentMethod = await PaymentMethod.create({
-    name,
-    user_id: user_id as Uuid,
-  });
+  const newPaymentMethod = await createPaymentMethodService(user_id, name);
   return res.status(200).json(newPaymentMethod);
 };

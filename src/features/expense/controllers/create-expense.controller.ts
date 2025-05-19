@@ -1,25 +1,13 @@
 import { Request, Response } from "express";
 import { Uuid } from "types";
-import { models } from "@lib/sequelize";
-
-const { Expense } = models;
+import { createExpenseService } from "../services/create-expense.services";
 
 export const createExpense = async (req: Request, res: Response) => {
   try {
     const user_id = req.user as Uuid;
     const body = req.body;
-
-    if (!body?.name) {
-      return res.status(400).json({ message: "Name is required." });
-    }
-
-    const expense = await Expense.create({
-      name: body?.name,
-      description: body?.description || "-",
-      user_id,
-    });
-
-    return res.status(201).json(expense);
+    const result = await createExpenseService(user_id, body);
+    return res.status(result.status).json(result.body);
   } catch (error) {
     console.error("Error creating expense:", error);
     return res.status(500).json({ message: "Internal server error." });

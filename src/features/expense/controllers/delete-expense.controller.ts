@@ -1,13 +1,8 @@
 import { Request, Response } from "express";
-import { models } from "@lib/sequelize";
-
-const { Expense } = models;
+import { deleteExpenseService } from "../services/delete-expense.services";
 
 export const deleteExpense = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const expense = await Expense.findByPk(id);
-  if (!expense) return res.status(404).json({ error: "Gasto no encontrado" });
-
-  await expense.destroy();
-  return res.status(204).json({ message: "Gasto eliminado correctamente" });
+  const result = await deleteExpenseService(id);
+  return res.status(result.status).json(result.body);
 };

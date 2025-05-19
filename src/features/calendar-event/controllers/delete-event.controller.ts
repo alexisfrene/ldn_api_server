@@ -1,17 +1,14 @@
 import { Request, Response } from "express";
-import { models } from "@lib/sequelize";
-
-const EventCalendar = models.EventCalendar;
+import { deleteEventService } from "../services/delete-event.services";
 
 export const deleteEvent = async (req: Request, res: Response) => {
   try {
-    const eventSelected = await EventCalendar.findByPk(req.params.id);
-    if (!eventSelected)
+    const deleted = await deleteEventService(req.params.id);
+    if (!deleted)
       return res
         .status(404)
         .json({ message: "Evento no encontrado", error: true });
-    const deleteEvent = await eventSelected.destroy();
-    return res.status(200).json(deleteEvent);
+    return res.status(200).json(deleted);
   } catch (error) {
     console.log(error);
     return res.status(500).json([]);

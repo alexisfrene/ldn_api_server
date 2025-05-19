@@ -1,38 +1,12 @@
 import { Request, Response } from "express";
-import { models } from "@lib/sequelize";
-
-const User = models.User;
+import { getIdsForCategoryNameService } from "../services/get-ids-for-name.services";
 
 export const getIdsForCategoryName = async (req: Request, res: Response) => {
   const user_id = req.user;
   const { collection_item_name } = req.query;
-
-  const user = await User.findByPk(user_id);
-
-  if (!user || !user.getUserCategories) {
-    return res
-      .status(400)
-      .json({ error: true, message: "El usuario no tiene categorías" });
-  }
-
-  const categories = await user.getUserCategories({
-    order: [["category_id", "ASC"]],
-  });
-
-  console.log("params", collection_item_name);
-  let selectedValue = {};
-  categories.forEach((category) => {
-    const searchedValue = category.values.find(
-      (value) => value.value === collection_item_name,
-    );
-
-    if (searchedValue) {
-      selectedValue = {
-        category_id: category.category_id,
-        value_id: searchedValue.id,
-      };
-    }
-  });
-
-  return res.status(200).json(selectedValue);
+  const result = await getIdsForCategoryNameService(
+    user_id,
+    collection_item_name as string,
+  );
+  return res.status(result.status).json(result.body);
 };

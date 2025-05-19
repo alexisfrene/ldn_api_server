@@ -1,27 +1,17 @@
 import { Request, Response } from "express";
-import { Uuid } from "types";
-import { models } from "@lib/sequelize";
-
-const { FinancialAccount, FinancialAccountsPaymentMethods } = models;
+import { createFinancialAccountService } from "@accounts-services/create-financial-account.services";
 
 export const createFinancialAccounts = async (req: Request, res: Response) => {
   const user_id = req.user;
-  const { name, paymentMethods }: { name: string; paymentMethods: number[] } =
-    req.body;
-
-  const newFinancialAccount = await FinancialAccount.create({
-    name,
-    user_id: user_id as Uuid,
-  });
-  if (paymentMethods?.length) {
-    const paymentMethodsPromise = paymentMethods.map(async (paymentMethod) =>
-      FinancialAccountsPaymentMethods.create({
-        financial_accounts_id: newFinancialAccount.financial_accounts_id,
-        payment_method_id: paymentMethod,
-      }),
+  const { name, paymentMethods } = req.body;
+  try {
+    const newFinancialAccount = await createFinancialAccountService(
+      user_id,
+      name,
+      paymentMethods,
     );
-    await Promise.all(paymentMethodsPromise);
+    return res.status(200).json({ newFinancialAccount });
+  } catch (error) {
+    return res.status(500).json({ error: "Internal Server Error" });
   }
-
-  return res.status(200).json({ newFinancialAccount });
 };

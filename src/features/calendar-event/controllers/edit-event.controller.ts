@@ -1,29 +1,15 @@
 import { Request, Response } from "express";
 import { EventCreation } from "@event-calendar-types/calendar-event";
-import { models } from "@lib/sequelize";
-
-const EventCalendar = models.EventCalendar;
+import { editEventService } from "../services/edit-event.services";
 
 export const editEvent = async (req: Request, res: Response) => {
   try {
-    const { title, description, start, end, allDay, color, location } =
-      req.body as EventCreation;
-
-    const eventSelected = await EventCalendar.findByPk(req.params.id);
-    if (!eventSelected)
+    const eventData = req.body as EventCreation;
+    const updateEvent = await editEventService(req.params.id, eventData);
+    if (!updateEvent)
       return res
         .status(404)
         .json({ message: "Evento no encontrado", error: true });
-
-    const updateEvent = await eventSelected.update({
-      title,
-      description,
-      start,
-      end,
-      allDay,
-      color,
-      location,
-    });
 
     return res.status(200).json(updateEvent);
   } catch (error) {

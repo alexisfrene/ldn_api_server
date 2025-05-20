@@ -5,7 +5,6 @@ import {
   setMinutes,
   setSeconds,
 } from "date-fns";
-import { ca } from "date-fns/locale";
 import { models } from "@lib/sequelize";
 
 const { User, Installment } = models;

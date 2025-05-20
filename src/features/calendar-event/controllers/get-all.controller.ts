@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAllEventsService } from "../services/get-all-events.services";
+import { getUserCalendarEvents } from "../services/get-all-events.services";
 
 export const getAllEvents = async (req: Request, res: Response) => {
   const user_id = req.user;
@@ -9,7 +9,7 @@ export const getAllEvents = async (req: Request, res: Response) => {
   }
 
   try {
-    const events = await getAllEventsService(user_id);
+    const events = await getUserCalendarEvents(user_id);
     if (!events) {
       return res.status(404).json({ message: "User not found", error: true });
     }

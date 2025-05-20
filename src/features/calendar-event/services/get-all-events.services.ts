@@ -17,7 +17,7 @@ const setTimeToEndOfDay = (date: Date) =>
 
 export const getUserCalendarEvents = async (userId: string) => {
   const user = await User.findByPk(userId);
-  if (!user) return null;
+  if (!user) return [];
 
   const [personalEvents, userDebts] = await Promise.all([
     user.getUserEventsCalendar({ order: [["calendar_event_id", "ASC"]] }),

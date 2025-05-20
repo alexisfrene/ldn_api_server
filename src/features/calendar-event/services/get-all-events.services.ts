@@ -24,7 +24,7 @@ export const getUserCalendarEvents = async (userId: string) => {
     user.getUserDebts({ order: [["debt_id", "ASC"]] }),
   ]);
 
-  const calendarEvents = personalEvents.map((event) => ({
+  let calendarEvents = personalEvents.map((event) => ({
     id: event.calendar_event_id,
     title: event.title,
     start: event.start,
@@ -34,6 +34,10 @@ export const getUserCalendarEvents = async (userId: string) => {
     location: event.location,
     description: event.description,
   }));
+
+  if (calendarEvents.length === 0) {
+    calendarEvents = [];
+  }
 
   for (const debt of userDebts) {
     const installments = await Installment.findAll({
@@ -58,5 +62,5 @@ export const getUserCalendarEvents = async (userId: string) => {
     }
   }
 
-  return calendarEvents;
+  return calendarEvents || [];
 };

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getUserCalendarEvents } from "../services/get-all-events.services";
+import { getUserCalendarEvents } from "@event-calendar-services/get-all-events.services";
 
 export const getAllEvents = async (req: Request, res: Response) => {
   const user_id = req.user;

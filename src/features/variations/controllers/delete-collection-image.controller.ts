@@ -1,8 +1,5 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
-import { deleteFromMinio } from "@lib/minio";
-
-const Variation = models.Variation;
+import { removeImagesCollectionService } from "../services/delete-collection-image.services";
 
 export const removeImagesCollection = async (req: Request, res: Response) => {
   const { id: variationId } = req.params;
@@ -10,53 +7,11 @@ export const removeImagesCollection = async (req: Request, res: Response) => {
   const { public_id } = req.body;
   const user_id = req.user;
 
-  if (!public_id)
-    return res
-      .status(400)
-      .json({ error: true, message: "No se paso nada en el cuerpo" });
-
-  if (!variationId)
-    return res.status(400).json({ error: true, message: "No autenticado" });
-
-  const variation = await Variation.findByPk(variationId);
-  if (!variation)
-    return res.status(404).json({
-      error: true,
-      message: "No se encontró la variación seleccionada",
-    });
-
-  const collectionSelected = variation.values.find(
-    (value: { id: string }) => value.id === collection_id,
+  const result = await removeImagesCollectionService(
+    variationId,
+    collection_id as string,
+    public_id,
+    user_id,
   );
-
-  if (!collectionSelected)
-    return res
-      .status(404)
-      .json({ error: true, message: "No se encontró la collection" });
-
-  const values = variation.values.filter(
-    (value: { id: string }) => value.id !== collectionSelected.id,
-  );
-
-  await deleteFromMinio(public_id, `${user_id}/variations`);
-  const newValues = collectionSelected.images.filter((i: string) =>
-    i.includes(public_id) ? false : i,
-  );
-
-  const updateVariation = await variation.update({
-    values: [
-      ...values,
-      {
-        id: collectionSelected.id,
-        label: collectionSelected.label,
-        images: newValues,
-      },
-    ],
-  });
-
-  return res.status(200).json({
-    error: false,
-    message: "Todo Ok",
-    updateVariation,
-  });
+  return res.status(result.status).json(result.body);
 };

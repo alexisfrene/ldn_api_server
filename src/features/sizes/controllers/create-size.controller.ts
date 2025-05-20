@@ -1,17 +1,9 @@
 import { Request, Response } from "express";
-import { models } from "@lib";
-
-const Size = models.Size;
+import { createSizeService } from "../services/create-size.services";
 
 export const createSize = async (req: Request, res: Response) => {
   const user_id = req.user;
   const { title, values } = req.body;
-  const newSize = await Size.create({
-    title,
-    values: values.map((e: { value: string }) => {
-      return { value: e.value, id: crypto.randomUUID() };
-    }),
-    user_id,
-  });
-  return res.status(200).json(newSize);
+  const result = await createSizeService(user_id, title, values);
+  return res.status(result.status).json(result.body);
 };

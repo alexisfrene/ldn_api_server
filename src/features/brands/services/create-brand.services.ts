@@ -1,5 +1,5 @@
 import { Uuid } from "types";
-import { models } from "@lib";
+import { models } from "@lib/sequelize";
 
 const { Brand } = models;
 

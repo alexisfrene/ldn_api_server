@@ -1,13 +1,15 @@
 import express from "express";
-import { createBrandController } from "@brands-controllers/create-brand.controller";
-import { getAllBrands } from "@brands-controllers/get-brand.controller";
-import { runValidate } from "@middlewares";
-import { createBrandValidator } from "@validators";
+import getRoutes from "@brands-routes/GET.routes";
+import postRoutes from "@brands-routes/POST.routes";
+import { asyncHandler, authenticateToken } from "@middlewares";
 
 const router = express.Router();
 
-router.get("/", getAllBrands);
-
-router.post("/", runValidate(createBrandValidator), createBrandController);
+router.use(
+  "/brands",
+  authenticateToken,
+  asyncHandler(async (req, res, next) => getRoutes(req, res, next)),
+  asyncHandler(async (req, res, next) => postRoutes(req, res, next)),
+);
 
 export default router;

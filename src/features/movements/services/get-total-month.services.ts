@@ -1,6 +1,6 @@
 import { Op, Sequelize } from "sequelize";
-import { models } from "@lib/sequelize";
 import { endOfMonth, startOfMonth } from "@utils";
+import { models } from "@lib/sequelize";
 
 const { Movement } = models;
 

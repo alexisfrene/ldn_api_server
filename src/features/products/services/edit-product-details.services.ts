@@ -1,5 +1,5 @@
-import { models } from "@lib/sequelize";
 import { cleanObject } from "@utils";
+import { models } from "@lib/sequelize";
 
 const Product = models.Product;
 const Detail = models.Detail;

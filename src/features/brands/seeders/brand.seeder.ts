@@ -1,5 +1,5 @@
-import { Models } from "@models";
 import { user_id } from "@utils";
+import { Models } from "@models";
 
 const seedBrand = async (models: Models) => {
   try {

@@ -1,8 +1,8 @@
-import fs from "node:fs";
-import path from "node:path";
 import bcrypt from "bcrypt";
 import { saltRounds } from "config/environment";
 import { MovementAttributes } from "features/movements/models/movements.model";
+import fs from "node:fs";
+import path from "node:path";
 import { Uuid } from "types";
 
 export const user_id = "372ea880-270f-4dfc-b7b3-caf0a987121f" as Uuid;

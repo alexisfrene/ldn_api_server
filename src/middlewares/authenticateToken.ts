@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from "express";
 import { jwtSecret } from "config/environment";
+import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { Uuid } from "../types";
 

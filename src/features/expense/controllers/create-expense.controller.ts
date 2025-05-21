@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { createExpenseService } from "@expense-services/create-expense.services";
 import { Uuid } from "types";
+import { createExpenseService } from "@expense-services/create-expense.services";
 
 export const createExpense = async (req: Request, res: Response) => {
   try {

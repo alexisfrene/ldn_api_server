@@ -1,5 +1,5 @@
-import path from "node:path";
 import multer from "multer";
+import path from "node:path";
 
 export const upload = multer({
   limits: { fileSize: 15 * 1024 * 1024, files: 10 },

@@ -89,7 +89,6 @@ export const getAllDebtsService = async (
     raw: true,
   })) as any;
 
-  count;
   const total_paid = Number(totals?.total_paid ?? 0);
   const total_unpaid = Number(totals?.total_unpaid ?? 0);
   const debtsTotal = total_paid + total_unpaid;
@@ -117,10 +116,17 @@ export const getAllDebtsService = async (
   });
 
   return {
-    debts: formattedDebts,
-    debtsTotal,
-    debtsTotalPaid: total_paid,
-    debtsTotalUnpaid: total_unpaid,
+    status: 200,
+    body: {
+      debts: formattedDebts,
+      debtsTotal,
+      debtsTotalPaid: total_paid,
+      debtsTotalUnpaid: total_unpaid,
+      totalPages: Math.ceil(count.length / limit),
+      currentPage: page,
+      totalItems: count,
+      limit,
+    },
   };
 };
 

@@ -1,8 +1,8 @@
 import express from "express";
+import { matchedData, validationResult } from "express-validator";
 import { deleteSizeCollection } from "@sizes-controllers/delete-collection.controller";
 import { deleteSizeValue } from "@sizes-controllers/delete-value.controller";
 import { deleteSizeValidator } from "@sizes-validators/size.validator";
-import { matchedData, validationResult } from "express-validator";
 import { runValidate } from "@middlewares";
 
 const router = express.Router();

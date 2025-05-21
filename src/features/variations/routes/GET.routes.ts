@@ -1,9 +1,9 @@
+import axios from "axios";
 import express, { Request, Response } from "express";
+import sharp from "sharp";
 import { getAllVariations } from "@variations-controllers/get-all.controller";
 import { getVariationForCategory } from "@variations-controllers/get-by-category.controller";
 import { getVariationById } from "@variations-controllers/get-by-id.controller";
-import axios from "axios";
-import sharp from "sharp";
 import { getTemporaryUrl } from "@lib/minio";
 
 const router = express.Router();

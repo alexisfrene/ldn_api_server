@@ -1,6 +1,6 @@
+import { Uuid } from "types";
 import { MovementAttributes } from "@movement-models/movements.model";
 import { PaymentMethodAttributes } from "@payment-methods-models/payment-methods.model";
-import { Uuid } from "types";
 import { models } from "@lib/sequelize";
 
 const { FinancialAccount, PaymentMethod, Movement } = models;

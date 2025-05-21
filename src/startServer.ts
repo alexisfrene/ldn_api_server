@@ -1,7 +1,7 @@
 import { Application } from "express";
+import { runMigrations } from "migrate";
 import fs from "node:fs";
 import path from "node:path";
-import { runMigrations } from "migrate";
 import { deleteFilesInTemp } from "@utils";
 
 const tempDir = path.join(process.cwd(), "temp");

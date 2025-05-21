@@ -1,6 +1,3 @@
-import { ProductAttributes } from "@products-models/product.model";
-import { UserAttributes } from "@users-models/user.model";
-import { VariationAttributes } from "@variations-models/variation.model";
 import {
   CreationOptional,
   DataTypes,
@@ -12,6 +9,9 @@ import {
   Sequelize,
 } from "sequelize";
 import { Uuid } from "types";
+import { ProductAttributes } from "@products-models/product.model";
+import { UserAttributes } from "@users-models/user.model";
+import { VariationAttributes } from "@variations-models/variation.model";
 import { Models } from "@models";
 
 type CategoriesItem = {

@@ -1,8 +1,8 @@
+import axios from "axios";
 import express, { Request, Response } from "express";
+import sharp from "sharp";
 import { getAvatar } from "@users-controllers/get-avatar.controller";
 import { getPreferenceInProductView } from "@users-controllers/get-user-preferences.controller";
-import axios from "axios";
-import sharp from "sharp";
 import { getTemporaryUrl } from "@lib/minio";
 
 const router = express.Router();

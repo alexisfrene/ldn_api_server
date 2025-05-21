@@ -1,11 +1,3 @@
-import { FinancialAccountAttributes } from "@accounts-models/accounts.model";
-import { BrandAttributes } from "@brands-models/brand.model";
-import { CategoryAttributes } from "@categories-models/category.model";
-import { DebtAttributes } from "@debt-models/debts.model";
-import { CalendarEventAttributes } from "@event-calendar-models/calendar-event.model";
-import { ExpenseAttributes } from "@expense-models/expenses.model";
-import { SizeAttributes } from "@sizes-models/sizes.model";
-import { VariationAttributes } from "@variations-models/variation.model";
 import {
   CreationOptional,
   DataTypes,
@@ -15,6 +7,14 @@ import {
   Model,
   Sequelize,
 } from "sequelize";
+import { BrandAttributes } from "@brands-models/brand.model";
+import { CategoryAttributes } from "@categories-models/category.model";
+import { SizeAttributes } from "@sizes-models/sizes.model";
+import { VariationAttributes } from "@variations-models/variation.model";
+import { CalendarEventAttributes } from "@event-calendar-models/calendar-event.model";
+import { FinancialAccountAttributes } from "@accounts-models/accounts.model";
+import { ExpenseAttributes } from "@expense-models/expenses.model";
+import { DebtAttributes } from "@debt-models/debts.model";
 import { Models } from "@models";
 import { Uuid } from "../../../types";
 import { MovementAttributes } from "../../movements/models/movements.model";

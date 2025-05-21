@@ -1,4 +1,3 @@
-import { MovementAttributes } from "@movement-models/movements.model";
 import {
   CreationOptional,
   DataTypes,
@@ -9,6 +8,7 @@ import {
   Sequelize,
 } from "sequelize";
 import { Uuid } from "types";
+import { MovementAttributes } from "@movement-models/movements.model";
 import { Models } from "@models";
 import { InstallmentAttributes } from "./installments.model";
 

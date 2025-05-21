@@ -9,7 +9,6 @@ export const getFinancialAccounts = async (req: Request, res: Response) => {
     const limit = parseInt(req.query.limit as string) || 10;
     const accounts = await getFinancialAccountsService(user_id, page, limit);
 
-    console.log("accounts", accounts);
     return res.status(200).json(accounts);
   } catch (error) {
     return res.status(500).json({ error: "Internal Server Error" });

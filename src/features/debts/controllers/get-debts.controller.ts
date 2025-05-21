@@ -6,7 +6,9 @@ import {
 
 export const getAllDebts = async (req: Request, res: Response) => {
   const user_id = req.user;
-  const result = await getAllDebtsService(user_id);
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 10;
+  const result = await getAllDebtsService(user_id, page, limit);
   return res.status(200).json(result);
 };
 

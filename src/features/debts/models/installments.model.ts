@@ -29,7 +29,7 @@ export class Installment extends Model<
 
   static associate(models: Models) {
     const DebtInstallments = Installment.belongsTo(models.Debt, {
-      as: "DebtInstallments",
+      as: "Debt",
       foreignKey: "debt_id",
     });
     const MovementInstallments = Installment.hasMany(models.Movement, {

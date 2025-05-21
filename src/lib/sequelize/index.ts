@@ -21,7 +21,7 @@ const sequelize = new Sequelize(database, username, password, {
 const { associations, models } = initModels(sequelize);
 
 sequelize
-  .sync({ force: forceSync })
+  .sync({ force: forceSync, alter: true })
   .then(async () => {
     if (forceSync) {
       await seedDatabase(models);

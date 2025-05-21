@@ -78,7 +78,6 @@ export default (sequelize: Sequelize) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: "Sin nombre",
         unique: true,
       },
       user_id: {

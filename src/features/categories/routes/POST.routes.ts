@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post(
   "/",
-  upload.array("files"),
+  upload.array("files", 10),
   runValidate(createCategoryValidator),
   createCategories,
 );

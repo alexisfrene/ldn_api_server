@@ -83,8 +83,6 @@ app.use(
 );
 app.use(errorHandler);
 
-process.loadEnvFile();
-
 const PORT: string | number = port;
 
 const main = async (): Promise<void> => {

@@ -10,8 +10,6 @@ interface TotalsByType {
   [key: string]: number;
 }
 
-process.loadEnvFile();
-
 const tempDir = path.join(process.cwd(), "temp");
 
 if (!saltRounds) {

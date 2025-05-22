@@ -1,6 +1,6 @@
 import { Op } from "sequelize";
-import { models } from "@lib/sequelize";
 import { hashPassword, validateUserInput } from "@utils";
+import { models } from "@lib/sequelize";
 
 const { User, Category, Size } = models;
 

@@ -1,15 +1,15 @@
+import axios from "axios";
 import express, { Request, Response } from "express";
+import { matchedData, validationResult } from "express-validator";
+import sharp from "sharp";
 import { getAllCategories } from "@categories-controllers/get-all.controller";
 import { getByIdCategory } from "@categories-controllers/get-by-id.controller";
 import { getIdsForCategoryName } from "@categories-controllers/get-ids-for-name.controller";
 import { getByIdCategoryValue } from "@categories-controllers/get-value-by-id.controller";
 import { getByIdValueImageURL } from "@categories-controllers/get-value-image-by-id.controller";
 import { getByIdCategoryValidator } from "@categories-validators/category.get-by-id.validator";
-import axios from "axios";
-import { matchedData, validationResult } from "express-validator";
-import sharp from "sharp";
-import { runValidate } from "@middlewares";
 import { getTemporaryUrl } from "@lib/minio";
+import { runValidate } from "@middlewares";
 
 const router = express.Router();
 

@@ -1,8 +1,8 @@
 import express from "express";
+import { matchedData, validationResult } from "express-validator";
 import { deleteCategoryCollection } from "@categories-controllers/delete-collection.controller";
 import { deleteCategoryValue } from "@categories-controllers/delete-value.controller";
 import { deleteByIdCategoryValidator } from "@categories-validators/category.delete.validator";
-import { matchedData, validationResult } from "express-validator";
 import { runValidate } from "@middlewares";
 
 const router = express.Router();

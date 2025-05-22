@@ -1,5 +1,5 @@
-import { EventCreation } from "@event-calendar-types/calendar-event";
 import { Uuid } from "types";
+import { EventCreation } from "@event-calendar-types/calendar-event";
 import { models } from "@lib/sequelize";
 
 const EventCalendar = models.EventCalendar;

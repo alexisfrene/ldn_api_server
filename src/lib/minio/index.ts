@@ -1,6 +1,6 @@
-import fs from "node:fs/promises";
 import { env, minioConfig } from "config/environment";
 import * as Minio from "minio";
+import fs from "node:fs/promises";
 import { getFileNameWithoutExtension } from "@utils";
 
 if (!minioConfig) {

@@ -1,10 +1,10 @@
+import axios from "axios";
 import express, { Request, Response } from "express";
+import sharp from "sharp";
 import { getAllProducts } from "@products-controllers/get-all.controller";
 import { getProductById } from "@products-controllers/get-by-id.controller";
 import { getImageProduct } from "@products-controllers/get-image.controller";
 import { getProductForCategory } from "@products-controllers/get-product-by-category.controller";
-import axios from "axios";
-import sharp from "sharp";
 import { getTemporaryUrl } from "@lib/minio";
 
 const router = express.Router();

@@ -1,44 +1,59 @@
-import { Op } from "sequelize";
-import { models } from "@lib/sequelize";
 import { calculateTotals, endOfMonth, startOfMonth } from "@utils";
+import { models } from "@lib/sequelize";
 
-const { User, Expense } = models;
+const { Expense, Movement } = models;
 
-export const getExpensesService = async (userId: string) => {
-  const user = await User.findByPk(userId);
-  const userExpenses = user
-    ? await user.getUserExpenses({ order: [["createdAt", "DESC"]] })
-    : [];
+export const getExpensesService = async (
+  userId: string,
+  page: number,
+  limit: number,
+) => {
+  const offset = (page - 1) * limit;
+  const { count, rows } = (await Expense.findAndCountAll({
+    where: { user_id: userId },
+    include: [
+      {
+        model: Movement,
+        as: "ExpenseMovements",
+      },
+    ],
+    order: [["createdAt", "DESC"]],
+    limit,
+    offset,
+  })) as { count: number; rows: any[] };
 
-  const formattedExpenses = await Promise.all(
-    userExpenses.map(async (expense) => {
-      const expenseDetails = await Expense.findByPk(expense.expense_id, {
-        attributes: ["description", "expense_id", "name"],
-      });
+  const formattedExpenses = rows.map((expense) => {
+    const allMovementsForExpense = expense.ExpenseMovements || [];
+    const movementsForCurrentMonth = allMovementsForExpense.filter(
+      (movement) => {
+        const createdAt = new Date(movement.createdAt);
+        return createdAt >= startOfMonth && createdAt <= endOfMonth;
+      },
+    );
+    const totalsForMonth = calculateTotals(movementsForCurrentMonth);
+    const totalsForAllTime = calculateTotals(allMovementsForExpense);
 
-      const [monthlyMovements, allMovements] = await Promise.all([
-        expenseDetails?.getExpenseMovements({
-          where: { entry_date: { [Op.between]: [startOfMonth, endOfMonth] } },
-        }) || [],
-        expenseDetails?.getExpenseMovements() || [],
-      ]);
+    return {
+      expense_id: expense.expense_id,
+      name: expense.name,
+      description: expense.description,
+      money_outflow_month: totalsForMonth.money_outflow || 0,
+      count_movements_month: totalsForMonth.count_movements || 0,
+      money_outflow: totalsForAllTime.money_outflow || 0,
+      count_movements: totalsForAllTime.count_movements || 0,
+    };
+  });
 
-      const totalsForMonth = calculateTotals(monthlyMovements);
-      const totalsForAllTime = calculateTotals(allMovements);
-
-      return {
-        expense_id: expense.expense_id,
-        name: expense.name,
-        description: expense.description,
-        money_outflow_month: totalsForMonth.money_outflow || 0,
-        count_movements_month: totalsForMonth.count_movements || 0,
-        money_outflow: totalsForAllTime.money_outflow || 0,
-        count_movements: totalsForAllTime.count_movements || 0,
-      };
-    }),
-  );
-
-  return { status: 200, body: formattedExpenses };
+  return {
+    status: 200,
+    body: {
+      expenses: formattedExpenses,
+      totalPages: Math.ceil(count / limit),
+      currentPage: page,
+      totalItems: count,
+      limit,
+    },
+  };
 };
 
 export const getExpenseByIdService = async (expense_id: string) => {

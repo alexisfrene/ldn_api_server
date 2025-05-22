@@ -1,6 +1,3 @@
-import { PaymentMethod } from "@payment-methods-models/payment-methods.model";
-import { UserAttributes } from "@users-models/user.model";
-import { MovementAttributes } from "features/movements/models/movements.model";
 import {
   CreationOptional,
   DataTypes,
@@ -12,6 +9,9 @@ import {
   Sequelize,
 } from "sequelize";
 import { Uuid } from "types";
+import { UserAttributes } from "@users-models/user.model";
+import { MovementAttributes } from "@movement-models/movements.model";
+import { PaymentMethod } from "@payment-methods-models/payment-methods.model";
 import { Models } from "@models";
 
 export class FinancialAccount extends Model<
@@ -78,7 +78,6 @@ export default (sequelize: Sequelize) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: "Sin nombre",
         unique: true,
       },
       user_id: {

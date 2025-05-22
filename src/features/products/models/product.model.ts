@@ -1,6 +1,3 @@
-import { CategoryAttributes } from "@categories-models/category.model";
-import { SizeAttributes } from "@sizes-models/sizes.model";
-import { Variation } from "@variations-models/variation.model";
 import {
   CreationOptional,
   DataTypes,
@@ -10,6 +7,9 @@ import {
   Model,
   Sequelize,
 } from "sequelize";
+import { CategoryAttributes } from "@categories-models/category.model";
+import { SizeAttributes } from "@sizes-models/sizes.model";
+import { Variation } from "@variations-models/variation.model";
 import { Models } from "@models";
 import { Uuid } from "../../../types";
 import { User } from "../../users/models/user.model";

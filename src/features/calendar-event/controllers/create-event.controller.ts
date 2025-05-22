@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { EventCreation } from "@event-calendar-types/calendar-event";
 import { Uuid } from "types";
+import { EventCreation } from "@event-calendar-types/calendar-event";
 import { createEventService } from "../services/create-event.services";
 
 export const createEvent = async (req: Request, res: Response) => {

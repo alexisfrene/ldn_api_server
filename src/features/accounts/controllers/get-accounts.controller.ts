@@ -5,7 +5,10 @@ import { getIsValidAccountNameService } from "@accounts-services/get-is-valid-ac
 export const getFinancialAccounts = async (req: Request, res: Response) => {
   try {
     const user_id = req.user;
-    const accounts = await getFinancialAccountsService(user_id);
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const accounts = await getFinancialAccountsService(user_id, page, limit);
+
     return res.status(200).json(accounts);
   } catch (error) {
     return res.status(500).json({ error: "Internal Server Error" });

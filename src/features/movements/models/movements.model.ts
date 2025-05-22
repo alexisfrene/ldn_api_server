@@ -1,5 +1,3 @@
-import { FinancialAccountAttributes } from "@accounts-models/accounts.model";
-import { DebtAttributes } from "@debt-models/debts.model";
 import {
   CreationOptional,
   DataTypes,
@@ -9,6 +7,8 @@ import {
   Model,
   Sequelize,
 } from "sequelize";
+import { FinancialAccountAttributes } from "@accounts-models/accounts.model";
+import { DebtAttributes } from "@debt-models/debts.model";
 import { Models } from "@models";
 import { Uuid } from "../../../types";
 import { PaymentMethodAttributes } from "../../payment-methods/models/payment-methods.model";

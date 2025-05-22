@@ -1,4 +1,3 @@
-import { Sequelize } from "sequelize";
 import { models } from "@lib/sequelize";
 
 const { Debt, Installment } = models;
@@ -10,8 +9,20 @@ export const getAllDebtsService = async (
 ) => {
   const offset = (page - 1) * limit;
 
-  const { count, rows } = await Debt.findAndCountAll({
+  const { count, rows: debts } = await Debt.findAndCountAll({
     where: { user_id },
+    attributes: ["debt_id"],
+    limit,
+    offset,
+    order: [
+      ["updatedAt", "DESC"],
+      ["createdAt", "DESC"],
+    ],
+  });
+  const fullDebts = await Debt.findAll({
+    where: {
+      debt_id: debts.map((d) => d.debt_id),
+    },
     include: [
       {
         model: Installment,
@@ -23,7 +34,7 @@ export const getAllDebtsService = async (
           "status",
           "debt_id",
         ],
-        required: false,
+        required: true,
       },
     ],
     attributes: [
@@ -32,70 +43,25 @@ export const getAllDebtsService = async (
       "total_interest",
       "interest_per_installment",
       "notes",
-      [
-        Sequelize.fn(
-          "SUM",
-          Sequelize.literal(
-            `CASE WHEN "DebtInstallments"."status" = 'paid' THEN "DebtInstallments"."amount" ELSE 0 END`,
-          ),
-        ),
-        "total_paid",
-      ],
-      [
-        Sequelize.fn(
-          "SUM",
-          Sequelize.literal(
-            `CASE WHEN "DebtInstallments"."status" = 'unpaid' THEN "DebtInstallments"."amount" ELSE 0 END`,
-          ),
-        ),
-        "total_unpaid",
-      ],
     ],
     group: ["Debt.debt_id", "DebtInstallments.installment_id"],
-    subQuery: false,
-    limit,
-    offset,
     order: [
       ["updatedAt", "DESC"],
       ["createdAt", "DESC"],
     ],
   });
 
-  const totals = (await Installment.findOne({
-    include: {
-      model: Debt,
-      as: "Debt",
-      where: { user_id },
-      attributes: [],
-    },
-    attributes: [
-      [
-        Sequelize.fn(
-          "SUM",
-          Sequelize.literal(`CASE WHEN status = 'paid' THEN amount ELSE 0 END`),
-        ),
-        "total_paid",
-      ],
-      [
-        Sequelize.fn(
-          "SUM",
-          Sequelize.literal(
-            `CASE WHEN status = 'unpaid' THEN amount ELSE 0 END`,
-          ),
-        ),
-        "total_unpaid",
-      ],
-    ],
-    raw: true,
-  })) as any;
+  const formattedDebts = fullDebts.map((debt: any) => {
+    let dp = 0;
+    let du = 0;
 
-  const total_paid = Number(totals?.total_paid ?? 0);
-  const total_unpaid = Number(totals?.total_unpaid ?? 0);
-  const debtsTotal = total_paid + total_unpaid;
-
-  const formattedDebts = rows.map((debt: any) => {
-    const dp = Number(debt.get("total_paid")) || 0;
-    const du = Number(debt.get("total_unpaid")) || 0;
+    debt.DebtInstallments.forEach((installment: any) => {
+      if (installment.status === "paid") {
+        dp += installment.amount;
+      } else {
+        du += installment.amount;
+      }
+    });
 
     const installments = (debt.DebtInstallments || []).sort(
       (a: any, b: any) =>
@@ -119,10 +85,7 @@ export const getAllDebtsService = async (
     status: 200,
     body: {
       debts: formattedDebts,
-      debtsTotal,
-      debtsTotalPaid: total_paid,
-      debtsTotalUnpaid: total_unpaid,
-      totalPages: Math.ceil(count.length / limit),
+      totalPages: Math.ceil(count / limit),
       currentPage: page,
       totalItems: count,
       limit,
@@ -131,7 +94,6 @@ export const getAllDebtsService = async (
 };
 
 export const getDebtsByIdService = async (id: string) => {
-  const { Debt, Installment } = models;
   const debt = await Debt.findByPk(id, {
     raw: true,
     attributes: { exclude: ["user_id", "createdAt", "updatedAt"] },
@@ -147,5 +109,38 @@ export const getDebtsByIdService = async (id: string) => {
   return {
     ...debt,
     installments: installments || [],
+  };
+};
+
+export const getStatsDebtsService = async (user_id: string) => {
+  const debts = (await Debt.findAll({
+    where: { user_id },
+    include: [
+      {
+        model: Installment,
+        as: "DebtInstallments",
+        attributes: ["amount", "status"],
+      },
+    ],
+    attributes: [],
+  })) as any[];
+
+  let totalPaid = 0;
+  let totalUnpaid = 0;
+
+  debts.forEach((debt) => {
+    debt.DebtInstallments.forEach((installment) => {
+      if (installment.status === "paid") {
+        totalPaid += installment.amount;
+      } else if (installment.status === "unpaid") {
+        totalUnpaid += installment.amount;
+      }
+    });
+  });
+
+  return {
+    debtsTotal: totalPaid + totalUnpaid,
+    debtsTotalPaid: totalPaid,
+    debtsTotalUnpaid: totalUnpaid,
   };
 };

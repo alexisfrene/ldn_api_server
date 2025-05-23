@@ -2,7 +2,7 @@ import { models } from "@lib/sequelize";
 
 const User = models.User;
 
-export const preferenceInProductViewService = async (
+export const editPreferenceInProductViewService = async (
   user_id: string,
   preferenceInProductView: string,
 ) => {

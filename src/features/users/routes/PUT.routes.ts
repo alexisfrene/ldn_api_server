@@ -1,8 +1,8 @@
 import express from "express";
-import { preferenceInProductView } from "@users-controllers/get-product-view-preference.controller";
+import { editPreferenceInProductView } from "@users-controllers/get-product-view-preference.controller";
 
 const router = express.Router();
 
-router.put("/preference", preferenceInProductView);
+router.put("/preference", editPreferenceInProductView);
 
 export default router;
